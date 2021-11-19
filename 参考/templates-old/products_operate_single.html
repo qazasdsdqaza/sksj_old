@@ -1,0 +1,1356 @@
+﻿{% load staticfiles %}
+<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<meta name="msapplication-TileColor" content="#0670f0">
+		<meta name="theme-color" content="#2ddcd3">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+
+
+		<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon"/>
+		<link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+
+		<!-- Title -->
+		<title>摇钱数（上传商品）</title>
+		<link rel="stylesheet" href="{% static 'assets/fonts/fonts/font-awesome.min.css' %}" />
+
+		<!-- Bootstrap Css -->
+		<link href="{% static 'assets/plugins/bootstrap-4.1.3/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+		<!-- Sidemenu Css -->
+		<link href="{% static 'assets/plugins/fullside-menu/css/style.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/fullside-menu/waves.min.css' %}" rel="stylesheet" />
+
+		<!-- Dashboard Css -->
+		<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+
+		<!-- c3.js Charts Plugin -->
+		<link href="{% static 'assets/plugins/charts-c3/c3-chart.css' %}" rel="stylesheet" />
+
+		<!-- Data table css -->
+		<link href="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+
+		<!-- Slect2 css -->
+		<link href="{% static 'assets/plugins/select2/select2.min.css' %}" rel="stylesheet" />
+
+		<!-- Custom scroll bar css-->
+		<link href="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" />
+
+		<!---Font icons-->
+		<link href="{% static 'assets/plugins/iconfonts/plugin.css' %}" rel="stylesheet" />
+
+        <!---计算器-->
+        <link href="{% static 'jisuanqi/css/sidebar.css' %}" rel="stylesheet" type="text/css" />
+
+
+	</head>
+	<body>
+		<div id="loading"></div>
+		<div class="page">
+			<div class="page-main">
+                <!-- 页眉目录栏 -->
+				<div class="app-header1 header py-1 d-flex">
+					<div class="container-fluid">
+						<div class="d-flex">
+							<a class="header-brand" href="">
+								<img src="{% static 'images/logo1.png' %}" class="header-brand-img" alt="Uplor  logo">
+							</a>
+							<div class="menu-toggle-button">
+								<a class="nav-link wave-effect" href="#" id="sidebarCollapse">
+									<span class="fa fa-bars"></span>
+								</a>
+							</div>
+							<div>
+								<div class="searching">
+									<a href="javascript:void(0)" class="search-open searching1">
+										<i class="fa fa-search"></i>
+									</a>
+									<div class="search-inline">
+										<form>
+											<input type="text" class="form-control" placeholder="Searching...">
+											<button type="submit">
+												<i class="fa fa-search"></i>
+											</button>
+											<a href="javascript:void(0)" class="search-close">
+												<i class="fa fa-times"></i>
+											</a>
+										</form>
+									</div>
+								</div>
+							</div>
+                            <div class="d-flex order-lg-1 ml-auto"  style="color: white" id="showdate"></div> <!--#太平洋时间 -->
+							<div class="d-flex order-lg-2 ml-auto">
+								<div class="dropdown d-none d-md-flex" >
+									<a  class="nav-link icon full-screen-link">
+										<i class="fe fe-maximize floating"  id="fullscreen-button"></i>
+									</a>
+							</div>
+                            <div class="profile_info">
+								<h2><a  href="/logout/">退出登录</a></h2>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="wrapper">
+					<!-- 侧边目录栏 -->
+					<nav id="sidebar" class="nav-sidebar">
+						<div class="profile clearfix">
+							<div class="profile_pic">
+								<img src="{% static 'images/aaa.png' %}" alt="..." class="img-circle profile_img">
+{#								<a href="editprofile.html" class="profile-img">#}
+{#									<span class="fa fa-pencil" aria-hidden="true"></span>#}
+{#								</a>#}
+							</div>
+							<div class="profile_info">
+								<h3>天道酬勤 地道酬善</h3>
+								<h3>人道酬诚 商道酬信</h3>
+							</div>
+						</div>
+						<ul class="list-unstyled components" id="accordion">
+							<li class="border-0"><h3>Tophatter</h3><li>
+                        {#高权限用户下面才可见 #}
+                        {% if user != 'up_data' %}
+                            <li>
+								<a href="/information_aggregation/" class=" wave-effect accordion-toggle " target="_blank"><i class="fa fa-diamond mr-2 sidebarpink"></i> 信息汇总展示</a>
+							</li>
+							<li>
+								<a href="#Submenu1" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-rocket mr-2 sidebarprimary"></i> 平台分析
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu1" data-parent="#accordion">
+									<li>
+										<a href="/index/" target="_blank">平台商品统计</a>
+									</li>
+									<li>
+										<a href="/goodslist/" target="_blank">商品分析</a>
+									</li>
+									<li>
+										<a href="/seller/" target="_blank">卖家分析</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#Submenu2" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 利润统计
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu2" data-parent="#accordion">
+									<li>
+										<a href="/profitStatistics/" target="_blank">订单统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_2/" target="_blank">拍卖统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_3/" target="_blank">拍卖统计(原始)</a>
+									</li>
+									<li>
+										<a href="/buy_nows/" target="_blank">一口价统计</a>
+									</li>
+                                    <li>
+										<a href="/buy_nows_page/" target="_blank">一口价（页面数据）</a>
+									</li>
+								</ul>
+							</li>
+                        {% endif %}
+
+                            <li>
+								<a href="#Submenu3" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu3" data-parent="#accordion">
+                                    <li>
+										<a href="/products_operate/ " target="_blank">批量上传</a>
+									</li>
+                                    <li>
+										<a href="/products_operate_single/" >上传商品</a>
+									</li>
+									<li>
+										<a href="/products/" target="_blank" >店铺所有商品</a>
+									</li>
+                                    <li>
+										<a href="/products_collect/" target="_blank">商品库</a>
+									</li>
+                                    {#高权限用户下面才可见 #}
+                                    {% if user != 'up_data' %}
+                                    <li>
+										<a href="/products_parets/" target="_blank">配件库</a>
+									</li>
+									<li>
+										<a href="/SKU_list_2/" target="_blank">商品信息录入</a>
+									</li>
+                                    {% endif %}
+								</ul>
+							</li>
+
+                        {#高权限用户下面才可见 #}
+                        {% if user != 'up_data' %}
+                            <li >
+								<a href="#Submenu7" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-table mr-2 sidebarpurple"></i> 发货物流
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu7" data-parent="#accordion">
+									<li>
+										<a href="/logistics_statistic/" target="_blank">物流规则 </a>
+									</li>
+									<li>
+										<a href="/return_performance/" target="_blank">退货表现</a>
+									</li>
+                                    <li>
+										<a href="/refund_orders/" target="_blank">订单退货</a>
+									</li>
+								</ul>
+							</li>
+							<li >
+								<a href="#Submenu8" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-sun-o mr-2 sidebarpink"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu8" data-parent="#accordion">
+									<li>
+										<a href="/founds/" target="_blank">资金统计 </a>
+									</li>
+									<li>
+										<a href="/fund_analysis/" target="_blank">资金表现</a>
+									</li>
+								</ul>
+							</li>
+                        {% endif %}
+                            <li><h3>5miles</h3><li>
+							<li>
+								<a href="#Submenu4" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu4" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_products_5miles/" target="_blank">所有商品</a>
+									</li>
+                                    <li>
+										<a href="/five_miles/up_products_5miles/" target="_blank">上传商品</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu5" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 订单管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu5" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_oders_5miles/" target="_blank">所有订单</a>
+									</li>
+								</ul>
+							</li>
+                        {#高权限用户下面才可见 #}
+                        {% if user != 'up_data' %}
+                            <li>
+								<a href="#Submenu6" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu6" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/funds_5miles/" target="_blank">余额状态</a>
+									</li>
+								</ul>
+							</li>
+                            <li><h3>其他电商平台</h3><li>
+                            <li >
+								<a href="#Submenu10" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-shopping-cart mr-2 sidebarsuccess"></i> 速卖通
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu10" data-parent="#accordion">
+									<li>
+										<a href="/Function_1/" target="_blank">价格计算</a>
+									</li>
+								</ul>
+							</li>
+							<li><h3>服务</h3><li>
+							<li>
+								<a href="#Submenu9" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 拓展功能
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu9" data-parent="#accordion">
+									<li>
+										<a href="/brand/" target="_blank" >平台商标统计</a>
+									</li>
+                                    <li>
+										<a href="/e_commerce_platform/" target="_blank">各类电商平台介绍</a>
+									</li>
+								</ul>
+							</li>
+                        {% endif %}
+						</ul>
+					</nav>
+
+                    <!-- 内容区域 -->
+					<div class=" content-area overflow-hidden">
+                        <div style="color: red;width: 100%;height: 10px;text-align: center " ><h2><br>Tophatter(单个产品上传)</h2></div>
+						<div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="col-md-2 mt-2 mb-2">
+                                    <a>
+                                    &nbsp;
+                                    </a>
+                                </div>
+							</div>
+							<div class="col-md-12 col-lg-12">
+                                <div class="col-md-2 mt-2 mb-2">
+                                    <br>
+                                    <button style="color: black ;" type="button" class="btn btn-block btn-danger" data-container="body"
+                                            data-toggle="popover" data-popover-color="popdanger"
+                                            data-placement="bottom" title="上传产品注意事项"
+                                            data-content="  1、listing命名规则为：店铺名称 —表格listing名称—上传的年月日。<br><br>
+                                                            2、Listing名称包括主listing 和 变种的listing。<br><br>
+                                                            3、同一个商品名称单日不能重复上传，因为listing名称一样，但是隔日上传是允许的，因为日期已经变更，listing名称不一样。<br><br>
+                                                            4、Campaign Name参数不能设置，平台API接口没有开放此参数。<br><br>
+                                                            5、商标参数没开放，发货地和处理天数采用默认值<br><br>">
+                                    上传产品注意事项
+                                    </button>
+                                </div>
+							</div>
+							<div class="col-md-12 col-lg-12">
+                                <div class="container my-4">
+                                        <div class="card-header">
+                                            <form id="searchForm"  method="post" action="" target="_top">
+                                                    {% csrf_token %}
+                                                    <div style="height: 60px;">
+                                                        <div style="width:  150px; height: 60px; float: left;vertical-align: middle">
+                                                                <input style="width: 120px;height: 30px;background: #4ebc30"type="submit" value="获取数据">
+                                                        </div>
+                                                        <div style="width: 300px; height: 40px; float: left">
+                                                            <span style="">输入lots_id：</span>
+                                                            <input id="lots_id" style="width: 150px; height: 36px; border-radius: 4px;" type="text" name="lots_id" placeholder="输入lots_id"value={{ lots_id }}>
+                                                        </div>
+
+                                                    </div>
+                                            </form>
+                                        </div>
+                                        <div class="card-header">
+                                            <form id="searchForm"  method="post" action="" target="_top">
+                                                    {% csrf_token %}
+                                                    <div style="height: 60px;">
+                                                        <div style="width:  150px; height: 60px; float: left;vertical-align: middle">
+                                                                <input style="width: 120px;height: 30px;background: #4ebc30"type="submit" value="获取数据">
+                                                        </div>
+                                                        <div style="width: 600px; height: 40px; float: left">
+                                                            <span style="">输入Top主SKU：</span>
+                                                            <input disabled="disabled" id="Top主SKU" style="width: 70%; height: 36px; border-radius: 4px;" type="text" name="Top主SKU" placeholder="输入Top主SKU"value={{ Top主SKU }}>
+                                                        </div>
+
+                                                    </div>
+                                            </form>
+                                        </div>
+                                    <h4 style="color: black"><br>编辑产品信息并上传产品到店铺；（<a style="color: red">*</a>为必须输入）<br></h4>
+                                    <form>
+                                    {% csrf_token %}
+                                        {##基本信息#}
+                                        <div class="card">
+                                            <div class="card-header">
+                                            <h3 class="card-title">基本信息</h3>
+                                            <div class="card-options">
+                                                <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                            </div>
+                                            </div>
+                                            <div class="card-body">
+                                                 <div style="height: 60px;">
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style=""><a style="color: red">*</a>ParentSKU：</span>
+                                                            <input id="ParentSKU" style="width: 20%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入" value="{{ 商品名称 }}">
+                                                            <span style="color: #a0a0a0"></span>
+                                                            <button type="button"  data-container="body"
+                                                                    data-toggle="popover" data-popover-color="popdanger"
+                                                                    data-placement="bottom" title="ParentSKU："
+                                                                    data-content="即父级SKU，可用来标识和区别不同的产品，也可以作为生成其他变种SKU的前缀。<br><br>
+                                                                                  例如父级SKU为T331 有黑色，白色两个变种。 变种SKU可为 T331-black，T331-white">
+                                                                    注意
+                                                            </button>
+                                                            <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="SKU命名规则："
+                                                                data-content="根据输入的ParentSKU加上必要的识别信息进行主SKU命名<br>
+                                                                              规则：账号名-ParentSKU-当前年月日<br>
+                                                                              例如：A-meijiataozhuang-200520">
+                                                                SKU命名规则
+                                                            </button>
+                                                        </div>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style=""><a style="color: red">*</a>产品标题：</span>
+                                                            <input id="产品标题" style="width: 80%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品标题 }}">
+                                                            <span style="color: #a0a0a0">注：最多255字符</span>
+                                                        </div>
+                                                        <span style=""><a style="color: red">*</a>产品描述：</span>
+                                                        <div style="width: 100%; height: 200px; float: left">
+                                                            <span style="position: center;margin-right:80px; "></span>
+                                                            <textarea id="产品描述" style="width: 80%; height: 185px; border-radius: 4px;" type="text" name="" placeholder="请输入">{{ 产品描述 }}</textarea>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+
+                                        {##产品信息#}
+                                        <div class="card">
+                                            <div class="card-header">
+                                            <h3 class="card-title">产品信息</h3>
+                                            <div class="card-options">
+                                                <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                            </div>
+                                            </div>
+                                            <div class="card-body">
+                                                 <div style="height: 60px;">
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style=""><a style="color: red">*</a>产品分类：</span>
+                                                            <select style="width: 70%; height: 46px; border-radius: 4px;" name="" id="产品分类">
+                                                            <option value="Electronics | Other">Electronics | Other（电子产品|其他）</option>
+                                                            <option value="Home | Other">Home | Other（家用|其他）</option>
+                                                            <option value="Jewelry | Other">Jewelry | Other（珠宝|其他）</option>
+                                                            <option value="Apparel | Other">Apparel | Other（服装|其他）</option>
+                                                            <option value="Jewelry | Rings">Jewelry | Rings（首饰|耳环）</option>
+                                                            <option value="Beauty | Other">Beauty | Other（美容|其他）</option>
+                                                            <option value="Jewelry | Necklaces">Jewelry | Necklaces（首饰|项链）</option>
+                                                            <option value="Electronics | Photography/Camera">Electronics | Photography/Camera（电子|摄影/摄像）</option>
+                                                            <option value="Home | Outdoor | Tool">Home | Outdoor | Tool（家用|户外|工具）</option>
+                                                            <option value="Collectibles | Other">Collectibles | Other（收藏|其他）</option>
+                                                            <option value="Accessories | Bags | Other">Accessories | Bags | Other（配件|包|其他）</option>
+                                                            <option value="Shoes | Other">Shoes | Other（鞋|其他）</option>
+                                                            <option value="Supplies | Other">Supplies | Other（供应|其他）</option>
+                                                            <option value="Home | Outdoor | Outdoor Accessories">Home | Outdoor | Outdoor Accessories（家用|户外|户外配件）</option>
+                                                            <option value="Supplies | Craft Supplies | Tools">Supplies | Craft Supplies | Tools（供应|工艺用品|工具）</option>
+                                                            <option value="Home | Pet Supplies">Home | Pet Supplies（家庭|宠物用品）</option>
+                                                            <option value="Home | Bath | Towels">Home | Bath | Towels（家庭|洗澡|浴巾）</option>
+                                                            <option value="Accessories | Bags | Satchels">Accessories | Bags | Satchels（配件|包|挎包）</option>
+                                                            <option value="Accessories | Other">Accessories | Other（配件|其他）</option>
+                                                            <option value="Kids | Other">Kids | Other（孩子|其他）</option>
+                                                            <option value="Electronics | Gaming">Electronics | Gaming（电子|游戏）</option>
+                                                            <option value="Home | Bath | Other">Home | Bath | Other（家用|洗澡|其他）</option>
+                                                            <option value="Apparel | Bottoms | Pants">Apparel | Bottoms | Pants（服饰|下身|裤子）</option>
+                                                            <option value="Home | Furniture">Home | Furniture（家用|家具）</option>
+                                                            <option value="Electronics | Hardware (Computers/Tablets/Phones) | Computers/Tablets">Electronics | Hardware (Computers/Tablets/Phones) | Computers/Tablets<br>（电子|硬件(电脑/平板电脑/手机)|电脑/平板电脑）</option>
+                                                            <option value="Electronics | Hardware (Computers/Tablets/Phones) | Mobile">Electronics | Hardware (Computers/Tablets/Phones) | Mobile<br>（电子|硬件(电脑/平板电脑/手机)|手机）</option>
+                                                            <option value="Beauty | Makeup (Cosmetics) | Cheek">Beauty | Makeup (Cosmetics) | Cheek(美容|化妆(化妆品)|脸颊)</option>
+                                                            <option value="Accessories | Other Accessories | Hats">Accessories | Other Accessories | Hats(配件|其他配件|帽子)</option>
+                                                            <option value="Kids | Kids/Youth Shoes | Other">Kids | Kids/Youth Shoes | Other(儿童|儿童/青年鞋|其他)</option>
+                                                            <option value="Electronics | Audio | Headphones">Electronics | Audio | Headphones(电子|音频|耳机)</option>
+                                                            <option value="Home | Outdoor | Other">Home | Outdoor | Other(家庭|户外|其他)</option>
+                                                            <option value="Accessories | Watches">Accessories | Watches(配件|手表)</option>
+                                                            <option value="Electronics | Accessories">Electronics | Accessories(电子|配件)</option>
+                                                            <option value="Home | Kitchen Dining | Other">Home | Kitchen &amp; Dining | Other(家庭|厨房餐饮|其他)</option>
+                                                            <option value="Home | Bed | Other">Home | Bed | Other(家|床|其他)</option>
+                                                            <option value="Beauty | Nails | Nail Art">Beauty | Nails | Nail Art(美丽|美甲|美甲艺术)</option>
+                                                            <option  style="color:whitesmoke" selected="selected" value="{{ 产品分类 }}">{{ 产品分类 }}</option>
+                                                            </select>
+                                                        </div>
+                                                 </div>
+                                                 <div style="height: 60px;">
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style=""><a style="color: red">*</a>物品状况：</span>
+                                                            <select style="width: 30%; height: 46px; border-radius: 4px;" name="" id="物品状况">
+                                                                <option value="">-- 选择物品状况 --</option>
+                                                                <option selected="selected" value="New">New</option>
+                                                                <option value="New with Tags">New with Tags</option>
+                                                                <option value="New with Defects">New with Defects</option>
+                                                                <option value="Used">Used</option>
+                                                                <option value="Used - Excellent">Used - Excellent</option>
+                                                                <option value="Used - Good">Used - Good</option>
+                                                                <option value="Used - Fair">Used - Fair</option>
+                                                                <option value="Refurbished">Refurbished</option>
+                                                                <option value="Refurbished - Manufacturer">Refurbished - Manufacturer</option>
+                                                                <option value="Refurbished - Seller">Refurbished - Seller</option>
+{#                                                            <option  style="color:whitesmoke" value={{ store_name }}>{{ store_name }}</option>#}
+                                                            </select>
+                                                        </div>
+                                                 </div>
+                                                 <div style="height: 60px;">
+                                                     <div style="width: 100%; height: 60px; float: left">
+                                                            <div style="width: 100%; height: 60px; float: left">
+                                                                <span style=""><a style="color: red"> </a>产品材质：</span>
+                                                                <select style="width: 31%; height: 46px; border-radius: 4px;" name="" id="产品材质">
+                                                                    <option value="">-- 选择产品材质 --</option>
+                                                                    <option value="Gold">Gold</option>
+                                                                    <option value="Silver">Silver</option>
+                                                                    <option value="Diamond">Diamond</option>
+                                                                    <option value="Ruby">Ruby</option>
+                                                                    <option value="ABS">ABS</option>
+                                                                    <option value="Yellow Gold Plated">Yellow Gold Plated</option>
+                                                                    <option value="Yellow Gold Filled">Yellow Gold Filled</option>
+                                                                    <option value="Yellow Gold">Yellow Gold</option>
+                                                                    <option value="White Gold Filled">White Gold Filled</option>
+                                                                    <option value="Rose Gold">Rose Gold</option>
+                                                                    <option selected="selected"  style="color:whitesmoke" value="{{ 产品材质 }}">{{ 产品材质 }}</option>
+                                                                </select>
+                                                                <button type="button"  data-container="body"
+                                                                    data-toggle="popover" data-popover-color="popdanger"
+                                                                    data-placement="bottom" title="材质："
+                                                                    data-content="材质库是现在收集的材质，其他未收集的需要后期加入">
+                                                                    注意
+                                                                </button>
+                                                            </div>
+
+                                                     </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        {##图片信息#}
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">图片信息</h3>
+                                                <div class="card-options">
+                                                    <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 style="color: grey">1、图片最少2张，最多8张，尺寸需大于500x480像素，不能重复上传<br>
+                                                                2、只能选择一张图片作为主图，不选或者选择无图片的序号都将第一张作为主图<br>
+                                                                3、图片替换，需要先将图片传到top,再将链接替换，top图片链接的后缀需要为： /original.pig<br></h5>
+                                                <div class="row mt-4">
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <h4><span style="color: red">1</span></h4>
+                                                        <a href="#" class="thumbnail ">
+                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片1 }}">
+                                                        </a>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">替换图片请在下方替换为新图片链接：</span>
+                                                            <input id="产品图片1" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片1}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <h4><span style="color: red">2</span></h4>
+                                                        <a href="#" class="thumbnail ">
+                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片2 }}">
+                                                        </a>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">替换图片请在下方替换为新图片链接：</span>
+                                                            <input id="产品图片2" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片2}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <h4><span style="color: red">3</span></h4>
+                                                        <a href="#" class="thumbnail ">
+                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片3 }}">
+                                                        </a>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">替换图片请在下方替换为新图片链接：</span>
+                                                            <input id="产品图片3" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片3}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <h4><span style="color: red">4</span></h4>
+                                                        <a href="#" class="thumbnail ">
+                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片4 }}">
+                                                        </a>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">替换图片请在下方替换为新图片链接：</span>
+                                                            <input id="产品图片4" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片4}}">
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <hr>
+                                                    <br>
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <br>
+                                                        <h4><span style="color: red">5</span></h4>
+                                                        <a href="#" class="thumbnail ">
+                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片5 }}">
+                                                        </a>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">替换图片请在下方替换为新图片链接：</span>
+                                                            <input id="产品图片5" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片5}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <br>
+                                                        <h4><span style="color: red">6</span></h4>
+                                                        <a href="#" class="thumbnail ">
+                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片6 }}">
+                                                        </a>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">替换图片请在下方替换为新图片链接：</span>
+                                                            <input id="产品图片6" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片6}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <br>
+                                                        <h4><span style="color: red">7</span></h4>
+                                                        <a href="#" class="thumbnail ">
+                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片7 }}">
+                                                        </a>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">替换图片请在下方替换为新图片链接：</span>
+                                                            <input id="产品图片7" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片7}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-md-3">
+                                                        <br>
+                                                        <h4><span style="color: red">8</span></h4>
+                                                        <a href="#" class="thumbnail ">
+                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片8 }}">
+                                                        </a>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">替换图片请在下方替换为新图片链接：</span>
+                                                            <input id="产品图片8" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片8}}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div style="height: 60px;">
+                                                        <div style="width: 300px; height: 60px; float: left">
+                                                            <span style=""><a style="color: red">*选择主图：</a></span>
+                                                            <select style="width: 150px; height: 36px; border-radius: 4px;" name="" id="主图序号">
+                                                                <option selected="selected" value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                            </select>
+                                                        </div>
+                                                 </div>
+                                        </div>
+
+                                        {#变种信息#}
+                                        <div class="card">
+                                            <div class="card-header">
+                                            <h3 class="card-title">变种信息&nbsp;&nbsp;</h3>
+                                            <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="变种命名规则："
+                                                                data-content="根据尺寸和颜色进行组合命名<br>
+                                                                              规则：账号名-ParentSKU-尺寸-颜色-当前年月日<br>
+                                                                              例如：A-meijiataozhuang-12M-black-200520  ">
+                                                                变种命名规则
+                                            </button>
+                                            <div class="card-options">
+                                                <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                            </div>
+                                            </div>
+                                            <div class="card-body">
+                                                 <div style="height: 60px;">
+                                                    <div style="width: 100%; height: 60px; float: left">
+                                                        <span style="">产品尺寸(size)：</span>
+                                                        <input id="尺寸" style="width: 40%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品尺寸 }}">
+                                                        <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="产品尺寸："
+                                                                data-content="可输入多个尺寸，请用“,”隔开<br>
+                                                                               例如：12M,18M">
+                                                                输入规则
+                                                        </button>
+                                                    </div>
+                                                 </div>
+                                                 <div style="height: 60px;">
+                                                    <div style="width: 100%; height: 60px; float: left">
+                                                        <span style="">产品颜色(color)：</span>
+                                                        <input id="颜色" style="width: 40%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品颜色 }}">
+                                                        <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="产品颜色："
+                                                                data-content="可输入多个颜色，请用“,”隔开<br>
+                                                                               例如：black,yellow">
+                                                                输入规则
+                                                        </button>
+                                                    </div>
+                                                 </div>
+                                                 <div style="height: 60px;">
+                                                    <div style="width: 100%; height: 60px; float: left">
+                                                        <span style="">库存数量：</span>
+                                                        <input id="库存数量" style="width: 10%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="10000">
+                                                        <span style="color: #a0a0a0">注：如果不输入则默认数量为999</span>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        {#价格信息#}
+                                        <div class="card">
+                                            <div class="card-header">
+                                            <h3 class="card-title">价格信息</h3>
+                                            <span style="color: #a0a0a0">（注：除SFB外，其他项目只能输入整数）</span>
+                                            <div class="card-options">
+                                                <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                            </div>
+                                            </div>
+                                            <div class="card-body">
+                                                 <div style="height: 60px;">
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style=""><a style="color: red">*</a>一口价（USD）：</span>
+                                                        <input id="一口价" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 一口价 }}">
+                                                        <span style="color: #a0a0a0">现有产品参考价：目标价 ：{{ 目标价 }}</span>
+                                                    </div>
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">目标价（USD）：</span>
+                                                        <input id="目标价" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="默认一口价+运费"value="">
+                                                        <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="目标价："
+                                                                data-content="为达到收支平衡时产品的价格">
+                                                                注意
+                                                        </button>
+                                                    </div>
+
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">零售价（USD）：</span>
+                                                        <input id="零售价" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="默认一口价+运费+5"value="">
+                                                        <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="零售价："
+                                                                data-content="在产品的销售价格旁边，显示为带删除线的价格。">
+                                                                注意
+                                                            <div class='gray-c'><div></div></div>
+                                                        </button>
+                                                    </div>
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">底价（USD）：</span>
+                                                        <input id="底价" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value={{ 底价 }}>
+                                                        <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="底价："
+                                                                data-content="如果最高出价低于此金额，则不会进行销售">
+                                                                注意
+                                                        </button>
+                                                    </div>
+
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">起拍价（USD）：</span>
+                                                        <input id="起拍价" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="1">
+                                                        <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="起拍价："
+                                                                data-content="拍卖中产品的起始价格">
+                                                                注意
+                                                        </button>
+                                                    </div>
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">SFB（USD）：</span>
+                                                        <input id="SFB" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="0">
+                                                        <span style="color: #a0a0a0">注：可以输入小数</span>
+                                                        <a href="https://seller-hub.en.tophatter.com/category/213-fees-payouts" target="_blank"  style="color: #0c85d0">出售费用详情</a>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        {#运输设置#}
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">运输设置</h3>
+                                                <span style="color: #a0a0a0">（注：数字项目只能输入整数）</span>
+                                                <div class="card-options">
+                                                    <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                 <div style="height: 60px;">
+                                                        <div style="width: 50%; height: 60px; float: left">
+                                                            <span style=""><a style="color: red">*</a>运输费用：</span>
+                                                            <input id="运输费用" style="width: 20%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="0">
+                                                            <span style="color: #a0a0a0">注：如不输入则免邮</span>
+                                                            <a href="https://seller-hub.en.tophatter.com/category/214-fulfillment-shipping" target="_blank"  style="color: #0c85d0">（运费规则）</a>
+                                                        </div>
+                                                        <div style="width: 50%; height: 60px; float: left">
+                                                            <span style=""><a style="color: red">*</a>发货地：</span>
+                                                            <select style="width: 20%; height: 36px; border-radius: 4px;" name="" id="发货地">
+                                                            <option selected="selected" value="China">China</option>
+                                                            <option value="USA">United States</option>
+                                                            </select>
+                                                            <span style="color: #a0a0a0">注：默认中国</span>
+                                                        </div>
+
+                                                        <div style="width: 50%; height: 60px; float: left">
+                                                            <span style="">运输重量（盎司）：</span>
+                                                            <input id="运输重量" style="width: 20%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value={{ product_identifier }}>
+                                                            <span style="color: #a0a0a0">注：1 盎司=28.349523125 克</span>
+                                                        </div>
+                                                        <div style="width: 50%; height: 60px; float: left">
+                                                            <span style=""><a style="color: red">*</a>处理时间(天)：</span>
+                                                            <input id="处理时间" style="width: 20%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="5">
+                                                            <span style="color: #a0a0a0">注：最长的处理天数为5天</span>
+                                                        </div>
+
+                                                        <div style="width: 50%; height: 60px; float: left">
+                                                            <span style="">最大日销售数量：</span>
+                                                            <input id="最大日销售数量" style="width: 20%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value={{ product_identifier }}>
+                                                        </div>
+                                                        <div style="width: 50%; height: 60px; float: left">
+                                                            <span style="">是否'买一得一'：</span>
+                                                            <select style="width: 20%; height: 36px; border-radius: 4px;" name="" id="是否买一得一">
+                                                            <option  value="Yes">Yes</option>
+                                                            <option selected="selected" value="No">No</option>
+                                                            </select>
+                                                            <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="买一得一："
+                                                                data-content="以相同的价格提供“买一得一”">
+                                                                注意
+                                                            </button>
+                                                            <span style="color: #a0a0a0">注：默认为Yes，代表开启</span>
+                                                        </div>
+
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">配件价格（USD）：</span>
+                                                            <input id="配件价格" style="width: 20%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value={{ 配件价格 }}>
+                                                            <span style="color: #a0a0a0">注：配件价格和配件描述必须同时输入或者同时不输入</span>
+                                                        </div>
+
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">配件描述1：</span>
+                                                            <select style="width: 40%; height: 36px; border-radius: 4px;" name="" id="配件描述1">
+                                                            <option value=""></option>
+                                                            <option value="Buy one get one">Buy one get one</option>
+                                                            <option value="32g Memory Card">32g Memory Card</option>
+                                                            <option value="USB cable">USB cable</option>
+                                                            <option  style="" selected="selected" value="{{ 配件描述}}">{{ 配件描述}}</option>
+                                                            </select>
+                                                            <span style="color: #a0a0a0">注：配件描述为：配件描述1+配件描述2</span>
+                                                        </div>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">配件描述2：</span>
+                                                            <input id="配件描述2" style="width: 40%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入配件描述"value="">
+                                                            <span style="color: #a0a0a0">注：最长40字节</span>
+                                                        </div>
+                                                 </div>
+                                                 </div>
+                                            </div>
+
+                                        {#CAMPAIGN设置#}
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">CAMPAIGN设置</h3>
+                                                <span style="color: #a0a0a0">（注：输入CAMPAIGN名必须在店铺已经设好，否则设置无效）</span>
+                                                <div class="card-options">
+                                                    <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                 <div style="height: 60px;">
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">CAMPAIGN_1：</span>
+                                                            <select style="width: 20%; height: 36px; border-radius: 4px;" name="" id="CAMPAIGN_1">
+                                                            <option selected="selected" value="{{ CAMPAIGN }}">{{ CAMPAIGN }}</option>
+                                                            <option value="AB5">AB5</option>
+                                                            <option value="AB7">AB7</option>
+                                                            <option value="AB8">AB8</option>
+                                                            <option value="AB9">AB9</option>
+                                                            <option value="B10">B10</option>
+                                                            <option value="B11">B11</option>
+                                                            <option value="B12">B12</option>
+                                                            <option value="B13">B13</option>
+                                                            <option value="B14">B14</option>
+                                                            <option value="B15">B15</option>
+                                                            <option value="B16">B16</option>
+                                                            <option value="B17">B17</option>
+
+                                                            <option value="B18">B18</option>
+                                                            <option value="B19">B19</option>
+                                                            <option value="B20">B20</option>
+                                                            <option value="B21">B21</option>
+                                                            <option value="B22">B22</option>
+                                                            <option value="B23">B23</option>
+                                                            <option value="B24">B24</option>
+                                                            <option value="B25">B25</option>
+                                                            <option value="B26">B26</option>
+                                                            <option value="B27">B27</option>
+                                                            <option value="B28">B28</option>
+                                                            <option value="B29">B29</option>
+                                                            <option value="B30">B30</option>
+
+                                                            <option value="BF-5">BF-5</option>
+                                                            <option value="BM5">BM5</option>
+                                                            <option value="BF5">BF5</option>
+                                                            </select>
+                                                            <span style="color: #a0a0a0">注：CAMPAIGN为：CAMPAIGN_1 + CAMPAIGN_2</span>
+                                                        </div>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">CAMPAIGN_2：</span>
+                                                            <input id="CAMPAIGN_2" style="width: 20%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入CAMPAIGN"value="">
+                                                            <span style="color: #a0a0a0">注：如果CAMPAIGN_1无可选名字，则在CAMPAIGN_2这输入，输入时请保持CAMPAIGN_1为空</span>
+                                                        </div>
+                                                 </div>
+                                                 </div>
+                                            </div>
+
+                                        {#商品运费#}
+                                        <div class="card">
+                                            <div class="card-header">
+                                            <h3 class="card-title">商品运费（可选）</h3>
+                                            <div class="card-options">
+                                                <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                            </div>
+                                            </div>
+                                            <div class="card-body">
+                                                 <div style="height: 60px;">
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">货物进价(¥)：</span>
+                                                        <input id="SKU_price"  style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入货物进价"value="{{ SKU_price }}">
+                                                    </div>
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">货物重量(g)：</span>
+                                                        <input id="SKU_weight" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入货物重量"value="{{ SKU_weight }}">
+                                                    </div>
+
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">配件价格(¥)：</span>
+                                                        <input id="SKU_parts_price" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入配件价格"value="{{ SKU_parts_price }}">
+                                                    </div>
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">配件重量(g)：</span>
+                                                        <input id="SKU_parts_weight" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入配件重量"value="{{ SKU_parts_weight }}">
+                                                    </div>
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">货物种类：</span>
+                                                        <select style="width: 30%; height: 36px; border-radius: 4px;" name="" id="SKU_variety">
+                                                        <option  style="" selected="selected" value="{{ SKU_variety }}">{{ SKU_variety }}</option>
+                                                        <option value="普货">普货</option>
+                                                        <option value="带电">带电</option>
+                                                        <option value="特货">特货</option>
+                                                        <option value="海运">海运</option>
+                                                        </select>
+                                                    </div>
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">海运运费(¥)：</span>
+                                                        <input id="HAI_SKU_freight" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入海运运费"value="{{ HAI_SKU_freight }}">
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+
+                                        <a>请选择你要上传的店铺名：</a>
+                                        全选&nbsp;<input id="checkAll" type="checkbox"/>&nbsp;&nbsp;
+                                        A&nbsp;<input type="checkbox"  name="test" value="A,"/>&nbsp;&nbsp;
+                                        B&nbsp;<input type="checkbox"  name="test" value="B,"/>&nbsp;&nbsp;
+                                        C&nbsp;<input type="checkbox"  name="test" value="C,"/>&nbsp;&nbsp;
+                                        E&nbsp;<input type="checkbox"  name="test" value="E,"/>&nbsp;&nbsp;
+                                        G&nbsp;<input type="checkbox"  name="test" value="G,"/>&nbsp;&nbsp;
+                                        H&nbsp;<input type="checkbox"  name="test" value="H,"/>&nbsp;&nbsp;
+                                        I&nbsp;<input type="checkbox"  name="test" value="I,"/>&nbsp;&nbsp;
+                                        J&nbsp;<input type="checkbox"  name="test" value="J,"/>&nbsp;&nbsp;
+                                        M&nbsp;<input type="checkbox"  name="test" value="M,"/>&nbsp;&nbsp;
+                                        P&nbsp;<input type="checkbox"  name="test" value="P,"/>&nbsp;&nbsp;
+                                        Q&nbsp;<input type="checkbox"  name="test" value="Q,"/>&nbsp;&nbsp;
+                                        R&nbsp;<input type="checkbox"  name="test" value="R,"/>&nbsp;&nbsp;
+
+                                        B5&nbsp;<input type="checkbox"  name="test" value="B5,"/>&nbsp;&nbsp;
+                                        B6&nbsp;<input type="checkbox"  name="test" value="B6,"/>&nbsp;&nbsp;
+                                        B7&nbsp;<input type="checkbox"  name="test" value="B7,"/>&nbsp;&nbsp;
+                                        B9&nbsp;<input type="checkbox"  name="test" value="B9,"/>&nbsp;&nbsp;
+                                        B10&nbsp;<input type="checkbox"  name="test" value="B10,"/>&nbsp;&nbsp;
+                                        PY&nbsp;<input type="checkbox"  name="test" value="PY,"/>&nbsp;&nbsp;
+                                        YL&nbsp;<input type="checkbox"  name="test" value="YL,"/>
+
+                                        <br><br>
+                                        <button style="color: black" type="button" onclick="jqchk(this)" class="btn btn-primary" id="bt" >上传数据到选定的店铺</button>
+                                        <span class="sp_3"></span><br>
+                                    </form>
+                                    <div style="color: black;size:B5">
+                                        上传成功:<span class="sp_1"></span><br>
+                                        上传失败:<span class="sp_2"></span><br>
+                                        <span class="sp_4"></span>
+                                    </div>
+                                </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--footer-->
+			<footer class="footer">
+				<div class="container">
+					<div class="row align-items-center flex-row-reverse">
+						<div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+							Copyright © 2019 <a href="#">Uplor </a>. Designed by <a href="http://www.tophatter.com/">Ethan</a> All rights reserved.
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- End Footer-->
+		</div>
+
+
+		<!-- Back to top -->
+		<a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+        <!--计算器-->
+        <div class="scrollsidebar" id="hhService" style="box-shadow: darkgrey 10px 10px 30px 5px ;opacity:1;">
+            <div class="side_content">
+                <div class="side_list">
+                    <div class="side_title"><a title="隐藏" class="close_btn"><span>关闭</span></a></div>
+                    <div class="side_center" style="background:#f2f4f8">
+                        <form >
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品进价(￥)</span>
+                                      <input type="number" id="计_产品进价" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品重量(g)</span>
+                                      <input type="number" id="计_产品重量" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>物流商选择</span>
+                                      <select style="width: 100px; height: 40px; border-radius: 4px;" name="" id="计_物流商选择" >
+                                            <option value="普货">普货</option>
+                                            <option value="带电">带电</option>
+                                            <option value="特货">特货</option>
+                                            <option value="海运">输入</option>
+                                            <option style="color: #d1d1d3" selected="selected" value="">--请选择--</option>
+                                      </select>
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入运费(￥)</span>
+                                      <input type="number" id="计_输入运费" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>均SFB($)</span>
+                                      <input type="number" id="计_均SFB" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>成交率(%)</span>
+                                      <input type="number" id="计_成交率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="80" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style=""><a style="color: red">*</a>预估退货率(%)</span>
+                                      <input type="number" id="计_预估退货率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="5" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>当前汇率</span>
+                                      <input type="number" id="计_当前汇率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="{{ EXCHANGE_RATE }}" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;一口价利润(%)</span>
+                                      <input type="number" id="计_一口价利润" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="30" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;拍卖利润率(%)</span>
+                                      <input type="number" id="计_拍卖利润率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="0" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 45px; float: left">
+                            </div>
+
+
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运费(￥)</span>
+                                      <input type="number" id="sp_1" style="color:red;width: 100px;height: 40px;border-radius: 4px;"  value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拍卖利润(￥)</span>
+                                      <input type="number" id="sp_6" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;一口价利润(￥):</span>
+                                      <input type="number" id="sp_7" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;拍卖总成本(￥)</span>
+                                      <input type="number" id="sp_2" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">一口价总成本(￥)</span>
+                                      <input type="number" id="sp_4" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;建议一口价($):</span>
+                                      <input type="number" id="sp_5" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;拍卖预计价($):</span>
+                                      <input type="number" id="sp_3" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div class=""  >
+                                <button class="btn btn-primary" type="button"  data-container="body"
+                                        data-toggle="popover" data-popover-color="popdanger"
+                                        data-placement="bottom" title="计算公式："
+                                        data-content="拍卖预计价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率) + SFB/成交率 <br><br>
+                                                      一口建议价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率)">计算公式
+                                </button>
+                                <button  type="button" onclick="displayResult_count(this)" class="btn btn-primary"  id="111" >开始计算</button>
+                            </div>
+                            <script>
+                              function displayResult_count(obj){
+                             $.ajax({
+                                        url:'/profitStatistics_2/',
+                                        type:'get',
+                                        data:
+                                            {
+                                            计_产品进价:$('#计_产品进价').val(),
+                                            计_产品重量:$('#计_产品重量').val(),
+                                            计_均SFB:$('#计_均SFB').val(),
+                                            计_成交率:$('#计_成交率').val(),
+                                            计_预估退货率:$('#计_预估退货率').val(),
+                                            计_当前汇率:$('#计_当前汇率').val(),
+                                            计_物流商选择:$('#计_物流商选择').val(),
+                                            计_输入运费:$('#计_输入运费').val(),
+                                            计_一口价利润:$('#计_一口价利润').val(),
+                                            计_拍卖利润率:$('#计_拍卖利润率').val(),
+                                            csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                             },
+                                            success: function (response) {
+                                                    var ret = JSON.parse(response);
+
+                                                    $('.sp_0').html('qwerty').css("color", "red");
+
+                                                    document.getElementById('sp_1').value=ret.msg_e_1;
+                                                    document.getElementById('sp_2').value=ret.msg_e_2;
+                                                    document.getElementById('sp_3').value=ret.msg_e_3;
+                                                    document.getElementById('sp_4').value=ret.msg_e_4;
+                                                    document.getElementById('sp_5').value=ret.msg_e_5;
+                                                    document.getElementById('sp_6').value=ret.msg_e_6;
+                                                    document.getElementById('sp_7').value=ret.msg_e_7;
+                                                }
+                                        })
+                             }
+                            </script>
+                        </form>
+                    </div>
+                    <div class="side_bottom"></div>
+                </div>
+            </div>
+            <div class="show_btn"><span>在线客服</span></div>
+        </div><!--scrollsidebar end-->
+
+		<!-- Dashboard js -->
+		 <script src="{% static 'assets/js/vendors/jquery-3.2.1.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/popper.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/js/bootstrap.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/selectize.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/circle-progress.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/rating/jquery.rating-stars.js' %}"></script>
+
+		<!-- Fullside-menu Js-->
+		 <script src="{% static 'assets/plugins/fullside-menu/jquery.slimscroll.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/fullside-menu/waves.min.js' %}"></script>
+
+		<!-- Custom scroll bar Js-->
+		 <script src="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+
+		<!-- Custom Js-->
+		 <script src="{% static 'assets/js/custom.js' %}"></script>
+
+        <!---选择框-->
+        <script>
+            function jqchk() { //jquery获取复选框值
+                var chk_value = [];
+                var str_1 = '正在上传……';
+                var str_2 = '上传完成';
+                var str_3 = '文件错误：';
+
+                //正在上传（状态文字）
+                $('.sp_3').html(str_1).css("color", "red");
+
+                //选择框的值
+                $('input[name="test"]:checked').each(function () {
+                    chk_value.push($(this).val());
+                });
+                var value = chk_value.join('');//把复选框的值以数组形式存放
+
+                $.ajax({
+                    type: "post",
+                    url: "/products_operate_single/",
+                    data: {
+                        valss: value,
+                        FIG:'FIG',
+                        //基本信息
+                        产品SKU:$('#ParentSKU').val(),
+                        产品标题:$('#产品标题').val(),
+                        产品描述:$('#产品描述').val(),
+                        //产品信息
+                        产品分类:$('#产品分类').val(),
+                        物品状况:$('#物品状况').val(),
+                        产品材质:$('#产品材质').val(),
+                        //图片信息
+                        主图序号:$('#主图序号').val(),
+                        产品图片1:$('#产品图片1').val(),
+                        产品图片2:$('#产品图片2').val(),
+                        产品图片3:$('#产品图片3').val(),
+                        产品图片4:$('#产品图片4').val(),
+                        产品图片5:$('#产品图片5').val(),
+                        产品图片6:$('#产品图片6').val(),
+                        产品图片7:$('#产品图片7').val(),
+                        //变种信息
+                        尺寸:$('#尺寸').val(),
+                        颜色:$('#颜色').val(),
+                        库存数量:$('#库存数量').val(),
+                        //价格信息
+                        一口价:$('#一口价').val(),
+                        目标价:$('#目标价').val(),
+                        零售价:$('#零售价').val(),
+                        底价:$('#底价').val(),
+                        起拍价:$('#起拍价').val(),
+                        SFB:$('#SFB').val(),
+                        //运输信息
+                        运输费用:$('#运输费用').val(),
+                        运输重量:$('#运输重量').val(),
+                        处理时间:$('#处理时间').val(),
+                        发货地:$('#发货地').val(),
+                        最大日销售数量:$('#最大日销售数量').val(),
+                        是否买一得一:$('#是否买一得一').val(),
+                        配件价格:$('#配件价格').val(),
+                        配件描述1:$('#配件描述1').val(),
+                        配件描述2:$('#配件描述2').val(),
+
+                        //CAMPAIGN信息
+                        CAMPAIGN_1:$('#CAMPAIGN_1').val(),
+                        CAMPAIGN_2:$('#CAMPAIGN_2').val(),
+
+                        //商品运费
+                        SKU_price:$('#SKU_price').val(),
+                        SKU_weight:$('#SKU_weight').val(),
+                        SKU_parts_price:$('#SKU_parts_price').val(),
+                        SKU_parts_weight:$('#SKU_parts_weight').val(),
+                        SKU_variety:$('#SKU_variety').val(),
+                        HAI_SKU_freight:$('#HAI_SKU_freight').val(),
+
+                        csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    },
+
+                    success: function (response) {
+                        var ret = JSON.parse(response);
+                        {#alert(ret.msg_1.msg_1)#}
+                        if (ret.msg_1) { //上传成功
+                            $('.sp_1').html(ret.msg_1).css("color", "red");
+                        }
+
+                        if (ret.msg_2) { //上传失败
+                            $('.sp_2').html(ret.msg_2).css("color", "red");
+                        }
+
+                        //上传完成
+                        $('.sp_3').html(str_2).css("color", "red");
+
+                        if (ret.msg_e) {//上传文件错误
+                            $('.sp_4').html(str_3 + ret.msg_e).css("color", "red");
+                        }
+                    }
+                })
+            }
+        </script>
+        <script type="text/javascript">
+        $(function() {
+           $("#checkAll").click(function() {
+                $('input[name="test"]').prop("checked",this.checked);
+            });
+            var $subBox = $("input[name='test']");
+            $subBox.click(function(){
+                $("#checkAll").prop("checked",$subBox.length == $("input[name='test']:checked").length ? true : false);
+            });
+        });
+    </script>
+
+        <!-- 图片懒加载 -->
+        <script src="{% static 'js/echo/echo.min.js' %}"></script>
+        <script>
+        Echo.init({
+            offset: 5,
+            throttle: 200
+        });
+        </script>
+
+        <!-- html太平洋时间 -->
+        <script>
+        // 时间设置
+        var  timezone = -7; // 时区 ： 东区时区1~12  西区时区-1~-12
+        var  date;
+
+         date = getLocalTime(timezone)
+          .toString()
+           .split("GMT+")[0]
+           .toString();
+        $("#showdate").html(date);
+
+       function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+       // 时间设置end
+       window.onload = function() {
+       // 调用时间
+       var setdate = setInterval(() => {
+       date = getLocalTime(timezone)
+         var year = date.getFullYear();
+         var month = date.getMonth()+1;
+         var Date = date.getDate();
+         var hour = date.getHours();  //获得小时、分钟、秒
+         var minute = date.getMinutes();
+         var second = date.getSeconds();
+         var weekday = 0;
+         switch(date.getDay()){
+            case 0:
+            weekday = "星期日";
+            break;
+            case 1:
+            weekday = "星期一";
+            break;
+            case 2:
+            weekday = "星期二";
+            break;
+            case 3:
+            weekday = "星期三";
+            break;
+            case 4:
+            weekday = "星期四";
+            break;
+            case 5:
+            weekday = "星期五";
+            break;
+            case 6:
+            weekday = "星期六";
+            break;
+         }
+        document.getElementById("showdate").innerHTML="<br>当前太平洋时间："+year+"年"+month+"月"+Date+"日&nbsp&nbsp;"+hour+":"+minute+":"+second+"&nbsp&nbsp;"+weekday;
+       }, 1000);
+       // 调用时间end
+        };
+      </script>
+
+        <!--计算器-->
+        <script type="text/javascript" src="{% static 'jisuanqi/js/jquery.hhService.js' %}"></script>
+        <script type="text/javascript">
+            $(function(){
+            //悬浮计算器
+            $("#hhService").fix({
+                float : 'right',	      //默认设置 “left” or “right”
+                minStatue : true,     //默认设置 “false” or “true”
+                skin : 'blue',	    //默认设置 “blue”  “orange”  “green”  “red”  “pink”
+                durationTime : 400
+            });
+        });
+        </script>
+	</body>
+</html>

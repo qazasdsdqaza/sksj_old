@@ -1,0 +1,549 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>商品库更新</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../static/style/admin.css" media="all">
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md4">
+        <div class="layui-card">
+{#          <div class="layui-card-header">更新信息</div>#}
+          <div class="layui-card-body ">
+            <div class="layui-form" action="">
+               <div class="layui-form-item">
+                <div class="layui-inline" style="width: 45%">
+                  <div class="layui-input-inline">
+                    <button  class="layui-btn  layui-btn-sm" lay-submit="" lay-filter="sousuo1688">1688匹配搜索</button>
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 45%">
+                  <label class="layui-form-label" >标准ID：</label>
+                  <div class="layui-input-inline" style="width: 45%">
+                    <input   type="tel"  id ="标准ID" name="标准ID" lay-verify="" autocomplete="off" class="layui-input" value="{{ 标准ID }}">
+                  </div>
+                </div>
+                <br><br>
+                <div class="layui-inline" style="width: 100%">
+                  <div class="layui-input-inline">
+                    <button  class="layui-btn  layui-btn-sm" lay-submit="" lay-filter="gengxinshangping">更新/保存商品库商品</button>
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 100%">
+                  <div class="layui-input-inline" style="width: 100%">
+                        <a style="width: 100%">状态:<span id="sp_1" style="color: #bd362f"></span></a>
+                  </div>
+                </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-md8">
+        <div class="layui-card">
+{#          <div class="layui-card-header">主图</div>#}
+          <div class="layui-card-body ">
+            <div class="layui-form" action="">
+              <div class="layui-form-item">
+                <div class="layui-inline" style="text-align: center">
+
+                    <img style=""  src="{{ 产品图片1}}" width="80" height="80">
+                    <br>
+                    <input style="width: 80px"  id ="产品图片1" name="产品图片1" lay-verify="" autocomplete="off" class="layui-input" value="{{ 产品图片1 }}">
+                    <a style="color: red">1</a>
+                </div>
+                <div class="layui-inline" style="text-align: center">
+                    <img style=""  src="{{ 产品图片2}}" width="80" height="80">
+                    <br>
+                    <input style="width: 80px"  id ="产品图片2" name="产品图片2" lay-verify="" autocomplete="off" class="layui-input" value="{{ 产品图片2 }}">
+                    <a style="color: red">2</a>
+                </div>
+                <div class="layui-inline" style="text-align: center">
+                    <img style=""  src="{{ 产品图片3}}" width="80" height="80">
+                    <br>
+                    <input style="width: 80px"  id ="产品图片3" name="产品图片3" lay-verify="" autocomplete="off" class="layui-input" value="{{ 产品图片3 }}">
+                    <a style="color: red">3</a>
+                </div>
+                <div class="layui-inline" style="text-align: center">
+                    <img style=""  src="{{ 产品图片4}}" width="80" height="80">
+                    <br>
+                    <input style="width: 80px"  id ="产品图片4" name="产品图片4" lay-verify="" autocomplete="off" class="layui-input" value="{{ 产品图片4 }}">
+                    <a style="color: red">4</a>
+                </div>
+                <div class="layui-inline" style="text-align: center">
+                    <img style=""  src="{{ 产品图片5}}" width="80" height="80">
+                    <br>
+                    <input style="width: 80px"  id ="产品图片5" name="产品图片5" lay-verify="" autocomplete="off" class="layui-input" value="{{ 产品图片5 }}">
+                    <a style="color: red">5</a>
+                </div>
+                <div class="layui-inline" style="text-align: center">
+                    <img style=""  src="{{ 产品图片6}}" width="80" height="80">
+                    <br>
+                    <input style="width: 80px"  id ="产品图片6" name="产品图片6" lay-verify="" autocomplete="off" class="layui-input" value="{{ 产品图片6 }}">
+                    <a style="color: red">6</a>
+                </div>
+                <div class="layui-inline" style="text-align: center">
+                    <img style=""  src="{{ 产品图片7}}" width="80" height="80">
+                    <br>
+                    <input style="width: 80px"  id ="产品图片7" name="产品图片7" lay-verify="" autocomplete="off" class="layui-input" value="{{ 产品图片7 }}">
+                    <a style="color: red">7</a>
+                </div>
+                <div class="layui-inline" style="text-align: center">
+                    <img style=""  src="{{ 产品图片8}}" width="80" height="80">
+                    <br>
+                    <input style="width: 80px"  id ="产品图片8" name="产品图片8" lay-verify="" autocomplete="off" class="layui-input" value="{{ 产品图片8 }}">
+                    <a style="color: red">8</a>
+                </div>
+                <div class="layui-inline" style="width: 25%">
+                  <label class="layui-form-label" >选择主图：</label>
+                  <div class="layui-input-inline" style="width: 25%">
+                    <select  name="主图序号" id="主图序号">
+                        <option selected="selected" value="{{ 主图序号 }}">{{ 主图序号 }}</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md4">
+        <div class="layui-card">
+          <div class="layui-card-header">价格信息<a style="color: #a0a0a0">（注：除SFB外，其他项目只能输入整数）</a></div>
+          <div class="layui-card-body ">
+            <div class="layui-form" action="">
+               <div class="layui-form-item" >
+                <div class="layui-inline" style="width: 40%">
+                  <label class="layui-form-label" ><a style="color: red">*</a>一口价：</label>
+                  <div class="layui-input-inline" style="width: 40%">
+                    <input   type="tel"  id ="一口价" name="一口价" lay-verify="required" autocomplete="off" class="layui-input" value="{{ 一口价 }}">
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 40%">
+                  <label class="layui-form-label" ><a style="color: red">*</a>起拍价：</label>
+                  <div class="layui-input-inline" style="width: 40%">
+                    <input   type="tel"  id ="起拍价" name="起拍价" lay-verify="required" autocomplete="off" class="layui-input" value="{{ 起拍价 }}">
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 40%">
+                  <label class="layui-form-label"><a style="color: red">*</a>SFB：</label>
+                  <div class="layui-input-inline" style="width: 40%">
+                    <input  type="tel"  id ="SFB" name="SFB" lay-verify="required" autocomplete="off" class="layui-input" value="{{ SFB }}">
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 40%">
+                  <label class="layui-form-label"><a style="color: red">*</a>运输费用：</label>
+                  <div class="layui-input-inline" style="width: 40%">
+                    <input  type="tel"  id ="运输费用" name="运输费用" lay-verify="required" autocomplete="off" class="layui-input" value="{{ 运输费用 }}">
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 40%">
+                  <label class="layui-form-label"><a style="color: red">*</a>目标价：</label>
+                  <div class="layui-input-inline" style="width: 40%">
+                    <input disabled type="tel"  id ="目标价" name="目标价" lay-verify="required" autocomplete="off" class="layui-input" value="20">
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 40%">
+                  <label class="layui-form-label" ><a style="color: red">*</a>零售价：</label>
+                  <div class="layui-input-inline" style="width: 40%">
+                    <input  disabled type="tel"  id ="零售价" name="零售价" lay-verify="required" autocomplete="off" class="layui-input" value="20">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-md4">
+        <div class="layui-card">
+          <div class="layui-card-header">关键信息</div>
+          <div class="layui-card-body ">
+            <div class="layui-form" action="">
+               <div class="layui-form-item">
+                <div class="layui-inline" style="width: 100%">
+                  <label class="layui-form-label" ><a style="color: red">*</a>商品名称：</label>
+                  <div class="layui-input-inline" style="width: 40%">
+                    <input   type="tel"  id ="商品名称" name="商品名称" lay-verify="required" autocomplete="off" class="layui-input" value="{{ 商品名称 }}">
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 100%" >
+                  <label class="layui-form-label" ><a style="color: red">*</a>TOP品类：</label>
+                  <div class="layui-input-inline" style="width: 60%">
+                    <select  name="" id="产品分类TOP" lay-search>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Apparel">Apparel</option>
+                        <option value="Beauty">Beauty</option>
+                        <option value="Branded_Bags">Branded_Bags</option>
+                        <option value="Collectibles">Collectibles</option>
+                        <option value="Edibles">Edibles</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Fine_Jewelry">Fine_Jewelry</option>
+                        <option value="Home">Home</option>
+                        <option value="Jewelry">Jewelry</option>
+                        <option value="Kids">Kids</option>
+                        <option value="Shoes">Shoes</option>
+                        <option value="Supplies">Supplies</option>
+                        <option value="Other">Other</option>
+                        <option value="Electronics | Other">Electronics | Other（电子产品|其他）</option>
+                        <option value="Home | Other">Home | Other（家用|其他）</option>
+                        <option value="Jewelry | Other">Jewelry | Other（珠宝|其他）</option>
+                        <option value="Apparel | Other">Apparel | Other（服装|其他）</option>
+                        <option value="Jewelry | Rings">Jewelry | Rings（首饰|耳环）</option>
+                        <option value="Beauty | Other">Beauty | Other（美容|其他）</option>
+                        <option value="Jewelry | Necklaces">Jewelry | Necklaces（首饰|项链）</option>
+                        <option value="Electronics | Photography/Camera">Electronics | Photography/Camera（电子|摄影/摄像）</option>
+                        <option value="Home | Outdoor | Tool">Home | Outdoor | Tool（家用|户外|工具）</option>
+                        <option value="Collectibles | Other">Collectibles | Other（收藏|其他）</option>
+                        <option value="Accessories | Bags | Other">Accessories | Bags | Other（配件|包|其他）</option>
+                        <option value="Shoes | Other">Shoes | Other（鞋|其他）</option>
+                        <option value="Supplies | Other">Supplies | Other（供应|其他）</option>
+                        <option value="Home | Outdoor | Outdoor Accessories">Home | Outdoor | Outdoor Accessories（家用|户外|户外配件）</option>
+                        <option value="Supplies | Craft Supplies | Tools">Supplies | Craft Supplies | Tools（供应|工艺用品|工具）</option>
+                        <option value="Home | Pet Supplies">Home | Pet Supplies（家庭|宠物用品）</option>
+                        <option value="Home | Bath | Towels">Home | Bath | Towels（家庭|洗澡|浴巾）</option>
+                        <option value="Accessories | Bags | Satchels">Accessories | Bags | Satchels（配件|包|挎包）</option>
+                        <option value="Accessories | Other">Accessories | Other（配件|其他）</option>
+                        <option value="Kids | Other">Kids | Other（孩子|其他）</option>
+                        <option value="Electronics | Gaming">Electronics | Gaming（电子|游戏）</option>
+                        <option value="Home | Bath | Other">Home | Bath | Other（家用|洗澡|其他）</option>
+                        <option value="Apparel | Bottoms | Pants">Apparel | Bottoms | Pants（服饰|下身|裤子）</option>
+                        <option value="Home | Furniture">Home | Furniture（家用|家具）</option>
+                        <option value="Electronics | Hardware (Computers/Tablets/Phones) | Computers/Tablets">Electronics | Hardware (Computers/Tablets/Phones) | Computers/Tablets<br>（电子|硬件(电脑/平板电脑/手机)|电脑/平板电脑）</option>
+                        <option value="Electronics | Hardware (Computers/Tablets/Phones) | Mobile">Electronics | Hardware (Computers/Tablets/Phones) | Mobile<br>（电子|硬件(电脑/平板电脑/手机)|手机）</option>
+                        <option value="Beauty | Makeup (Cosmetics) | Cheek">Beauty | Makeup (Cosmetics) | Cheek(美容|化妆(化妆品)|脸颊)</option>
+                        <option value="Accessories | Other Accessories | Hats">Accessories | Other Accessories | Hats(配件|其他配件|帽子)</option>
+                        <option value="Kids | Kids/Youth Shoes | Other">Kids | Kids/Youth Shoes | Other(儿童|儿童/青年鞋|其他)</option>
+                        <option value="Electronics | Audio | Headphones">Electronics | Audio | Headphones(电子|音频|耳机)</option>
+                        <option value="Home | Outdoor | Other">Home | Outdoor | Other(家庭|户外|其他)</option>
+                        <option value="Accessories | Watches">Accessories | Watches(配件|手表)</option>
+                        <option value="Electronics | Accessories">Electronics | Accessories(电子|配件)</option>
+                        <option value="Home | Kitchen Dining | Other">Home | Kitchen &amp; Dining | Other(家庭|厨房餐饮|其他)</option>
+                        <option value="Home | Bed | Other">Home | Bed | Other(家|床|其他)</option>
+                        <option value="Beauty | Nails | Nail Art">Beauty | Nails | Nail Art(美丽|美甲|美甲艺术)</option>
+                        <option  style="color:whitesmoke" selected="selected" value="{{ 产品分类TOP }}">{{ 产品分类TOP }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 100%" >
+                  <label class="layui-form-label" ><a style="color: red">*</a>5M品类：</label>
+                  <div class="layui-input-inline" style="width:60%">
+                    <select  name="" id="产品分类5M" lay-search>
+                        <option value=""></option>
+                        <option value="Toys,Baby & Kids">Toys,Baby & Kids</option>
+                        <option value="Home & Garden">Home & Garden</option>
+                        <option value="Fashion & Accessories">Fashion & Accessories</option>
+                        <option value="Beauty & Health">Beauty & Health</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Sports & Outdoors">Sports & Outdoors</option>
+                        <option value="Jewelry & Watches">Jewelry & Watches</option>
+                        <option value="Collectibles">Collectibles</option>
+                        <option selected="selected" value="{{ 产品分类5M }}">{{ 产品分类5M }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-md4">
+        <div class="layui-card">
+          <div class="layui-card-header">商品成本</div>
+          <div class="layui-card-body ">
+            <div class="layui-form" action="">
+               <div class="layui-form-item">
+                <div class="layui-inline" style="width: 45%">
+                  <label class="layui-form-label" >商品进价：</label>
+                  <div class="layui-input-inline" style="width: 45%">
+                    <input   type="tel"  id ="SKU_price" name="SKU_price" lay-verify="" autocomplete="off" class="layui-input" value="{{ SKU_price }}">
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 40%">
+                  <label class="layui-form-label">商品重量：</label>
+                  <div class="layui-input-inline" style="width: 40%">
+                    <input  type="tel"  id ="SKU_weight" name="SKU_weight" lay-verify="" autocomplete="off" class="layui-input" value="{{ SKU_weight }}">
+                  </div>
+                </div>
+                   <div class="layui-inline" style="width: 45%">
+                  <label class="layui-form-label" >配件进价：</label>
+                  <div class="layui-input-inline" style="width: 45%">
+                    <input   type="tel"  id ="SKU_parts_price" name="SKU_parts_price" lay-verify="" autocomplete="off" class="layui-input" value="{{ SKU_parts_price }}">
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 40%">
+                  <label class="layui-form-label">配件重量：</label>
+                  <div class="layui-input-inline" style="width: 40%">
+                    <input  type="tel"  id ="SKU_parts_weight" name="SKU_parts_weight" lay-verify="" autocomplete="off" class="layui-input" value="{{ SKU_parts_weight }}">
+                  </div>
+                </div>
+                   <div class="layui-inline" style="width: 45%">
+                  <label class="layui-form-label" >货物种类：</label>
+                  <div class="layui-input-inline" style="width: 45%">
+                     <select  name="" id="SKU_variety">
+                        <option value="{{ SKU_variety }}">{{ SKU_variety }}</option>
+                        <option value="输入运费">输入运费</option>
+                        <option value="普货">普货</option>
+                        <option value="带电">带电</option>
+                        <option value="特货">特货</option>
+                        <option value="平邮">平邮</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 40%">
+                  <label class="layui-form-label">输入运费：</label>
+                  <div class="layui-input-inline" style="width: 40%">
+                    <input  type="tel" id ="HAI_SKU_freight" name="HAI_SKU_freight" lay-verify="" autocomplete="off" class="layui-input" value="{{ HAI_SKU_freight }}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">其他信息<a style="color: #a0a0a0">（<a style="color: red">*</a> 项目输入不能为空或者0）</a></div>
+          <div class="layui-card-body ">
+            <div class="layui-form" action="">
+               <div class="layui-form-item">
+                <div class="layui-inline" >
+                  <label class="layui-form-label" style="width: 120px"><a style="color: red">*</a>本站ID：</label>
+                  <div class="layui-input-inline">
+                    <input disabled type="tel" id ="摇钱数ID" name="摇钱数ID" value="{{ 摇钱数ID }}" lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                </div>
+                <div class="layui-inline" >
+                  <label class="layui-form-label" style="width: 120px"><a style="color: red">*</a>产品条件：</label>
+                  <div class="layui-input-inline">
+                    <div class="layui-input-inline">
+                    <select  name="" id="产品条件" lay-search>
+                        <option value="New">New</option>
+                        <option value="New with Tags">New with Tags</option>
+                        <option value="New with Defects">New with Defects</option>
+                        <option value="Used">Used</option>
+                        <option value="Used - Excellent">Used - Excellent</option>
+                        <option value="Used - Good">Used - Good</option>
+                        <option value="Used - Fair">Used - Fair</option>
+                        <option value="Refurbished">Refurbished</option>
+                        <option value="Refurbished - Manufacturer">Refurbished - Manufacturer</option>
+                        <option value="Refurbished - Seller">Refurbished - Seller</option>
+                        <option  style="" selected="selected" value="{{ 产品条件}}">{{ 产品条件}}</option>
+                    </select>
+                  </div>
+                  </div>
+                </div>
+
+                <div class="layui-inline" >
+                  <label class="layui-form-label" style="width: 120px">产品材质：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" id ="产品材质" name="产品材质" value="{{ 产品材质 }}"  lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                </div>
+                <div class="layui-inline"  >
+                  <label class="layui-form-label" style="width: 120px">CAMPAIGN设置：</label>
+                  <div class="layui-input-inline">
+                    <select  name="" id="CAMPAIGN" lay-search>
+                        <option value="" selected >--请选择--</option>
+                        <option  style="" selected="selected" value="{{ CAMPAIGN}}">{{ CAMPAIGN}}</option>
+                        {% for campaign_list in campaign_listes %}
+                            <option value="{{ campaign_list.name }}">{{ campaign_list.name }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="layui-inline" style="width: 43.5%" >
+                  <label class="layui-form-label" style="width: 120px">产品尺寸：</label>
+                  <div class="layui-input-inline" style="width: 60%">
+                    <input  type="tel" id ="产品尺寸" name="产品尺寸" value="{{ 产品尺寸 }}"  lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                    <a style="color: #a0a0a0">注：用,隔开。</a>
+                </div>
+                <div class="layui-inline" style="width: 43.5%" >
+                  <label class="layui-form-label" style="width: 120px">产品颜色：</label>
+                  <div class="layui-input-inline" style="width: 60%">
+                    <input type="tel" id ="产品颜色" name="产品颜色" value="{{ 产品颜色 }}"  lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                    <a style="color: #a0a0a0">注：用,隔开。</a>
+                </div>
+                <div class="layui-inline"  >
+                  <label class="layui-form-label" style="width: 120px">配件价格：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" id ="配件价格" name="配件价格" value="{{ 配件价格 }}"  lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                </div>
+                <div class="layui-inline " style="width: 75%">
+                  <label class="layui-form-label" style="width: 120px">配件描述：</label>
+                  <div class="layui-input-inline" style="width: 50%">
+                    <input type="tel" id ="配件描述" name="配件描述" value="{{ 配件描述 }}"  lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                  <a style="color: #a0a0a0">注：最长40字节。</a>
+                </div>
+                <div class="layui-inline" style="width: 100%">
+                  <label class="layui-form-label" style="width: 120px"><a style="color: red">*</a>产品标题：</label>
+                  <div class="layui-input-inline" style="width: 70%">
+                    <input type="tel" id ="产品标题" name="产品标题" value="{{ 产品标题 }}" lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                </div>
+
+                <div class="layui-inline" style="width: 100%">
+                  <label class="layui-form-label" style="width: 120px"><a style="color: red">*</a>产品描述：</label>
+                  <div class="layui-input-inline" style="width: 70%">
+                    <textarea id ="产品描述" name="产品描述" placeholder="请输入" class="layui-textarea">{{ 产品描述 }}</textarea>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <script src="../../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form',], function(){
+    var $ = layui.$
+    ,layer = layui.layer
+    ,form = layui.form;
+
+    //1688搜索
+        //更新
+    form.on('submit(sousuo1688)', function(data){
+        layer.msg('加载中', {
+          icon: 16
+          ,shade: 0.01
+          ,time:2000
+        });
+        $.ajax({
+            url:'/common_functions/TOP_statistics/',
+            type:'get',
+            data:{top_img_url:$('#产品图片1').val()},
+            success:
+                function (response)
+                {
+                    var index = layer.msg();
+                    layer.close(index);
+                    var ret = JSON.parse(response);
+                    if (ret.img_url) { //上传成功
+                        layer.open({
+                              type: 2,
+                              title: '1688匹配搜索',
+                              shade: 0,
+                              offset: 'lt',
+                              shadeClose: false,
+                              maxmin: true,
+                              area: ['70%', '70%'],
+                              content: 'https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://sksj.shop//static/user_files_directory/TOP_img_to_own/'+ret.img_url,
+                            });
+                    }
+                }
+            })
+
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+    //更新
+    form.on('submit(gengxinshangping)', function(data){
+        layer.msg('正在更新，请稍后…', {icon: 16 ,shade: 0.01,time: 120000});
+        $.ajax({
+            url:'/PruAndLog/owm_products_update/',
+            type:'get',
+            data:{
+                FIG:'FIG',
+                //图片信息
+                标准ID:$('#标准ID').val(),
+                //图片信息
+                主图序号:$('#主图序号').val(),
+                产品图片1:$('#产品图片1').val(),
+                产品图片2:$('#产品图片2').val(),
+                产品图片3:$('#产品图片3').val(),
+                产品图片4:$('#产品图片4').val(),
+                产品图片5:$('#产品图片5').val(),
+                产品图片6:$('#产品图片6').val(),
+                产品图片7:$('#产品图片7').val(),
+                产品图片8:$('#产品图片8').val(),
+
+                //价格信息
+                一口价:$('#一口价').val(),
+                目标价:$('#目标价').val(),
+                零售价:$('#零售价').val(),
+                起拍价:$('#起拍价').val(),
+                SFB:$('#SFB').val(),
+                运输费用:$('#运输费用').val(),
+
+                //关键信息
+                商品名称:$('#商品名称').val(),
+                产品分类TOP:$('#产品分类TOP').val(),
+                产品分类5M:$('#产品分类5M').val(),
+
+                //商品成本
+                SKU_price:$('#SKU_price').val(),
+                SKU_weight:$('#SKU_weight').val(),
+                SKU_parts_price:$('#SKU_parts_price').val(),
+                SKU_parts_weight:$('#SKU_parts_weight').val(),
+                SKU_variety:$('#SKU_variety').val(),
+                HAI_SKU_freight:$('#HAI_SKU_freight').val(),
+
+                //其他信息
+                摇钱数ID:$('#摇钱数ID').val(),
+                产品条件:$('#产品条件').val(),
+                产品材质:$('#产品材质').val(),
+                CAMPAIGN:$('#CAMPAIGN').val(),
+                产品尺寸:$('#产品尺寸').val(),
+                产品颜色:$('#产品颜色').val(),
+                配件价格:$('#配件价格').val(),
+                配件描述:$('#配件描述').val(),
+                产品标题:$('#产品标题').val(),
+                产品描述:$('#产品描述').val(),
+            },
+            success: function (response)
+                {  var res = JSON.parse(response);
+                    var index_load =  layer.msg();
+                    layer.close(index_load);
+
+                    if (res.msg_e) {//上传成功
+                        document.getElementById("sp_1").innerHTML=res.msg_e;
+                        layer.msg(res.msg_e, {shade: 0.1});
+                    }
+
+                }
+            })
+        //执行
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+  });
+  </script>
+</body>
+</html>

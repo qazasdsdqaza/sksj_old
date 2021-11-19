@@ -1,0 +1,1427 @@
+﻿{% load staticfiles %}
+<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<meta name="msapplication-TileColor" content="#0670f0">
+		<meta name="theme-color" content="#2ddcd3">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+
+
+		<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon"/>
+		<link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+
+		<!-- Title -->
+		<title>摇钱数（拍卖统计-原始）</title>
+		<link rel="stylesheet" href="{% static 'assets/fonts/fonts/font-awesome.min.css' %}" />
+
+		<!-- Bootstrap Css -->
+		<link href="{% static 'assets/plugins/bootstrap-4.1.3/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+		<!-- Sidemenu Css -->
+		<link href="{% static 'assets/plugins/fullside-menu/css/style.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/fullside-menu/waves.min.css' %}" rel="stylesheet" />
+
+		<!-- Dashboard Css -->
+		<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+
+		<!-- c3.js Charts Plugin -->
+		<link href="{% static 'assets/plugins/charts-c3/c3-chart.css' %}" rel="stylesheet" />
+
+		<!-- Data table css -->
+		<link href="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+
+		<!-- Slect2 css -->
+		<link href="{% static 'assets/plugins/select2/select2.min.css' %}" rel="stylesheet" />
+
+		<!-- Custom scroll bar css-->
+		<link href="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" />
+
+		<!---Font icons-->
+		<link href="{% static 'assets/plugins/iconfonts/plugin.css' %}" rel="stylesheet" />
+
+        <!---Echarts图表库-->
+        <script src="{% static 'js/echarts.min.js' %}"></script>
+
+        <!---计算器-->
+        <link href="{% static 'jisuanqi/css/sidebar.css' %}" rel="stylesheet" type="text/css" />
+
+        <style>
+            .status2-pic{
+                width: 80px;
+                height: 80px;
+            }
+
+            img{
+                background-size: cover;
+                background-position: center;
+            }
+        </style>
+
+	</head>
+	<body>
+		<div id="loading"></div>
+		<div class="page">
+			<div class="page-main">
+                <!-- 页眉目录栏 -->
+				<div class="app-header1 header py-1 d-flex">
+					<div class="container-fluid">
+						<div class="d-flex">
+							<a class="header-brand" href="">
+								<img src="{% static 'images/logo1.png' %}" class="header-brand-img" alt="Uplor  logo">
+							</a>
+							<div class="menu-toggle-button">
+								<a class="nav-link wave-effect" href="#" id="sidebarCollapse">
+									<span class="fa fa-bars"></span>
+								</a>
+							</div>
+							<div>
+								<div class="searching">
+									<a href="javascript:void(0)" class="search-open searching1">
+										<i class="fa fa-search"></i>
+									</a>
+									<div class="search-inline">
+										<form>
+											<input type="text" class="form-control" placeholder="Searching...">
+											<button type="submit">
+												<i class="fa fa-search"></i>
+											</button>
+											<a href="javascript:void(0)" class="search-close">
+												<i class="fa fa-times"></i>
+											</a>
+										</form>
+									</div>
+								</div>
+							</div>
+                            <div class="d-flex order-lg-1 ml-auto"  style="color: white" id="showdate"></div> <!--#太平洋时间 -->
+							<div class="d-flex order-lg-2 ml-auto">
+								<div class="dropdown d-none d-md-flex" >
+									<a  class="nav-link icon full-screen-link">
+										<i class="fe fe-maximize floating"  id="fullscreen-button"></i>
+									</a>
+							</div>
+                            <div class="profile_info" style="width: 200px">
+								<h2><a style="color: red"  href="https://www.kdocs.cn/ent/615404630/1095839877" target="_blank">详细数据&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></h2>
+							</div>
+                            <div class="profile_info">
+								<h2><a  href="/logout/">退出登录</a></h2>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wrapper">
+					<!-- 侧边目录栏 -->
+					<nav id="sidebar" class="nav-sidebar">
+						<div class="profile clearfix">
+							<div class="profile_pic">
+								<img src="{% static 'images/aaa.png' %}" alt="..." class="img-circle profile_img">
+{#								<a href="editprofile.html" class="profile-img">#}
+{#									<span class="fa fa-pencil" aria-hidden="true"></span>#}
+{#								</a>#}
+							</div>
+							<div class="profile_info">
+								<h3>天道酬勤 地道酬善</h3>
+								<h3>人道酬诚 商道酬信</h3>
+							</div>
+						</div>
+						<ul class="list-unstyled components" id="accordion">
+							<li class="border-0"><h3>Tophatter</h3><li>
+                            <li>
+								<a href="/information_aggregation/" class=" wave-effect accordion-toggle " target="_blank"><i class="fa fa-diamond mr-2 sidebarpink"></i> 信息汇总展示</a>
+							</li>
+							<li>
+								<a href="#Submenu1" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-rocket mr-2 sidebarprimary"></i> 平台分析
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu1" data-parent="#accordion">
+									<li>
+										<a href="/index/" target="_blank">平台商品统计</a>
+									</li>
+									<li>
+										<a href="/goodslist/" target="_blank">商品分析</a>
+									</li>
+									<li>
+										<a href="/seller/" target="_blank">卖家分析</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#Submenu2" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 利润统计
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu2" data-parent="#accordion">
+									<li>
+										<a href="/profitStatistics/" target="_blank">订单统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_2/" target="_blank">拍卖统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_3/" >拍卖统计(原始)</a>
+									</li>
+									<li>
+										<a href="/buy_nows/" target="_blank">一口价统计</a>
+									</li>
+                                    <li>
+										<a href="/buy_nows_page/" target="_blank">一口价（页面数据）</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu3" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu3" data-parent="#accordion">
+                                    <li>
+										<a href="/products_operate/ " target="_blank">批量上传</a>
+									</li>
+                                    <li>
+										<a href="/products_operate_single/" target="_blank">上传商品</a>
+									</li>
+									<li>
+										<a href="/products/" target="_blank">店铺所有商品</a>
+									</li>
+                                    <li>
+										<a href="/products_collect/" target="_blank">商品库</a>
+									</li>
+                                    <li>
+										<a href="/products_parets/" target="_blank">配件库</a>
+									</li>
+									<li>
+										<a href="/SKU_list_2/" target="_blank">商品信息录入</a>
+									</li>
+								</ul>
+							</li>
+                            <li >
+								<a href="#Submenu7" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-table mr-2 sidebarpurple"></i> 发货物流
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu7" data-parent="#accordion">
+									<li>
+										<a href="/logistics_statistic/" target="_blank">物流规则 </a>
+									</li>
+									<li>
+										<a href="/return_performance/" target="_blank">退货表现</a>
+									</li>
+                                    <li>
+										<a href="/refund_orders/" target="_blank">订单退货</a>
+									</li>
+								</ul>
+							</li>
+							<li >
+								<a href="#Submenu8" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-sun-o mr-2 sidebarpink"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu8" data-parent="#accordion">
+									<li>
+										<a href="/founds/" target="_blank">资金统计 </a>
+									</li>
+									<li>
+										<a href="/fund_analysis/" target="_blank">资金表现</a>
+									</li>
+								</ul>
+							</li>
+                            <li><h3>5miles</h3><li>
+							<li>
+								<a href="#Submenu4" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu4" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_products_5miles/" target="_blank">所有商品</a>
+									</li>
+                                    <li>
+										<a href="/five_miles/up_products_5miles/" target="_blank">上传商品</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu5" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 订单管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu5" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_oders_5miles/" target="_blank">所有订单</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu6" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu6" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/funds_5miles/" target="_blank">余额状态</a>
+									</li>
+								</ul>
+							</li>
+                            <li><h3>其他电商平台</h3><li>
+                            <li >
+								<a href="#Submenu10" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-shopping-cart mr-2 sidebarsuccess"></i> 速卖通
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu10" data-parent="#accordion">
+									<li>
+										<a href="/Function_1/" target="_blank">价格计算</a>
+									</li>
+								</ul>
+							</li>
+							<li><h3>服务</h3><li>
+							<li>
+								<a href="#Submenu9" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 拓展功能
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu9" data-parent="#accordion">
+									<li>
+										<a href="/brand/" target="_blank" >平台商标统计</a>
+									</li>
+                                    <li>
+										<a href="/e_commerce_platform/" target="_blank">各类电商平台介绍</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+                    <!-- 内容区域 -->
+					<div class=" content-area overflow-hidden">
+						<div class="row">
+							<div class="col-md-12 col-lg-12">
+								<div class="card">
+									<div class="card-header">
+                                        <form id="searchForm"  method="post" action="" target="_top">
+                                            {% csrf_token %}
+                                            <div style="height: 60px;">
+                                                <div style="width: 150px; height: 60px; float: left">
+                                                    <span style="">账户选择：</span>
+                                                    <select style="width:50px; height: 36px; border-radius: 4px;" name="store_name" id="store_name">
+                                                        <option value="all">all</option>
+                                                        <option value="A">A</option>
+                                                        <option value="B">B</option>
+                                                        <option value="C">C</option>
+                                                        <option value="E">E</option>
+                                                        <option value="G">G</option>
+                                                        <option value="I">I</option>
+                                                        <option value="J">J</option>
+                                                        <option value="M">M</option>
+                                                        <option value="P">P</option>
+                                                        <option value="Q">Q</option>
+
+                                                        <option value="B6">B6</option>
+                                                        <option value="B10">B10</option>
+                                                        <option value="PY">PY</option>
+                                                        <option value="YL">YL</option>
+                                                        <option value="YM">YM</option>
+                                                        <option value="YH">YH</option>
+                                                        <option value="YMW">YMW</option>
+                                                        <option selected="selected" value={{ store_name }}>{{ store_name }}</option>
+                                                    </select>
+                                                </div>
+                                                <div style="width: 230px; height: 60px; float: left">
+                                                    <span style="">时间段选择：</span>
+                                                    <select style="width: 120px; height: 36px; border-radius: 4px;" name="time_local" id="time_local" placeholder="today">
+                                                        <option value="today">today</option>
+                                                        <option value="yesterday">yesterday</option>
+                                                        <option value="last_week">last_week</option>
+                                                        <option value="last_30_days">last_30_days</option>
+                                                        <option selected="selected" style="color:whitesmoke" value={{ time_local }}  >{{ time_local }}</option>
+                                                    </select>
+                                                </div>
+                                                <div style="width:  230px; height: 60px; float: left">
+                                                    <span style="">SKU：</span><!--font-size: 15px; margin-left: 40px;-->
+                                                    <input id="identifier" style="width: 150px; height: 36px; border-radius: 4px;" type="text" name="identifier" placeholder="请输入SKU关键字"value={{ identifier }}>
+                                                </div>
+                                                <div style="width:  150px; height: 60px; float: left;vertical-align: middle">
+                                                        <input style="width: 120px;height: 30px;background: #4ebc30"type="submit" value="查询数据">
+                                                </div>
+                                                <div style=" float: left;color: #117a8b;vertical-align: middle">
+                                                    <span><a style="color: red">5M订单数：</a></span><br>
+                                                            <span>今天：(<a style="color: red">{{ M5_TODAY_ODERS}}</a>)</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;<span>昨天：(<a style="color: red">{{ M5_YESTODAY_ODERS}}</a>)</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;<span>7天： (<a style="color: red">{{ M5_SEVENDAYS_ODERS}}</a>)</span>
+                                                </div>
+                                                <div style=" float: left;color: red;vertical-align: middle">
+                                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br>
+                                                </div>
+                                                <div style=" float: left;color: red;vertical-align: middle">
+                                                    <span>数据更新时间：</span><br>
+                                                    <span>{{ SAVE_TIME}}(北京)</span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;<span>{{ SAVE_TIME_UTC}}(太平洋)</span>
+                                                </div>
+                                            </div>
+                                        </form>
+{#										<h4 class="page-title">拍卖统计(原始)</h4>#}
+										<div class="card-options">
+											<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+											<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+										</div>
+									</div>
+
+									<div class="card-body">
+										<div class="table-responsive">
+											<table  class="table table-striped table-bordered" >
+												<thead style="background: #5bc0de">
+                                                    <tr id="my_tr" >
+                                                        <th style="text-align: center">统计</th>
+                                                        <th style="text-align: center">展示总数</th>
+                                                        <th style="text-align: center">成交总数</th>
+                                                         <th style="text-align: center">成交率</th>
+                                                        <th style="text-align: center">汇率</th>
+                                                        <th style="text-align: center">平均SFB($)</th>
+                                                        <th style="text-align: center">总成本(¥)</th>
+                                                        <th style="text-align: center">总毛利润(¥)</th>
+                                                        <th style="text-align: center">利润率</th>
+                                                    </tr>
+												</thead>
+												<tbody>
+                                                    <tr id="my_tr2" style="font-size: 15px;">
+                                                        <td style="text-align: center;"><!--账户名-->
+                                                            <div >
+                                                               <button style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" class="" data-toggle="modal" data-target="#gy{{ StoreData.SKU}}a">统计</button><!---->
+                                                               <button style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" class="" data-toggle="modal" data-target="#Aaa" >HOME提醒</button>
+                                                            </div>
+                                                            <!-- 统计弹出框信息 -->
+                                                            <div class="modal fade" id="gy{{ StoreData.SKU}}a" tabindex="-1" role="dialog"  aria-hidden="true"  >
+                                                                <div  class="modal-dialog modal-lg modal-dialog-centered"  role="document"  >
+                                                                    <div class="modal-content" style="width: 1000px"  >
+                                                                        <div class="modal-header" >
+                                                                            <h5 class="modal-title">{{ StoreData.SKU}}</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body"  >
+{#                                                                          <div id="{{ StoreData.SKU}}aa" style="min-width:400px;height:400px"></div>#}
+                                                                            <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                                                                            <div id="obj_ALL" style="width: 800px;height:400px;"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <script type="text/javascript">
+                                                                // 基于准备好的dom，初始化echarts实例
+                                                                var myChart = echarts.init(document.getElementById('obj_ALL'));
+                                                                // 指定图表的配置项和数据
+                                                                var option = {
+                                                                    title: {
+                                                                        {#text: '订单统计',#}
+                                                                        {#text: '总共订单状态',#}
+                                                                        {#subtext: '纯属虚构'#}
+                                                                    },
+                                                                    tooltip: {
+                                                                        trigger: 'axis',
+                                                                        axisPointer: {
+                                                                                      type: 'cross'
+                                                                                      }
+                                                                    },
+                                                                    legend: {
+                                                                        data:['单量','均到手价','均SFB','成交率','利润率'],
+                                                                    },
+                                                                    grid: {
+                                                                        left: '3%',
+                                                                        right: '4%',
+                                                                        bottom: '3%',
+                                                                        containLabel: true
+                                                                    },
+                                                                    toolbox: {
+                                                                        show: true,
+                                                                        feature: {
+                                                                            {#magicType: {show: true, type: ['stack', 'tiled']},#}
+                                                                            dataView: {show: true, readOnly: false},
+                                                                            restore: {show: true},
+                                                                            saveAsImage: {show: true}
+                                                                        }
+                                                                    },
+                                                                    xAxis: {
+                                                                        type: 'category',
+                                                                        boundaryGap: false,
+                                                                        data: ['昨天0-3','昨天3-6','昨天6-9','昨天9-12','昨天12-15','昨天15-18','昨天18-21','昨天21-24','0-3','3-6','6-9','9-12','12-15','15-18','18-21','21-24']
+                                                                    },
+                                                                    yAxis: [{
+                                                                                name: '单量',
+                                                                                type: 'value',
+                                                                                position:'left',
+                                                                                axisLabel: {
+                                                                                                formatter: '{value} 单'
+                                                                                            }
+
+                                                                            },
+                                                                            {
+                                                                                name: '均手价/SFB',
+                                                                                type: 'value',
+                                                                                position:'right',
+                                                                                axisLabel: {
+                                                                                                formatter: '{value} 美元'
+                                                                                            }
+                                                                            },
+                                                                                                                                                            {
+                                                                                name: '',
+                                                                                type: 'value',
+                                                                                position:'right',
+                                                                                axisLabel: {
+                                                                                                formatter: '{value} 美元'
+                                                                                            }
+                                                                            },
+                                                                           {
+                                                                                name: '成交/利润率',
+                                                                                type: 'value',
+                                                                                position:'right',
+                                                                                offset:80,
+                                                                                axisLabel: {
+                                                                                                formatter: '{value} %'
+                                                                                            }
+
+                                                                            },
+                                                                            {
+                                                                                name: '',
+                                                                                type: 'value',
+                                                                                position:'right',
+                                                                                offset:80,
+                                                                                axisLabel: {
+                                                                                                formatter: '{value} %'
+                                                                                            }
+
+                                                                            }
+                                                                            ],
+                                                                    series: [
+                                                                    {
+                                                                        name: '单量',
+                                                                        type: 'bar',
+                                                                        {#smooth: true,#}
+                                                                        data: [
+                                                                             {{ obj_ALL.yestoday_03_orders}}, {{ obj_ALL.yestoday_06_orders}}, {{ obj_ALL.yestoday_09_orders}},{{ obj_ALL.yestoday_12_orders}},
+                                                                             {{ obj_ALL.yestoday_15_orders}}, {{ obj_ALL.yestoday_18_orders}}, {{ obj_ALL.yestoday_21_orders}},{{ obj_ALL.yestoday_23_orders}},
+                                                                             {{ obj_ALL.today_03_orders}}, {{ obj_ALL.today_06_orders}}, {{ obj_ALL.today_09_orders}},{{ obj_ALL.today_12_orders}},
+                                                                             {{ obj_ALL.today_15_orders}}, {{ obj_ALL.today_18_orders}}, {{ obj_ALL.today_21_orders}},{{ obj_ALL.today_23_orders}}
+                                                                              ],
+                                                                        yAxisIndex:0,
+                                                                    },
+                                                                    {
+                                                                        name: '均到手价',
+                                                                        type: 'line',
+                                                                        {#smooth: true,#}
+                                                                        data: [
+                                                                             {{ obj_ALL.yestoday_03_revenue}}, {{ obj_ALL.yestoday_06_revenue}}, {{ obj_ALL.yestoday_09_revenue}},{{ obj_ALL.yestoday_12_revenue}},
+                                                                             {{ obj_ALL.yestoday_15_revenue}}, {{ obj_ALL.yestoday_18_revenue}}, {{ obj_ALL.yestoday_21_revenue}},{{ obj_ALL.yestoday_23_revenue}},
+                                                                             {{ obj_ALL.today_03_revenue}}, {{ obj_ALL.today_06_revenue}}, {{ obj_ALL.today_09_revenue}},{{ obj_ALL.today_12_revenue}},
+                                                                             {{ obj_ALL.today_15_revenue}}, {{ obj_ALL.today_18_revenue}}, {{ obj_ALL.today_21_revenue}},{{ obj_ALL.today_23_revenue}}
+                                                                             ],
+                                                                        yAxisIndex:1,
+                                                                    },
+                                                                                                                                            {
+                                                                        name: '均SFB',
+                                                                        type: 'line',
+                                                                        {#smooth: true,#}
+                                                                        data: [
+                                                                             {{ obj_ALL.yestoday_03_SFB}}, {{ obj_ALL.yestoday_06_SFB}}, {{ obj_ALL.yestoday_09_SFB}},{{ obj_ALL.yestoday_12_SFB}},
+                                                                             {{ obj_ALL.yestoday_15_SFB}}, {{ obj_ALL.yestoday_18_SFB}}, {{ obj_ALL.yestoday_21_SFB}},{{ obj_ALL.yestoday_23_SFB}},
+                                                                             {{ obj_ALL.today_03_SFB}}, {{ obj_ALL.today_06_SFB}}, {{ obj_ALL.today_09_SFB}},{{ obj_ALL.today_12_SFB}},
+                                                                             {{ obj_ALL.today_15_SFB}}, {{ obj_ALL.today_18_SFB}}, {{ obj_ALL.today_21_SFB}},{{ obj_ALL.today_23_SFB}}
+                                                                             ],
+                                                                        yAxisIndex:1,
+                                                                    },
+                                                                      {
+                                                                        name: '成交率',
+                                                                        type: 'line',
+                                                                        {#smooth: true,#}
+                                                                        data: [
+                                                                             {{ obj_ALL.yestoday_03_CloseRate}}, {{ obj_ALL.yestoday_06_CloseRate}}, {{ obj_ALL.yestoday_09_CloseRate}},{{ obj_ALL.yestoday_12_CloseRate}},
+                                                                             {{ obj_ALL.yestoday_15_CloseRate}}, {{ obj_ALL.yestoday_18_CloseRate}}, {{ obj_ALL.yestoday_21_CloseRate}},{{ obj_ALL.yestoday_23_CloseRate}},
+                                                                             {{ obj_ALL.today_03_CloseRate}}, {{ obj_ALL.today_06_CloseRate}}, {{ obj_ALL.today_09_CloseRate}},{{ obj_ALL.today_12_CloseRate}},
+                                                                             {{ obj_ALL.today_15_CloseRate}}, {{ obj_ALL.today_18_CloseRate}}, {{ obj_ALL.today_21_CloseRate}},{{ obj_ALL.today_23_CloseRate}}
+                                                                             ],
+                                                                        yAxisIndex:3,
+                                                                    },
+                                                                      {
+                                                                        name: '利润率',
+                                                                        type: 'line',
+                                                                        {#smooth: true,#}
+                                                                        data: [
+                                                                             {{ obj_ALL.yestoday_03_profit}}, {{ obj_ALL.yestoday_06_profit}}, {{ obj_ALL.yestoday_09_profit}},{{ obj_ALL.yestoday_12_profit}},
+                                                                             {{ obj_ALL.yestoday_15_profit}}, {{ obj_ALL.yestoday_18_profit}}, {{ obj_ALL.yestoday_21_profit}},{{ obj_ALL.yestoday_23_profit}},
+                                                                             {{ obj_ALL.today_03_profit}}, {{ obj_ALL.today_06_profit}}, {{ obj_ALL.today_09_profit}},{{ obj_ALL.today_12_profit}},
+                                                                             {{ obj_ALL.today_15_profit}}, {{ obj_ALL.today_18_profit}}, {{ obj_ALL.today_21_profit}},{{ obj_ALL.today_23_profit}}
+                                                                             ],
+                                                                        yAxisIndex:3,
+                                                                    }
+                                                                    ]
+                                                                };
+                                                                // 使用刚指定的配置项和数据显示图表。
+                                                                myChart.setOption(option);
+                                                                window.addEventListener("resize", function() {myChart.resize();});
+                                                            </script>
+                                                            <!-- 详情弹出框信息 -->
+                                                            <div class="modal fade" id="Aaa" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" >
+                                                                                HOME页提醒数据
+                                                                            </h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body"  >
+									                                        <div class="card-body">
+                                                                                <div class="table-responsive">
+                                                                                    <table id="example3" class="hover table-bordered" style="width: 100%">
+                                                                                        <tbody>
+                                                                                            {% for TODO_data in TODO_datas %}
+                                                                                                <tr style="color: #01a7b3">
+                                                                                                    <td style="text-align: center">{{ TODO_data.store_name }}</td><!--店铺-->
+                                                                                                        {% for name in TODO_data.name %}
+                                                                                                             <td style="text-align: center">{{ name }}</td><!--类型-->
+                                                                                                        {% endfor %}
+                                                                                                    <td style="text-align: center">{{ TODO_data.save_time }}</td><!--时间-->
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td style="text-align: center"></td><!--店铺-->
+                                                                                                        {% for data in TODO_data.data %}
+                                                                                                             <td style="text-align: center">{{ data }}</td><!--数据-->
+                                                                                                        {% endfor %}
+                                                                                                    <td style="text-align: center"></td><!--时间-->
+                                                                                                </tr>
+                                                                                            {% endfor %}
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td><!--统计-->
+                                                        <td style="text-align: center">{{ SCHEDULES}}</td>
+                                                        <td style="text-align: center">{{ ORDERS}}</td>
+                                                        <td style="text-align: center">{{ ORDERS_PRO}}%</td>
+                                                        <td style="text-align: center">{{EXCHANGE_RATE}}</td>
+                                                        <td style="text-align: center">{{ SFB_AVG}}</td>
+                                                        <td style="text-align: center">{{ FEES_SUM }}</td>
+                                                        <td style="text-align: center">{{ PROFIT_SUM }}</td>
+
+                                                        {% if PROFIT_PRO > 0  %}
+                                                            <td style="text-align: center">{{ PROFIT_PRO }}%</td><!--总利润-->
+                                                        {% else %}
+                                                            <td style="text-align: center;color:orangered">{{ PROFIT_PRO }}%</td><!--总利润-->
+                                                        {% endif %}
+                                                    </tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<!-- table-wrapper -->
+								</div>
+								<!-- section-wrapper -->
+							</div>
+							<div class="col-md-12 col-lg-12">
+								<div class="card">
+{#                                    <div class="card-header">#}
+{#                                        <div class="card-options">#}
+{#											<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>#}
+{#											<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>#}
+{#										</div>#}
+{#									</div>#}
+									<div class="card-body">
+										<div class="table-responsive">
+											<table id="example2" class="hover table-bordered" >
+												<thead style="background: #0ec0e1">
+                                                    <tr >
+                                                        <td style="text-align: center">账户名</td>
+                                                        <td style="text-align: center">商品图/SKU</td><!--SKU-->
+                                                        <td style="text-align: center">利润率</td>
+                                                        <td style="text-align: center">均毛利润(¥)</td>
+                                                        <td style="text-align: center">展示次数</td>
+                                                        <td style="text-align: center">成交次数</td>
+                                                        <td style="text-align: center">成交率</td>
+                                                        <td style="text-align: center">平均销售额($)</td>
+                                                        <td style="text-align: center">平均SFB($)</td>
+                                                        <td style="text-align: center">平均到手价($)</td>
+                                                        <td style="text-align: center">商品(¥)</td>
+                                                        <td style="text-align: center">毛利润(¥)</td>
+                                                        <td style="text-align: center">商品操作</td>
+                                                    </tr>
+												</thead>
+												<tbody>
+                                                    {% for StoreData in StoreDatas %}
+                                                        <tr   >
+                                                            <td style="text-align: center;"><!--账户名-->
+                                                                <a>{{ StoreData.store_name}}<br>
+                                                                    {% if StoreData.store_name == 'E'  %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26120028','target')" />
+                                                                    {% elif StoreData.store_name == 'I' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26145870','target')" />
+
+                                                                    {% elif StoreData.store_name == 'A' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=25720956','target')" />
+                                                                    {% elif StoreData.store_name == 'B' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26095177','target')" />
+                                                                    {% elif StoreData.store_name == 'C' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26096309','target')" />
+                                                                    {% elif StoreData.store_name == 'G' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26132649','target')" />
+                                                                    {% elif StoreData.store_name == 'YL' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=34239907','target')" />
+                                                                    {% elif StoreData.store_name == 'J' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26160889','target')" />
+                                                                    {% elif StoreData.store_name == 'M' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=25903508','target')" />
+                                                                    {% elif StoreData.store_name == 'Q' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=28837326','target')" />
+                                                                    {% elif StoreData.store_name == 'P' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26211690','target')" />
+                                                                    {% elif StoreData.store_name == 'PY' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=33320687','target')" />
+                                                                    {% elif StoreData.store_name == 'B6' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=33048880','target')" />
+                                                                    {% elif StoreData.store_name == 'B10' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=33304778','target')" />
+                                                                    {% endif %}
+                                                                </a><br>
+                                                                {% if StoreData.standard_product_id %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="同型商品"  onclick="window.open('/index/?standard_product_id={{ StoreData.standard_product_id }}','target')" />
+                                                                 {% else %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: #bababa;background: white" type="button" id="" title="" value="同型商品"  onclick="" />
+                                                                 {% endif %}<br>
+                                                                <div >
+                                                                    <button style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button"  data-toggle="modal" data-target="#gh{{ StoreData.SKU}}a">统计图形</button><br> <!---->
+                                                                    <button style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" onClick='img_lode("{{ StoreData.primary_image }}")' style="background: #00bcd4" class="" id="" >1688同款</button>
+                                                                     <script language=javascript>
+                                                                        function img_lode(img){
+                                                                     $.ajax({
+                                                                                url:'/products/',
+                                                                                type:'get',
+                                                                                data:
+                                                                                    {
+                                                                                    img_url:img,
+                                                                                    csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                                                                     },
+                                                                                success: function (response) {
+                                                                                                                var ret = JSON.parse(response);
+                                                                                                                {#alert(ret.img_url)#}
+                                                                                                                if (ret.img_url) { //上传成功
+                                                                                                                    {#location.href='https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://ndmc.shop/static/TOPIMG/'+ret.img_url;#}
+                                                                                                                    window.open('https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://ndmc.shop/static/TOPIMG/'+ret.img_url,'target')
+                                                                                                                }
+                                                                                                            }
+
+                                                                                })
+                                                                     }
+                                                                    </script>
+                                                                </div>
+                                                                <!-- 弹出框信息 -->
+                                                                <div class="modal fade" id="gh{{ StoreData.SKU}}a" tabindex="-1" role="dialog"  aria-hidden="true"  >
+                                                                    <div  class="modal-dialog modal-lg modal-dialog-centered"  role="document"  >
+                                                                        <div class="modal-content" style="width: 1000px"  >
+                                                                            <div class="modal-header" >
+                                                                                <h5 class="modal-title">{{ StoreData.SKU}}
+                                                                                    <a ><img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}" width="60" height="60"></a>
+                                                                                </h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body"  >
+{#                                                                                 <div id="{{ StoreData.SKU}}aa" style="min-width:400px;height:400px"></div>#}
+                                                                                <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                                                                                <div id="h{{ StoreData.SKU}}aa" style="width: 780px;height:400px;"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <script type="text/javascript">
+                                                                    // 基于准备好的dom，初始化echarts实例
+                                                                    var myChart = echarts.init(document.getElementById('h{{ StoreData.SKU}}aa'));
+                                                                    // 指定图表的配置项和数据
+                                                                    var option = {
+                                                                        title: {
+                                                                            {#text: '订单统计',#}
+                                                                            {#text: '总共订单状态',#}
+                                                                            {#subtext: '纯属虚构'#}
+                                                                        },
+                                                                        tooltip: {
+                                                                            trigger: 'axis',
+                                                                            axisPointer: {
+                                                                                          type: 'cross'
+                                                                                          }
+                                                                        },
+                                                                        legend: {
+                                                                            data:['单量','均到手价','均SFB','成交率','利润率'],
+                                                                        },
+                                                                        grid: {
+                                                                            left: '3%',
+                                                                            right: '4%',
+                                                                            bottom: '3%',
+                                                                            containLabel: true
+                                                                        },
+                                                                        toolbox: {
+                                                                            show: true,
+                                                                            feature: {
+                                                                                {#magicType: {show: true, type: ['stack', 'tiled']},#}
+                                                                                dataView: {show: true, readOnly: false},
+                                                                                restore: {show: true},
+                                                                                saveAsImage: {show: true}
+                                                                            }
+                                                                        },
+                                                                        xAxis: {
+                                                                            type: 'category',
+                                                                            boundaryGap: false,
+                                                                            data: ['昨天0-3','昨天3-6','昨天6-9','昨天9-12','昨天12-15','昨天15-18','昨天18-21','昨天21-24','0-3','3-6','6-9','9-12','12-15','15-18','18-21','21-24']
+                                                                        },
+                                                                        yAxis: [{
+                                                                                    name: '单量',
+                                                                                    type: 'value',
+                                                                                    position:'left',
+                                                                                    axisLabel: {
+                                                                                                    formatter: '{value} 单'
+                                                                                                },
+                                                                                },
+                                                                                {
+                                                                                    name: '均手价/SFB',
+                                                                                    type: 'value',
+                                                                                    position:'right',
+                                                                                    axisLabel: {
+                                                                                                    formatter: '{value} 美元'
+                                                                                                },
+                                                                                },
+                                                                                {
+                                                                                    name: '',
+                                                                                    type: 'value',
+                                                                                    position:'right',
+                                                                                    axisLabel: {
+                                                                                                    formatter: '{value} 美元'
+                                                                                                },
+                                                                                },
+                                                                               {
+                                                                                    name: '成交/利润率',
+                                                                                    type: 'value',
+                                                                                    position:'right',
+                                                                                    offset:80,
+                                                                                    axisLabel: {
+                                                                                                    formatter: '{value} %'
+
+                                                                                                },
+
+                                                                                },
+                                                                                {
+                                                                                    name: '',
+                                                                                    type: 'value',
+                                                                                    position:'right',
+                                                                                    offset:80,
+                                                                                    axisLabel: {
+                                                                                                    formatter: '{value} %'
+                                                                                                },
+
+                                                                                }
+                                                                                ],
+                                                                        series: [
+                                                                        {
+                                                                            name: '单量',
+                                                                            type: 'bar',
+                                                                            {#smooth: true,#}
+                                                                            data: [
+                                                                                 {{ StoreData.yestoday_03_orders}}, {{ StoreData.yestoday_06_orders}}, {{ StoreData.yestoday_09_orders}},{{ StoreData.yestoday_12_orders}},
+                                                                                 {{ StoreData.yestoday_15_orders}}, {{ StoreData.yestoday_18_orders}}, {{ StoreData.yestoday_21_orders}},{{ StoreData.yestoday_23_orders}},
+                                                                                 {{ StoreData.today_03_orders}}, {{ StoreData.today_06_orders}}, {{ StoreData.today_09_orders}},{{ StoreData.today_12_orders}},
+                                                                                 {{ StoreData.today_15_orders}}, {{ StoreData.today_18_orders}}, {{ StoreData.today_21_orders}},{{ StoreData.today_23_orders}}
+                                                                                  ],
+                                                                            yAxisIndex:0,
+                                                                        },
+                                                                        {
+                                                                            name: '均到手价',
+                                                                            type: 'line',
+                                                                            {#smooth: true,#}
+                                                                            data: [
+                                                                                 {{ StoreData.yestoday_03_revenue}}, {{ StoreData.yestoday_06_revenue}}, {{ StoreData.yestoday_09_revenue}},{{ StoreData.yestoday_12_revenue}},
+                                                                                 {{ StoreData.yestoday_15_revenue}}, {{ StoreData.yestoday_18_revenue}}, {{ StoreData.yestoday_21_revenue}},{{ StoreData.yestoday_23_revenue}},
+                                                                                 {{ StoreData.today_03_revenue}}, {{ StoreData.today_06_revenue}}, {{ StoreData.today_09_revenue}},{{ StoreData.today_12_revenue}},
+                                                                                 {{ StoreData.today_15_revenue}}, {{ StoreData.today_18_revenue}}, {{ StoreData.today_21_revenue}},{{ StoreData.today_23_revenue}}
+                                                                                 ],
+                                                                            yAxisIndex:1,
+                                                                        },
+                                                                                                                                                {
+                                                                            name: '均SFB',
+                                                                            type: 'line',
+                                                                            {#smooth: true,#}
+                                                                            data: [
+                                                                                 {{ StoreData.yestoday_03_SFB}}, {{ StoreData.yestoday_06_SFB}}, {{ StoreData.yestoday_09_SFB}},{{ StoreData.yestoday_12_SFB}},
+                                                                                 {{ StoreData.yestoday_15_SFB}}, {{ StoreData.yestoday_18_SFB}}, {{ StoreData.yestoday_21_SFB}},{{ StoreData.yestoday_23_SFB}},
+                                                                                 {{ StoreData.today_03_SFB}}, {{ StoreData.today_06_SFB}}, {{ StoreData.today_09_SFB}},{{ StoreData.today_12_SFB}},
+                                                                                 {{ StoreData.today_15_SFB}}, {{ StoreData.today_18_SFB}}, {{ StoreData.today_21_SFB}},{{ StoreData.today_23_SFB}}
+                                                                                 ],
+                                                                            yAxisIndex:1,
+                                                                        },
+                                                                          {
+                                                                            name: '成交率',
+                                                                            type: 'line',
+                                                                            {#smooth: true,#}
+                                                                            data: [
+                                                                                 {{ StoreData.yestoday_03_CloseRate}}, {{ StoreData.yestoday_06_CloseRate}}, {{ StoreData.yestoday_09_CloseRate}},{{ StoreData.yestoday_12_CloseRate}},
+                                                                                 {{ StoreData.yestoday_15_CloseRate}}, {{ StoreData.yestoday_18_CloseRate}}, {{ StoreData.yestoday_21_CloseRate}},{{ StoreData.yestoday_23_CloseRate}},
+                                                                                 {{ StoreData.today_03_CloseRate}}, {{ StoreData.today_06_CloseRate}}, {{ StoreData.today_09_CloseRate}},{{ StoreData.today_12_CloseRate}},
+                                                                                 {{ StoreData.today_15_CloseRate}}, {{ StoreData.today_18_CloseRate}}, {{ StoreData.today_21_CloseRate}},{{ StoreData.today_23_CloseRate}}
+                                                                                 ],
+                                                                            yAxisIndex:3,
+                                                                        },
+                                                                          {
+                                                                            name: '利润率',
+                                                                            type: 'line',
+                                                                            {#smooth: true,#}
+                                                                            data: [
+                                                                                 {{ StoreData.yestoday_03_profit}}, {{ StoreData.yestoday_06_profit}}, {{ StoreData.yestoday_09_profit}},{{ StoreData.yestoday_12_profit}},
+                                                                                 {{ StoreData.yestoday_15_profit}}, {{ StoreData.yestoday_18_profit}}, {{ StoreData.yestoday_21_profit}},{{ StoreData.yestoday_23_profit}},
+                                                                                 {{ StoreData.today_03_profit}}, {{ StoreData.today_06_profit}}, {{ StoreData.today_09_profit}},{{ StoreData.today_12_profit}},
+                                                                                 {{ StoreData.today_15_profit}}, {{ StoreData.today_18_profit}}, {{ StoreData.today_21_profit}},{{ StoreData.today_23_profit}}
+                                                                                 ],
+                                                                            yAxisIndex:3,
+                                                                        }
+                                                                        ]
+                                                                    };
+                                                                    // 使用刚指定的配置项和数据显示图表。
+                                                                    myChart.setOption(option);
+                                                                </script>
+
+                                                            </td><!--店铺名/统计-->
+                                                            <td style="text-align: center;" ><!--主图-->
+                                                                <div >
+                                                                    <a data-toggle="modal" data-target="#gj{{ StoreData.SKU}}b">
+                                                                        <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}" width="80" height="80"></a>  <!--StoreData.primary_image-->
+{#                                                                          <img style="background-image: url('{{ StoreData.primary_image}}');"  class="status2-pic" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2NkAAIAAAoAAggA9GkAAAAASUVORK5CYII=" >#}
+                                                                    </a>
+                                                                </div>
+                                                                <p>{{ StoreData.SKU}}</p>
+                                                                            <!-- 弹出框信息 -->
+                                                                <div class="modal fade" id="gj{{ StoreData.SKU}}b" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document" >
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="example-Modal3">{{ StoreData.SKU}}</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                 <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}">
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td><!--主图/SKU-->
+
+                                                            {% if StoreData.profit_pro > 0  %}
+                                                                <td style="text-align: center">{{ StoreData.profit_pro}}%</td><!--利润率-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">{{ StoreData.profit_pro}}%</td><!--利润率-->
+                                                            {% endif %}
+
+                                                            {% if StoreData.profit_sum_avg > 0  %}
+                                                                <td style="text-align: center">{{ StoreData.profit_sum_avg}}</td><!--平均毛利润-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">{{ StoreData.profit_sum_avg}}</td><!--平均毛利润-->
+                                                            {% endif %}
+
+                                                            <td style="text-align: center;background:#DCEBF7">{{ StoreData.schedules}}</td><!--展示次数-->
+                                                            <td style="text-align: center">{{ StoreData.orders}}</td><!--成交次数-->
+                                                            <td style="text-align: center">{{ StoreData.closing}}%</td><!--成交率-->
+                                                            <td style="text-align: center">{{ StoreData.revenue_avg}}</td><!--平均售额-->
+
+                                                            <td style="text-align: center;background:#DCEBF7">{{ StoreData.SFB_avg}}</td><!--平均SFB-->
+                                                            <td style="text-align: center">{{ StoreData.top_profit_avg}}</td><!--平均到手价-->
+
+                                                            {% if StoreData.SKU_price  > '0.00' or StoreData.SKU_freight  > '0.00' %}
+                                                                <td style="text-align: center"><p>货价:{{ StoreData.SKU_price}}</p><!--主商品采购-->
+                                                                                <p>运费:{{ StoreData.SKU_freight}}</p></td><!--主商品运费-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">未输入</td>
+                                                            {% endif %}
+
+                                                            {% if StoreData.profit_sum > 0  %}
+                                                                <td style="text-align: center">{{ StoreData.profit_sum}}</td><!--毛利润-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">{{ StoreData.profit_sum}}</td><!--毛利润-->
+                                                            {% endif %}
+
+                                                             <td style="text-align: center" >
+                                                            <div >
+                                                                    <button style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button"  data-toggle="modal" data-target="#gk{{ StoreData.SKU}}c">编辑</button>
+                                                            </div>
+{#                                                            <div >#}
+{#                                                               <a href="/products_operate_single/?Top主SKU={{ StoreData.SKU}}" target="_blank"  style="color: lightseagreen;background: white">上传到TOP</a>#}
+{#                                                            </div>#}
+{#                                                            <div >#}
+{#                                                               <a href="/five_miles/up_products_5miles/?Top主SKU={{ StoreData.SKU}}" target="_blank"  style="color: lightseagreen;background: white">上传到5M</a>#}
+{#                                                            </div>#}
+                                                            <div >
+                                                               <a href="/products_update/?Top主SKU={{ StoreData.SKU}}&店铺名={{ StoreData.store_name }}" target="_blank"  style="color: lightseagreen;background: white">商品信息更新</a>
+                                                            </div>
+                                                            <div >
+                                                               <a href="/products_collect_update/?Top主SKU={{ StoreData.SKU}}&来源=TOP后台" target="_blank"  style="color: lightseagreen;background: white">加入商品库</a>
+                                                            </div>
+                                                            <!-- 弹出框信息 -->
+                                                            <div class="modal fade" id="gk{{ StoreData.SKU}}c" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" >
+                                                                                商品信息编辑  <a style="color: #f1a02f">{{ StoreData.SKU}}</a>
+                                                                                <a ><img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}" width="80" height="80"></a>
+                                                                            </h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+
+                                                                        <form >
+                                                                            <div class="modal-body">
+                                                                                <div class="form-group">
+                                                                                    <span style="">商品名称</span>
+                                                                                    <input style="" type="text" class="form-control" id="SKU_name"  name="SKU_name" placeholder="商品名称"value={{ StoreData.SKU }}>
+                                                                                </div>
+                                                                                <div class="form-group" >
+                                                                                    <span style="text-align:left">货物进价(¥)</span>
+                                                                                    <input  type="text" class="form-control" id="SKU_price"  name="SKU_price" placeholder="请输入货物进价"value={{ StoreData.SKU_price }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">货物重量(g)</span>
+                                                                                    <input type="text" class="form-control" id="SKU_weight"  name="SKU_weight" placeholder="请输入货物重量"value={{ StoreData.SKU_weight }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">配件价格(¥)</span>
+                                                                                    <input type="text" class="form-control" id="SKU_parts_price"  name="SKU_parts_price" placeholder="请输入配件价格"value={{ StoreData.SKU_parts_price }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">配件重量(g)</span>
+                                                                                    <input type="text" class="form-control" id="SKU_parts_weight"  name="SKU_parts_weight"  placeholder="请输入配件重量"value={{ StoreData.SKU_parts_weight }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">货物种类：</span>
+
+                                                                                    <select style="width: 80px; height: 36px; border-radius: 4px;" name="SKU_variety" id="SKU_variety" >
+                                                                                        <option value="普货">普货</option>
+                                                                                        <option value="带电">带电</option>
+                                                                                        <option value="特货">特货</option>
+                                                                                        <option value="海运">海运</option>
+                                                                                        <option value="平邮">平邮</option>
+                                                                                        <option style="color: #d1d1d3" selected="selected" value={{ StoreData.SKU_variety }}>{{ StoreData.SKU_variety }}</option>
+                                                                                    </select>
+                                                                                    <span style="">({{ StoreData.SKU_variety }})</span>
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <span style="color: blue">海运运费(￥)：</span>
+                                                                                    <input style="color: blue" type="text" class="form-control" id="HAI_SKU_freight"  name="HAI_SKU_freight"  placeholder="请输入海运运费"value={{ StoreData.HAI_SKU_freight }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="color:lightseagreen">平邮成交价小于7运费(￥)：</span>
+                                                                                    <input style="color: lightseagreen" type="text" class="form-control" id="Pingyou_min7_SKU_freight"  name="Pingyou_min7_SKU_freight"  placeholder="请输入平邮成交价小于7运费"value={{ StoreData.Pingyou_min7_SKU_freight }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="color:lightseagreen">平邮成交价大于7运费(￥)：</span>
+                                                                                    <input style="color:lightseagreen" type="text" class="form-control" id="Pingyou_max7_SKU_freight"  name="Pingyou_max7_SKU_freight"  placeholder="请输入平邮成交价大于7运费"value={{ StoreData.Pingyou_max7_SKU_freight }}>
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <span style="">是否加入收藏夹：</span>
+                                                                                    <select style="width: 80px; height: 36px; border-radius: 4px;" name="top_colect" id="top_colect" >
+                                                                                        <option selected = 'selected' value=""></option>
+                                                                                        <option value="1">加入收藏</option>
+                                                                                        <option value="0">取消收藏</option>
+                                                                                    </select>
+                                                                                </div>
+
+
+                                                                                <div class="modal-footer"  >
+                                                                                    <button type="button" onclick="displayResult(this)" class="btn btn-primary" id="111" >提交</button>
+                                                                                </div>
+                                                                                 <script>
+                                                                                  function displayResult(obj){
+                                                                                      var SKU_name=$(obj).                     parent().parent().eq(0).children().eq(0).children().eq(1).val();
+                                                                                      var SKU_price=$(obj).                    parent().parent().eq(0).children().eq(1).children().eq(1).val();
+                                                                                      var SKU_weight=$(obj).                   parent().parent().eq(0).children().eq(2).children().eq(1).val();
+                                                                                      var SKU_parts_price=$(obj).              parent().parent().eq(0).children().eq(3).children().eq(1).val();
+                                                                                      var SKU_parts_weight=$(obj).             parent().parent().eq(0).children().eq(4).children().eq(1).val();
+                                                                                      var SKU_variety=$(obj).                  parent().parent().eq(0).children().eq(5).children().eq(1).val();
+                                                                                      var HAI_SKU_freight=$(obj).              parent().parent().eq(0).children().eq(6).children().eq(1).val();
+                                                                                      var Pingyou_min7_SKU_freight=$(obj).     parent().parent().eq(0).children().eq(7).children().eq(1).val();
+                                                                                      var Pingyou_max7_SKU_freight=$(obj).     parent().parent().eq(0).children().eq(8).children().eq(1).val();
+                                                                                      var top_colect=$(obj).                   parent().parent().eq(0).children().eq(9).children().eq(1).val();
+
+
+
+                                                                                 $.ajax({
+                                                                                            url:'/profitStatistics_2/',
+                                                                                            type:'post',
+                                                                                            data:
+                                                                                                {
+                                                                                                SKU_name:SKU_name,
+                                                                                                SKU_price:SKU_price,
+                                                                                                SKU_weight:SKU_weight,
+                                                                                                SKU_parts_price:SKU_parts_price,
+                                                                                                SKU_parts_weight:SKU_parts_weight,
+                                                                                                SKU_variety:SKU_variety,
+                                                                                                HAI_SKU_freight:HAI_SKU_freight,
+                                                                                                Pingyou_min7_SKU_freight:Pingyou_min7_SKU_freight,
+                                                                                                Pingyou_max7_SKU_freight:Pingyou_max7_SKU_freight,
+                                                                                                top_colect:top_colect,
+                                                                                                csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                                                                                 }
+                                                                                            })
+                                                                                 }
+                                                                                </script>
+
+                                                                            </div>
+                                                                        </form>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td><!--编辑-->
+                                                        </tr>
+                                                    {% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--footer-->
+			<footer class="footer">
+				<div class="container">
+					<div class="row align-items-center flex-row-reverse">
+						<div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+							Copyright © 2019 <a href="#">Uplor </a>. Designed by <a href="http://www.tophatter.com/">Ethan</a> All rights reserved.
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- End Footer-->
+		</div>
+
+		<!-- Back to top -->
+		<a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+        <!--计算器-->
+        <div class="scrollsidebar" id="hhService" style="box-shadow: darkgrey 10px 10px 30px 5px ;opacity:1;">
+            <div class="side_content">
+                <div class="side_list">
+                    <div class="side_title"><a title="隐藏" class="close_btn"><span>关闭</span></a></div>
+                    <div class="side_center" style="background:#f2f4f8">
+                        <form >
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品进价(￥)</span>
+                                      <input type="number" id="计_产品进价" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品重量(g)</span>
+                                      <input type="number" id="计_产品重量" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>物流商选择</span>
+                                      <select style="width: 100px; height: 40px; border-radius: 4px;" name="" id="计_物流商选择" >
+                                            <option value="普货">普货</option>
+                                            <option value="带电">带电</option>
+                                            <option value="特货">特货</option>
+                                            <option value="海运">输入</option>
+                                            <option style="color: #d1d1d3" selected="selected" value="">--请选择--</option>
+                                      </select>
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入运费(￥)</span>
+                                      <input type="number" id="计_输入运费" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>均SFB($)</span>
+                                      <input type="number" id="计_均SFB" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>成交率(%)</span>
+                                      <input type="number" id="计_成交率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="80" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style=""><a style="color: red">*</a>预估退货率(%)</span>
+                                      <input type="number" id="计_预估退货率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="5" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>当前汇率</span>
+                                      <input type="number" id="计_当前汇率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="{{ EXCHANGE_RATE }}" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;一口价利润(%)</span>
+                                      <input type="number" id="计_一口价利润" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="30" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;拍卖利润率(%)</span>
+                                      <input type="number" id="计_拍卖利润率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="0" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 45px; float: left">
+                            </div>
+
+
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运费(￥)</span>
+                                      <input type="number" id="sp_1" style="color:red;width: 100px;height: 40px;border-radius: 4px;"  value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拍卖利润(￥)</span>
+                                      <input type="number" id="sp_6" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;一口价利润(￥):</span>
+                                      <input type="number" id="sp_7" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;拍卖总成本(￥)</span>
+                                      <input type="number" id="sp_2" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">一口价总成本(￥)</span>
+                                      <input type="number" id="sp_4" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;建议一口价($):</span>
+                                      <input type="number" id="sp_5" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;拍卖预计价($):</span>
+                                      <input type="number" id="sp_3" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div class=""  >
+                                <button class="btn btn-primary" type="button"  data-container="body"
+                                        data-toggle="popover" data-popover-color="popdanger"
+                                        data-placement="bottom" title="计算公式："
+                                        data-content="拍卖预计价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率) + SFB/成交率 <br><br>
+                                                      一口建议价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率)">计算公式
+                                </button>
+                                <button  type="button" onclick="displayResult_count(this)" class="btn btn-primary"  id="111" >开始计算</button>
+                            </div>
+                            <script>
+                              function displayResult_count(obj){
+                             $.ajax({
+                                        url:'/profitStatistics_2/',
+                                        type:'get',
+                                        data:
+                                            {
+                                            计_产品进价:$('#计_产品进价').val(),
+                                            计_产品重量:$('#计_产品重量').val(),
+                                            计_均SFB:$('#计_均SFB').val(),
+                                            计_成交率:$('#计_成交率').val(),
+                                            计_预估退货率:$('#计_预估退货率').val(),
+                                            计_当前汇率:$('#计_当前汇率').val(),
+                                            计_物流商选择:$('#计_物流商选择').val(),
+                                            计_输入运费:$('#计_输入运费').val(),
+                                            计_一口价利润:$('#计_一口价利润').val(),
+                                            计_拍卖利润率:$('#计_拍卖利润率').val(),
+                                            csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                             },
+                                            success: function (response) {
+                                                    var ret = JSON.parse(response);
+
+                                                    $('.sp_0').html('qwerty').css("color", "red");
+
+                                                    document.getElementById('sp_1').value=ret.msg_e_1;
+                                                    document.getElementById('sp_2').value=ret.msg_e_2;
+                                                    document.getElementById('sp_3').value=ret.msg_e_3;
+                                                    document.getElementById('sp_4').value=ret.msg_e_4;
+                                                    document.getElementById('sp_5').value=ret.msg_e_5;
+                                                    document.getElementById('sp_6').value=ret.msg_e_6;
+                                                    document.getElementById('sp_7').value=ret.msg_e_7;
+                                                }
+                                        })
+                             }
+                            </script>
+                        </form>
+                    </div>
+                    <div class="side_bottom"></div>
+                </div>
+            </div>
+            <div class="show_btn"><span>在线客服</span></div>
+        </div><!--scrollsidebar end-->
+
+		<!-- Dashboard js -->
+		 <script src="{% static 'assets/js/vendors/jquery-3.2.1.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/popper.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/js/bootstrap.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/selectize.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/circle-progress.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/rating/jquery.rating-stars.js' %}"></script>
+
+		<!-- Fullside-menu Js-->
+		 <script src="{% static 'assets/plugins/fullside-menu/jquery.slimscroll.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/fullside-menu/waves.min.js' %}"></script>
+
+		<!-- Data tables -->
+		 <script src="{% static 'assets/plugins/datatable/jquery.dataTables.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.js' %}"></script>
+
+		<!-- Select2 js -->
+		 <script src="{% static 'assets/plugins/select2/select2.full.min.js' %}"></script>
+
+		<!-- Custom scroll bar Js-->
+		 <script src="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+
+		<!-- Custom Js-->
+		 <script src="{% static 'assets/js/custom.js' %}"></script>
+
+        <!-- Data table js -->
+        <script>
+            $(function(e) {
+            $('#example').DataTable();
+            } );
+            $(document).ready(function() {
+            $('#example2').DataTable();
+            } );
+        </script>
+
+        <!-- 图片懒加载 -->
+        <script src="{% static 'js/echo/echo.min.js' %}"></script>
+        <script>
+        Echo.init({
+            offset: 5,
+            throttle: 200
+        });
+        </script>
+        <script>
+//回到顶部
+        $("#to_top").click(function() {
+             $("html,body").animate({scrollTop:0}, 200);
+        });
+         $(document).scroll(function(){
+            var scroll_top =  $(document).scrollTop();
+            if(scroll_top > 800){
+                 $("#to_top").show();
+            }else{
+                 $("#to_top").hide();
+            }
+        });
+//去底部
+        $("#to_bottom").click(function() {
+            $("html,body").animate({scrollTop:document.body.clientHeight + 'px'}, 200);
+        });
+         $(document).scroll(function(){
+            var  scroll_top = $(document).scrollTop();
+            if(scroll_top < 800){
+                $("#to_bottom").show();
+            }else{
+                 $("#to_bottom").hide();
+            }
+        });
+</script>
+
+        <!-- html太平洋时间 -->
+        <script>
+        // 时间设置
+        var  timezone = -7; // 时区 ： 东区时区1~12  西区时区-1~-12
+        var  date;
+
+         date = getLocalTime(timezone)
+          .toString()
+           .split("GMT+")[0]
+           .toString();
+        $("#showdate").html(date);
+
+       function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+       // 时间设置end
+       window.onload = function() {
+       // 调用时间
+       var setdate = setInterval(() => {
+       date = getLocalTime(timezone)
+         var year = date.getFullYear();
+         var month = date.getMonth()+1;
+         var Date = date.getDate();
+         var hour = date.getHours();  //获得小时、分钟、秒
+         var minute = date.getMinutes();
+         var second = date.getSeconds();
+         var weekday = 0;
+         switch(date.getDay()){
+            case 0:
+            weekday = "星期日";
+            break;
+            case 1:
+            weekday = "星期一";
+            break;
+            case 2:
+            weekday = "星期二";
+            break;
+            case 3:
+            weekday = "星期三";
+            break;
+            case 4:
+            weekday = "星期四";
+            break;
+            case 5:
+            weekday = "星期五";
+            break;
+            case 6:
+            weekday = "星期六";
+            break;
+         }
+        document.getElementById("showdate").innerHTML="<br>当前太平洋时间："+year+"年"+month+"月"+Date+"日&nbsp&nbsp;"+hour+":"+minute+":"+second+"&nbsp&nbsp;"+weekday;
+       }, 1000);
+       // 调用时间end
+        };
+      </script>
+
+        <!--计算器-->
+        <script type="text/javascript" src="{% static 'jisuanqi/js/jquery.hhService.js' %}"></script>
+        <script type="text/javascript">
+            $(function(){
+            //悬浮计算器
+            $("#hhService").fix({
+                float : 'right',	      //默认设置 “left” or “right”
+                minStatue : true,     //默认设置 “false” or “true”
+                skin : 'blue',	    //默认设置 “blue”  “orange”  “green”  “red”  “pink”
+                durationTime : 400
+            });
+        });
+        </script>
+
+	</body>
+</html>
+

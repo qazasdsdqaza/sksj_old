@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TOP店铺资料</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../static/style/admin.css" media="all">
+  {#  回到顶部底部#}
+  <link rel="stylesheet" href="../../../static/myself_static_files/top_down/style.css" media="all">
+    <!---ECharts图表库-->
+  <script src="https://unpkg.com/echarts@4.8.0/dist/echarts.js" charset="utf-8"></script>
+
+<style type="text/css">
+.mystyle table
+{
+border-collapse: collapse;
+border: none;
+}
+.mystyle td
+{
+border: solid #000 1px;
+height: 40px;
+}
+</style>
+</head>
+<body >
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body"  >
+            <table class="mystyle" style="width: 100%" id="" lay-filter="top-statistiics-table">
+                <thead style="background: #0ec0e1">
+                    <tr >
+                        <td style="text-align: center;width: 50px" >名称</td>
+                        <td style="text-align: center;width: 80px" >普货</td>
+                        <td style="text-align: center;width: 50px" >带电</td>
+                        <td style="text-align: center;width: 50px" >特货</td>
+                        <td style="text-align: center;width: 50px" >销售占比</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                         <td style="text-align: center;background:#a0bccd">每克费用(美国)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="美国_每克_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="美国_每克_普货" placeholder="请输入"value={{ LogDatas.美国_每克_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="美国_每克_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="美国_每克_带电" placeholder="请输入"value={{ LogDatas.美国_每克_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="美国_每克_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="美国_每克_特货" placeholder="请输入"value={{ LogDatas.美国_每克_特货}}></td> <!--特货-->
+                         <td style="text-align: center"></td><!--销售占比-->
+                        <a style="text-align: center;height: 90px">
+                            <button  class="layui-btn  layui-btn-sm" lay-submit="" lay-filter="保存">保存物流数据</button>(只能进行当天数据保存)</span><!---->
+                        </a>
+                    </tr>
+                    <tr>
+                         <td style="text-align: center;background:#a0bccd">挂号费(美国)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="美国_挂号_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="美国_挂号_普货" placeholder="请输入"value={{ LogDatas.美国_挂号_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="美国_挂号_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="美国_挂号_带电" placeholder="请输入"value={{ LogDatas.美国_挂号_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="美国_挂号_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="美国_挂号_特货" placeholder="请输入"value={{ LogDatas.美国_挂号_特货}}></td> <!--特货-->
+                         <td style="text-align: center">
+                         <input id="美国_销售比" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="美国_销售比" placeholder="请输入"value={{ LogDatas.美国_销售比}}>%</td> <!--销售占比-->
+                    </tr>
+                    <tr>
+                         <td style="text-align: center;background:#a0bccd">折扣(美国)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="美国_折扣_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="美国_折扣_普货" placeholder="请输入"value={{ LogDatas.美国_折扣_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="美国_折扣_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="美国_折扣_带电" placeholder="请输入"value={{ LogDatas.美国_折扣_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="美国_折扣_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="美国_折扣_特货" placeholder="请输入"value={{ LogDatas.美国_折扣_特货}}></td> <!--特货-->
+                         <td style="text-align: center"></td><!--销售占比-->
+                    </tr>
+{#                                                        #a0afc7  #abbac3 #a0a0a0  #}
+
+                     <tr>
+                         <td style="text-align: center;background:#a0afc7">每克费用(英国)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="英国_每克_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="英国_每克_普货" placeholder="请输入"value={{ LogDatas.英国_每克_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="英国_每克_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="英国_每克_带电" placeholder="请输入"value={{ LogDatas.英国_每克_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="英国_每克_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="英国_每克_特货" placeholder="请输入"value={{ LogDatas.英国_每克_特货}}></td> <!--特货-->
+                         <td style="text-align: center"></td><!--销售占比-->
+                    </tr>
+                    <tr>
+                         <td style="text-align: center;background:#a0afc7">挂号费(英国)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="英国_挂号_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="英国_挂号_普货" placeholder="请输入"value={{ LogDatas.英国_挂号_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="英国_挂号_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="英国_挂号_带电" placeholder="请输入"value={{ LogDatas.英国_挂号_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="英国_挂号_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="英国_挂号_特货" placeholder="请输入"value={{ LogDatas.英国_挂号_特货}}></td> <!--特货-->
+                         <td style="text-align: center">
+                         <input id="英国_销售比" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="英国_销售比" placeholder="请输入"value={{ LogDatas.英国_销售比}}>%</td> <!--销售占比-->
+                    </tr>
+                    <tr>
+                         <td style="text-align: center;background:#a0afc7">折扣(英国)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="英国_折扣_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="英国_折扣_普货" placeholder="请输入"value={{ LogDatas.英国_折扣_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="英国_折扣_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="英国_折扣_带电" placeholder="请输入"value={{ LogDatas.英国_折扣_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="英国_折扣_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="英国_折扣_特货" placeholder="请输入"value={{ LogDatas.英国_折扣_特货}}></td> <!--特货-->
+                         <td style="text-align: center"></td><!--销售占比-->
+                    </tr>
+
+
+                    <tr>
+                         <td style="text-align: center;background:#abbac3">每克费用(加拿大)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="加拿_每克_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="加拿_每克_普货" placeholder="请输入"value={{ LogDatas.加拿_每克_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="加拿_每克_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="加拿_每克_带电" placeholder="请输入"value={{ LogDatas.加拿_每克_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="加拿_每克_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="加拿_每克_特货" placeholder="请输入"value={{ LogDatas.加拿_每克_特货}}></td> <!--特货-->
+                         <td style="text-align: center"></td><!--销售占比-->
+                    </tr>
+                    <tr>
+                         <td style="text-align: center;background:#abbac3">挂号费(加拿大)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="加拿_挂号_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="加拿_挂号_普货" placeholder="请输入"value={{ LogDatas.加拿_挂号_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="加拿_挂号_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="加拿_挂号_带电" placeholder="请输入"value={{ LogDatas.加拿_挂号_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="加拿_挂号_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="加拿_挂号_特货" placeholder="请输入"value={{ LogDatas.加拿_挂号_特货}}></td> <!--特货-->
+                         <td style="text-align: center">
+                         <input id="加拿_销售比" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="加拿_销售比" placeholder="请输入"value={{ LogDatas.加拿_销售比}}>%</td> <!--销售占比-->
+                    </tr>
+                    <tr>
+                         <td style="text-align: center;background:#abbac3">折扣(加拿大)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="加拿_折扣_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="加拿_折扣_普货" placeholder="请输入"value={{ LogDatas.加拿_折扣_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="加拿_折扣_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="加拿_折扣_带电" placeholder="请输入"value={{ LogDatas.加拿_折扣_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="加拿_折扣_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="加拿_折扣_特货" placeholder="请输入"value={{ LogDatas.加拿_折扣_特货}}></td> <!--特货-->
+                         <td style="text-align: center"></td><!--销售占比-->
+                    </tr>
+
+                    <tr>
+                         <td style="text-align: center;background:#a0a0a0">每克费用(澳大利亚)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="澳大_每克_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="澳大_每克_普货" placeholder="请输入"value={{ LogDatas.澳大_每克_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="澳大_每克_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="澳大_每克_带电" placeholder="请输入"value={{ LogDatas.澳大_每克_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="澳大_每克_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="澳大_每克_特货" placeholder="请输入"value={{ LogDatas.澳大_每克_特货}}></td> <!--特货-->
+                         <td style="text-align: center"></td><!--销售占比-->
+                    </tr>
+                    <tr>
+                         <td style="text-align: center;background:#a0a0a0">挂号费(澳大利亚)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="澳大_挂号_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="澳大_挂号_普货" placeholder="请输入"value={{ LogDatas.澳大_挂号_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="澳大_挂号_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="澳大_挂号_带电" placeholder="请输入"value={{ LogDatas.澳大_挂号_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="澳大_挂号_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="澳大_挂号_特货" placeholder="请输入"value={{ LogDatas.澳大_挂号_特货}}></td> <!--特货-->
+                         <td style="text-align: center">
+                         <input id="澳大_销售比" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="澳大_销售比" placeholder="请输入"value={{ LogDatas.澳大_销售比}}>%</td> <!--销售占比-->
+                    </tr>
+                    <tr>
+                         <td style="text-align: center;background:#a0a0a0">折扣(澳大利亚)</td><!--订单数-->
+                         <td style="text-align: center">
+                         <input id="澳大_折扣_普货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="澳大_折扣_普货" placeholder="请输入"value={{ LogDatas.澳大_折扣_普货}}></td> <!--普货-->
+                         <td style="text-align: center">
+                         <input id="澳大_折扣_带电" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="澳大_折扣_带电" placeholder="请输入"value={{ LogDatas.澳大_折扣_带电}}></td> <!--带电-->
+                         <td style="text-align: center">
+                         <input id="澳大_折扣_特货" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="澳大_折扣_特货" placeholder="请输入"value={{ LogDatas.澳大_折扣_特货}}></td> <!--特货-->
+                         <td style="text-align: center"></td><!--销售占比-->
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{#  返回顶部底部按钮#}
+<div id="floatPanel">
+	<div class="ctrolPanel">
+		<a class="arrow" href="#"><span>顶部</span></a>
+		<a class="arrow" href="#"><span>底部</span></a>
+	</div>
+</div>
+{#  图表统计#}
+<div id="tongjiChart" style="display: none;">
+     <div id="tongjiChartMain" style="width: 600px; height: 500px;"></div>
+</div>
+
+  <script src="../../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'table','form', 'laydate','flow','jquery'], function(){
+    var table = layui.table;
+    var laydate = layui.laydate;
+    var form = layui.form;
+    var $ = layui.$;
+
+    {#table.init('top-statistiics-table', { //转化静态表格#}
+    {#    //height: 'full-500'#}
+    {#  });#}
+
+    //导出
+     form.on('submit(保存)', function(data){
+              $.ajax({
+            url:'/PruAndLog/logistics_statistic/',
+            type:'get',
+            data:
+                {
+                caozuo_status:'保存',
+
+                美国_每克_普货:$('#美国_每克_普货').val(),
+                美国_每克_带电:$('#美国_每克_带电').val(),
+                美国_每克_特货:$('#美国_每克_特货').val(),
+                美国_挂号_普货:$('#美国_挂号_普货').val(),
+                美国_挂号_带电:$('#美国_挂号_带电').val(),
+                美国_挂号_特货:$('#美国_挂号_特货').val(),
+                美国_销售比:$('#美国_销售比').val(),
+                美国_折扣_普货:$('#美国_折扣_普货').val(),
+                美国_折扣_带电:$('#美国_折扣_带电').val(),
+                美国_折扣_特货:$('#美国_折扣_特货').val(),
+
+                英国_每克_普货:$('#英国_每克_普货').val(),
+                英国_每克_带电:$('#英国_每克_带电').val(),
+                英国_每克_特货:$('#英国_每克_特货').val(),
+                英国_挂号_普货:$('#英国_挂号_普货').val(),
+                英国_挂号_带电:$('#英国_挂号_带电').val(),
+                英国_挂号_特货:$('#英国_挂号_特货').val(),
+                英国_销售比:$('#英国_销售比').val(),
+                英国_折扣_普货:$('#英国_折扣_普货').val(),
+                英国_折扣_带电:$('#英国_折扣_带电').val(),
+                英国_折扣_特货:$('#英国_折扣_特货').val(),
+
+                加拿_每克_普货:$('#加拿_每克_普货').val(),
+                加拿_每克_带电:$('#加拿_每克_带电').val(),
+                加拿_每克_特货:$('#加拿_每克_特货').val(),
+                加拿_挂号_普货:$('#加拿_挂号_普货').val(),
+                加拿_挂号_带电:$('#加拿_挂号_带电').val(),
+                加拿_挂号_特货:$('#加拿_挂号_特货').val(),
+                加拿_销售比:$('#加拿_销售比').val(),
+                加拿_折扣_普货:$('#加拿_折扣_普货').val(),
+                加拿_折扣_带电:$('#加拿_折扣_带电').val(),
+                加拿_折扣_特货:$('#加拿_折扣_特货').val(),
+
+                澳大_每克_普货:$('#澳大_每克_普货').val(),
+                澳大_每克_带电:$('#澳大_每克_带电').val(),
+                澳大_每克_特货:$('#澳大_每克_特货').val(),
+                澳大_挂号_普货:$('#澳大_挂号_普货').val(),
+                澳大_挂号_带电:$('#澳大_挂号_带电').val(),
+                澳大_挂号_特货:$('#澳大_挂号_特货').val(),
+                澳大_销售比:$('#澳大_销售比').val(),
+                澳大_折扣_普货:$('#澳大_折扣_普货').val(),
+                澳大_折扣_带电:$('#澳大_折扣_带电').val(),
+                澳大_折扣_特货:$('#澳大_折扣_特货').val(),
+
+                 },
+                success: function (response)
+                    {
+                        var ret = JSON.parse(response);
+                        var index = layer.msg();
+                        layer.close(index);
+                        if (ret.Detailed_orders == '1') { //上传成功
+                           layer.msg(ret.msg_e, {shade: 0.2,time: 2000});
+                        }
+                        else if (ret.Detailed_orders == '0'){
+                           layer.msg(ret.msg_e, {shade: 0.2,time: 2000});
+                        }
+                        else {
+                           layer.msg(ret.msg_e, {shade: 0.2,time: 2000});
+                        }
+                    }
+                    })
+
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+{#页面到底到顶#}
+    $(function(){
+	// 页面浮动面板
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(0).click(function(){
+		$("html,body").animate({scrollTop :0}, 800);
+		return false;
+	});
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(1).click(function(){
+		$("html,body").animate({scrollTop : $(document).height()}, 800);
+		return false;
+	});
+});
+
+//the file id end//
+  });
+
+</script>
+</body>
+</html>

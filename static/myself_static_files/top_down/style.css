@@ -1,0 +1,12 @@
+@charset "utf-8";
+/* floatPanel */
+#floatPanel .ctrolPanel{width:36px;height:58px;background:#fff url(./float-panel-bg.png) no-repeat left top;border:solid 1px #ddd;position:fixed;right:2px;bottom:38px;overflow:hidden;z-index:10000; _position:absolute; /* for IE6 */_top:expression(documentElement.scrollTop + 500);}
+#floatPanel .ctrolPanel a{width:34px;font-size:12px;color:#ff6600;letter-spacing:1px;text-align:center;overflow:hidden;}
+#floatPanel .ctrolPanel .arrow{height:29px;line-height:28px;display:block;margin:1px auto;}
+#floatPanel .ctrolPanel .arrow span{display:none;}
+#floatPanel .ctrolPanel .arrow:hover{background:#f4f4f4;}
+#floatPanel .ctrolPanel .arrow:hover span{display:block;}
+
+
+
+

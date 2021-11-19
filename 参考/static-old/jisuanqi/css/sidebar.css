@@ -1,0 +1,84 @@
+﻿@charset "utf-8";
+
+.qqserver p img{display:inline;margin:-5px 5px 0 0;vertical-align:middle;}
+.scrollsidebar{position:absolute;z-index:999;top:250px;}
+.side_content{width:0px;height:auto;overflow:hidden;float:left;}
+.side_content .side_list{width:500px;overflow:hidden;}
+.show_btn{width:0px;height:144px;overflow:hidden;margin-top:50px;float:left;cursor:pointer;}
+.show_btn span{display:none;}
+.close_btn{width:24px;height:24px;cursor:pointer;}
+.side_title,.side_bottom,.close_btn,.show_btn{background:url(../images/service/sidebar_bg.png) no-repeat;}
+.side_title{height:46px;}
+.side_title{height:46px;}
+.side_bottom{height:8px;}
+.side_center{font-family:Verdana, Geneva, sans-serif;padding:10px 12px 5px 12px;font-size:12px;}
+.close_btn{float:right;display:block;width:19px;height:19px;margin:16px 7px 0 0;_margin:16px 3px 0 0;}
+.close_btn span{display:none;}
+.side_center .qqserver p{text-align:left;padding:6px 0;margin:0;vertical-align:middle;}
+.phoneserver {font-size:14px;text-align:center;}
+.phoneserver p{padding:2px 0;_height:16px;margin:0;color:#666666;}
+.msgserver{border-top:1px dotted #ccc;text-align:center;margin-top:6px;padding:10px 0 3px 0;}
+.msgserver a{background:url(../images/service/sidebar_bg.png) no-repeat -119px -154px;padding:3px 0 3px 23px;}
+.side_content hr{border-bottom:1px solid #E6E6E6;height:1px;margin:10px 0;clear:both;}
+
+
+/* gray skin as the default skin */
+.side_title, .side_gray .side_title{background-position:-682px 0;}
+.side_center, .side_gray .side_center{background:url(../images/service/gray_line.gif) repeat-y center;}
+.side_bottom, .side_gray .side_bottom{background-position:-682px -60px;}
+.close_btn, .side_gray .close_btn{background-position:-44px -91px;}
+.close_btn:hover, .side_gray .close_btn:hover{background-position:-65px -91px;}
+.show_btn , .side_gray .show_btn{background-position:-255px 0;}
+.msgserver a, .side_gray .msgserver a{color:#6c6c6c;}
+hr, .side_gray hr{border-bottom:1px solid #e4e4e4;}
+
+/* blue skin  */
+.side_blue .side_title{background-position:-333px 0;}
+.side_blue .side_center{background:url(../images/service/blue_line.gif) repeat-y center;}
+.side_blue .side_bottom{background-position:-333px -60px;}
+.side_blue .close_btn{background-position:-44px 0;}
+.side_blue .close_btn:hover{background-position:-65px 0;}
+.side_blue .show_btn{background-position:-119px 0;}
+.side_blue .msgserver a{color:#06C;}
+.side_blue hr{border-bottom:1px solid #dbe4e9;}
+
+/* orange skin  */
+.side_orange .side_title{background-position:-333px -76px;}
+.side_orange .side_center{background:url(../images/service/orange_line.gif) repeat-y center;}
+.side_orange .side_bottom{background-position:-333px -136px;}
+.side_orange .close_btn{background-position:-44px -23px;}
+.side_orange .close_btn:hover{background-position:-65px -23px;}
+.side_orange .show_btn{background-position:-153px 0;}
+.side_orange .msgserver a{color:#ff9a00;}
+.side_orange hr{border-bottom:1px solid #feefde;}
+
+/* green skin  */
+.side_green .side_title{background-position:-505px 0;}
+.side_green .side_center{background:url(../images/service/green_line.gif) repeat-y center;}
+.side_green .side_bottom{background-position:-505px -60px;}
+.side_green .close_btn{background-position:-44px -45px;}
+.side_green .close_btn:hover{background-position:-65px -45px;}
+.side_green .show_btn{background-position:-187px 0;}
+.side_green .msgserver a{color:#68c40b;}
+.side_green hr{border-bottom:1px solid #edf2e5;}
+
+/* red skin  */
+.side_red .side_title{background-position:-505px -76px;}
+.side_red .side_center{background:url(../images/service/red_line.gif) repeat-y center;}
+.side_red .side_bottom{background-position:-505px -136px;}
+.side_red .close_btn{background-position:-44px -67px;}
+.side_red .close_btn:hover{background-position:-65px -67px;}
+.side_red .show_btn{background-position:-221px 0;}
+.side_red .msgserver a{color:red;}
+.side_red hr{border-bottom:1px solid #f7f5df;}
+
+
+/* pink skin  */
+.side_pink .side_title{background-position:-682px -76px;}
+.side_pink .side_center{background:url(../images/service/pink_line.gif) repeat-y center;}
+.side_pink .side_bottom{background-position:-682px -136px;}
+.side_pink .close_btn{background-position:-44px -112px;}
+.side_pink .close_btn:hover{background-position:-65px -112px;}
+.side_pink .show_btn{background-position:-289px 0;}
+.side_pink .msgserver a{color:#ed0652;}
+.side_pink hr{border-bottom:1px solid #e4e4e4;}

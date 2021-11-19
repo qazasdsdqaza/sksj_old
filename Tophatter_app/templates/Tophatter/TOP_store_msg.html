@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TOP店铺资料</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../static/style/admin.css" media="all">
+  {#  回到顶部底部#}
+  <link rel="stylesheet" href="../../../static/myself_static_files/top_down/style.css" media="all">
+    <!---ECharts图表库-->
+  <script src="https://unpkg.com/echarts@4.8.0/dist/echarts.js" charset="utf-8"></script>
+  <style>
+        .layui-input,.layui-inline{
+            height:30px;
+        }
+        .layui-form-item .layui-input-inline{
+            width: 150px;
+        }
+  </style>
+</head>
+<body >
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body"  >
+            <table class="layui-hide" id="top-statistiics-table" lay-filter="top-statistiics-table"></table>
+            <script type="text/html" id="test-table-toolbarDemo">
+              <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm" lay-event="add_new_store_name">新增</button>
+                <button class="layui-btn layui-btn-sm" lay-event="delete_store_name">删除</button>
+              </div>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{#  返回顶部底部按钮#}
+<div id="floatPanel">
+	<div class="ctrolPanel">
+		<a class="arrow" href="#"><span>顶部</span></a>
+		<a class="arrow" href="#"><span>底部</span></a>
+	</div>
+</div>
+{#  图表统计#}
+<div id="tongjiChart" style="display: none;">
+     <div id="tongjiChartMain" style="width: 600px; height: 500px;"></div>
+</div>
+
+  <script src="../../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'table','form', 'laydate','flow','jquery'], function(){
+    var table = layui.table;
+    var laydate = layui.laydate;
+    var form = layui.form;
+    var $ = layui.$;
+
+    //表格控制，表格主体，采用方法渲染
+    table.render({
+      elem: '#top-statistiics-table'
+      ,url: '/Tophatter/TOP_store_msg/'
+      {#,height: 'full-100'#}
+      ,cellMinWidth: 110
+      ,cols: [[
+         {type:'radio'}
+        ,{type:'numbers'}
+        ,{title: '店铺名称',width:120,field:'store_name', align: 'center'}
+        ,{title: '店铺ID',width:120,field:'seller_id',  align: 'center',edit: 'text'}
+        ,{title: 'API密钥',width:200,field:'store_APIToken',  align: 'center',edit: 'text'}
+        ,{title: 'IP地址:端口',width:200,field:'IP_address',  align: 'center',edit: 'text'}
+        ,{title: '店铺cookie',width:250,field:'store_cookie',  align: 'center',edit: 'text'}
+        ,{title: '创建时间',width:200,field:'created_time',  align: 'center', sort: true}
+        ,{title: '更新时间',width:200,field:'updated_time', align: 'center',sort: true}
+        ,{title: '详细备注',field:'beizhu',  align: 'center',edit: 'text'}
+      ]]
+      ,initSort: {
+            field: 'created_time' //排序字段，对应 cols 设定的各字段名
+            ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+          }
+      ,toolbar: '#test-table-toolbarDemo'
+      ,autoSort: false //禁用前端自动排序。
+      ,page: true
+      ,limit:'40'
+    });
+
+    //监听单元格编辑
+    table.on('edit(top-statistiics-table)', function(obj){
+      var value = obj.value //得到修改后的值
+      ,data = obj.data //得到所在行所有键值
+      ,field = obj.field; //得到字段
+      layer.open({
+			  type: 0,
+			  title: '更改店铺信息',
+			  shadeClose: false,
+			  shade: 0.4,
+              btn: ['确认', '取消'],
+			  content:'<a>店铺（<a style="color:coral" >'+ data.store_name + '</a>）的（<a style="color:coral">' + field + ' </a>）字段更改为：</a><br><a style="color:coral">'+ value+'</a>',
+			  yes:function(index){
+                  $.ajax({
+                    url:'/Tophatter/TOP_store_msg/',
+                    type:'get',
+                    data:{
+                        caozuo_status:'edit',
+                        store_name_edit:data.store_name,
+                        field_edit:field,
+                        value_edit:value,
+                         },
+                    success:
+                        function (response)
+                        {
+                          var ret = JSON.parse(response);
+                          if (ret.msg_e == '替换成功'){layer.msg(ret.msg_e + ':['+ data.store_name +'] ' + field + ' 字段更改为：'+ value );}
+                          else{layer.msg(ret.msg_e );}
+                        }
+                    })
+				  }
+			});
+    });
+
+    //头工具栏事件(新增，删除)
+    table.on('toolbar(top-statistiics-table)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+      if(obj.event === 'add_new_store_name')
+      {
+         layer.open({
+			  type: 1,
+			  title: '增加店铺',
+			  shadeClose: true,
+			  shade: 0.4,
+              btn: ['确认', '取消'],
+              area:['250px', '200px'],
+			  content:'<br><div class="layui-inline" >\n' +
+                  '    <label class="layui-form-label" style="width: 100px;" >输入店铺名称：</label>\n' +
+                  '        <div class="layui-input-inline" >\n' +
+                  '            <input style="width: 90px;"  type="text" value="" name="store_name_add" id="store_name_add" lay-verify="" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                  '        </div>\n' +
+                  '     </div>'+
+                      '<div class="layui-inline" >\n' +
+                  '    <label class="layui-form-label" style="width: 170px;color:coral" >注：店铺名后期不可修改</label>\n' +
+                  '        <div class="layui-input-inline" >\n' +
+                  '        </div>\n' +
+                  '     </div>'+
+                  '     <br><br><h6 style="" ></h6>',
+			  yes:function(index){
+			      var store_name_add   =$("#store_name_add").val();
+                  $.ajax({
+                    url:'/Tophatter/TOP_store_msg/',
+                    type:'get',
+                    data:{
+                        caozuo_status:'add',
+                        store_name_add:store_name_add,
+                         },
+                    success:
+                        function (response)
+                        {
+                           var ret = JSON.parse(response);
+                          if (ret.msg_e == '创建成功'){
+                            //执行重载
+                            table.reload('top-statistiics-table', {page: {curr: 1 },where: {}});
+                            layer.close(index);
+                            layer.msg(ret.msg_e );
+                          }
+                          else{layer.msg(ret.msg_e );}
+                        }
+                    })
+				  }
+			});
+      }
+      else if(obj.event === 'delete_store_name')
+      {
+         layer.open({
+			  type: 1,
+			  title: '删除店铺',
+			  shadeClose: true,
+			  shade: 0.4,
+              btn: ['确认', '取消'],
+              area:['250px', '220px'],
+			  content:
+                  '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:coral" >（'+checkStatus.data[0].store_name+'）店铺信息将会删除!</a>'+
+                  '<br><br><a >&nbsp;&nbsp;&nbsp;注：删除店铺不会删除对应的后台' +
+                  '<br>&nbsp;&nbsp;&nbsp;数据，再次添加同名店铺的时候将' +
+                  '<br>&nbsp;&nbsp;&nbsp;对接以前的数据。</a>',
+			  yes:function(index){
+                  $.ajax({
+                    url:'/Tophatter/TOP_store_msg/',
+                    type:'get',
+                    data:{
+                        caozuo_status:'delete',
+                        store_name_del:checkStatus.data[0].store_name,
+                         },
+                    success:
+                        function (response)
+                        {
+                           var ret = JSON.parse(response);
+                          if (ret.msg_e == '删除成功'){
+                            //执行重载
+                            table.reload('top-statistiics-table', {page: {curr: 1 },where: {}});
+                            layer.close(index);
+                            layer.msg(ret.msg_e );
+                          }
+                          else{layer.msg(ret.msg_e );}
+                        }
+                    })
+				  }
+			});
+      }
+    });
+
+    //触发排序事件
+    table.on('sort(top-statistiics-table)', function(obj){
+      table.reload('top-statistiics-table', {
+        initSort: obj
+        ,where: {
+           Sort_field: obj.field //排序字段
+          ,Sort_order: obj.type //排序方式
+        }
+      });
+    });
+
+{#页面到底到顶#}
+    $(function(){
+	// 页面浮动面板
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(0).click(function(){
+		$("html,body").animate({scrollTop :0}, 800);
+		return false;
+	});
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(1).click(function(){
+		$("html,body").animate({scrollTop : $(document).height()}, 800);
+		return false;
+	});
+});
+
+//the file id end//
+  });
+
+</script>
+</body>
+</html>

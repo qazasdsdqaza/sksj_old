@@ -1,0 +1,1092 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>平台统计</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../static/style/admin.css" media="all">
+{#  回到顶部底部#}
+  <link rel="stylesheet" href="../../../static/myself_static_files/top_down/style.css" media="all">
+  <!---ECharts图表库-->
+  <script src="https://unpkg.com/echarts@4.8.0/dist/echarts.js" charset="utf-8"></script>
+  <style>
+        .layui-input,.layui-inline{
+            height:30px;
+        }
+        .layui-form-item .layui-input-inline{
+            width: 150px;
+        }
+        .layui-table-cell {
+            font-size:14px;
+            padding:0 5px;
+            height:auto;
+            overflow:visible;
+            text-overflow:inherit;
+            white-space:normal;
+            word-break: break-all;
+        }
+  </style>
+</head>
+<body >
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+{#          搜索栏  #}
+          <div class="layui-fluid">
+            <div class="layui-card">
+{#              <div class="layui-card-body" style="padding: 15px;">#}
+                <div class="layui-form"  lay-filter="">
+                  <div class="layui-form-item" >
+                    <div class="layui-inline" >
+                      <label class="layui-form-label" >起始日期</label>
+                      <div class="layui-input-inline" >
+                        <input   type="text" value="{{ start_time }}" name="start_time" id="start_time" lay-verify="required" placeholder="yyyy-MM-dd HH:mm" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label" >结束日期</label>
+                      <div class="layui-input-inline" >
+                        <input type="text" value="{{ end_time }}" name="end_time" id="end_time" lay-verify="required" placeholder="yyyy-MM-dd HH:mm" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label" >商品编号</label>
+                      <div class="layui-input-inline" >
+                        <input type="text" name="Lots_id" id="Lots_id" lay-verify="" placeholder="请输入" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label" >标准ID</label>
+                      <div class="layui-input-inline" >
+                        <input  type="text" value="{{ standard_product_id }}" name="standard_product_id" id="standard_product_id" lay-verify="" placeholder="请输入" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+{#                    <div class="layui-inline" >#}
+{#                      <label class="layui-form-label">卖出数量</label>#}
+{#                      <div class="layui-input-inline" style="width: 80px">#}
+{#                        <input type="number" name="quantity_min" id="quantity_min" placeholder="" lay-verify="required"  autocomplete="off" class="layui-input" value="0">#}
+{#                      </div>#}
+{#                      <div class="layui-form-mid">-</div>#}
+{#                      <div class="layui-input-inline" style="width: 80px">#}
+{#                        <input type="number" name="quantity_max" id="quantity_max" placeholder="" lay-verify="required" autocomplete="off" class="layui-input" value="9999">#}
+{#                      </div>#}
+{#                    </div>#}
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">成交价格</label>
+                      <div class="layui-input-inline" style="width: 63px;">
+                        <input  type="number" name="price_min" id="price_min" lay-verify="required" placeholder="￥" autocomplete="off" class="layui-input" value="0">
+                      </div>
+                      <div class="layui-form-mid">-</div>
+                      <div class="layui-input-inline" style="width: 63px;">
+                        <input  type="number" name="price_max" id="price_max" lay-verify="required" placeholder="￥" autocomplete="off" class="layui-input" value="9999">
+                      </div>
+                    </div>
+                    <div class="layui-inline"  >
+                      <label class="layui-form-label" >卖家姓名</label>
+                      <div class="layui-input-inline" >
+                        <input  type="text" name="seller_name" id="seller_name" lay-verify="" placeholder="请输入" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">卖家ID</label>
+                      <div class="layui-input-inline" >
+                        <input  type="text" value="{{ seller_id }}" name="seller_id" id="seller_id" lay-verify="" placeholder="请输入" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">商品名称</label>
+                      <div class="layui-input-inline" >
+                        <input  type="text" name="product_name" id="product_name" lay-verify="" placeholder="请输入" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">商品品类</label>
+                      <div class="layui-input-inline" >
+                        <select disabled  name="product_taxonomy" id="product_taxonomy" lay-filter="" >
+                            <option value="all">all</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Apparel">Apparel</option>
+                            <option value="Beauty">Beauty</option>
+                            <option value="Branded_Bags">Branded_Bags</option>
+                            <option value="Collectibles">Collectibles</option>
+                            <option value="Edibles">Edibles</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Fine_Jewelry">Fine_Jewelry</option>
+                            <option value="Home">Home</option>
+                            <option value="Jewelry">Jewelry</option>
+                            <option value="Kids">Kids</option>
+                            <option value="Shoes">Shoes</option>
+                            <option value="Supplies">Supplies</option>
+                            <option value="Other">Other</option>
+                            <option selected="selected" value="{{ product_taxonomy }}">{{ product_taxonomy }}</option>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">是否收藏</label>
+                      <div class="layui-input-inline" >
+                          <select name="product_collection" id="product_collection" lay-filter="" >
+                            <option value="全部商品" selected>全部商品</option>
+                            <option value="收藏商品">收藏商品</option>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">订单类型</label>
+                      <div class="layui-input-inline" >
+                          <select  name="product_type" id="product_type" lay-filter=""  >
+                            <option value="全部订单" selected >全部订单</option>
+                            <option value="竞拍价">竞拍价</option>
+                            <option value="一口价(拍)">一口价(拍)</option>
+                            <option value="一口价(纯)">一口价(纯)</option>
+                            <option value="一口价(全)">一口价(全)</option>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">查询数据</label>
+{#                      <div class="layui-input-inline" style="width: 70px" >#}
+{#                        <input  type="number" name="quantity" id="quantity" placeholder="" autocomplete="off" class="layui-input"value="50" >#}
+{#                      </div>#}
+                      <div class="layui-input-inline"  >
+                        <button id =""  class="layui-btn layui-btn-sm" lay-submit lay-filter="chaxunshuju">按条件查询</button>
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">导出到TOP</label>
+                      <div class="layui-input-inline" style="width: 100px">
+                          <select name="导出类型" id="导出类型" lay-filter="" >
+                            <option value=""  selected=""></option>
+                            <option value="CSV" >CSV</option>
+                          </select>
+                      </div>
+                      <div class="layui-input-inline"style="width: 40px" >
+                        <button  class="layui-btn  layui-btn-sm" lay-submit="" lay-filter="daochushangping">导出</button>
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">加入商品库</label>
+                      <div class="layui-input-inline" style="width: 120px" >
+                          <select name="加入商品库" id="加入商品库" lay-filter="" >
+                            <option value="" selected=""></option>
+                            <option value="无限制" >无限制</option>
+                            <option value="评分>3.5" >评分>3.5</option>
+                          </select>
+                      </div>
+                      <div class="layui-input-inline" style="width: 150px">
+                        <button  class="layui-btn  layui-btn-sm" lay-submit="" lay-filter="jiarushangpingku">加入</button>
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <div class="layui-input-inline" >
+                        <a  class="layui-btn  layui-btn-sm" lay-submit="" lay-filter="所有备注卖家">所有备注卖家</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+{#              </div>#}
+            </div>
+          </div>
+          <div class="layui-card-body"  >
+            <table class="layui-hide" id="top-statistiics-table" lay-filter="top-statistiics-table"></table>
+{#              编号列#}
+            <script type="text/html" id="top-statistiics-table-chanpingbianhao">
+                   <a></a><a href="https://tophatter.com/lots/{% verbatim %}{{d.lots_id}}{% endverbatim %}" target="_blank" class="layui-table-link">{% verbatim %}{{d.lots_id}}{% endverbatim %}</a>
+               <br><a></a><a >{% verbatim %}{{d.product_parent_id}}{% endverbatim %}</a>
+            </script>
+{#              标准id列#}
+            <script type="text/html" id="top-statistiics-table-biaozhunid">
+                <a >{% verbatim %}{{d.standard_product_id}}{% endverbatim %}</a>
+                <br><a class="layui-btn layui-btn-primary layui-btn-xs"  lay-event="tongxingshangping" >同型商品</a>
+                <br><a class="layui-btn layui-btn-primary layui-btn-xs"  lay-event="shangpingfenxi" >   商品分析</a>
+            </script>
+{#              配件列#}
+            <script type="text/html" id="top-statistiics-table-peijian">
+
+                  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="xiangqing">详情</a>
+                  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="jinru1688" >1688</a>
+              <br><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="tubiaotongji" >统计</a>
+
+                  {% verbatim %}
+                  {{#  if(d.lot_upsells_full_description_1 || d.lot_upsells_full_description_1){ }}
+                  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="peijian">配件</a>
+                  {{#  } else { }}
+                        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event=""><p style="color: white">配件</p></a>
+                  {{#  }  }}
+                  {% endverbatim %}
+            </script>
+{#              图片列#}
+            <script type="text/html" id="top-statistiics-table-tupian">
+              <div id="top-statistiics-table-tupian-flow" lay-event="tupianfangda"><img style="float: left" lay-src="{% verbatim %}{{ d.image_urls }}{% endverbatim %}"  alt="" ></div>
+{#            src="https://s1.ax1x.com/2018/12/06/F1mTmQ.gif"#}
+            </script>
+{#              评分列#}
+            <script type="text/html" id="top-statistiics-table-pingfen">
+                  {% verbatim %}
+                  {{#  if(d.ratings_average){ }}
+                      <a >{{ d.ratings_average }} / {{ d.ratings_count }} / {{ d.alerts_count }}</a>
+                  {{#  } else { }}
+                      <a >-- / {{ d.ratings_count }} / {{ d.alerts_count }}</a>
+                  {{#  }  }}
+                  {% endverbatim %}
+            </script>
+{#              卖家姓名列#}
+            <script type="text/html" id="top-statistiics-table-seller">
+                <a >{% verbatim %}{{ d.seller_name }}/{% endverbatim %}</a>
+                {% verbatim %}
+                {{#  if(d.CN_seller_name){ }}
+                    <a class="layui-table-link"  lay-event="seller_edit">{{ d.CN_seller_name }}</a>
+                {{#  } else { }}
+                    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="seller_edit">编辑</a>
+                {{#  }  }}
+                {% endverbatim %}
+              <br><a class="layui-table-link" lay-event="maijiasuoyoushangping">{% verbatim %}{{ d.user_id }}{% endverbatim %}</a>
+                  <a class="layui-btn layui-btn-primary layui-btn-xs"  lay-event="seller_fenxi" >卖家分析</a>
+            </script>
+{#              备注详情列#}
+            <script type="text/html" id="top-statistiics-table-beizhuxinxi">
+                  {% verbatim %}
+                  {{#  if(d.own_all_product_name){ }}
+                    <a >名称：{{ d.own_all_product_name }}</a>
+                  {{#  } else { }}
+                    <a >名称：</a>
+                  {{#  }  }}
+                  {% endverbatim %}
+
+                  {% verbatim %}
+                  {{#  if(d.own_all_product_1688addrass){ }}
+                    <br><a >1688：</a><a href="{{ d.own_all_product_1688addrass }}" target="_blank" class="layui-table-link">点我</a>
+                  {{#  } else { }}
+                    <br><a >1688：</a>
+                  {{#  }  }}
+                  {% endverbatim %}
+            </script>
+{#              操作列#}
+            <script type="text/html" id="top-statistiics-table-caozuo">
+                    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="xinxibeizhu"><p>信息备注</p></a>
+                <br><a lay-href="/PruAndLog/owm_products_update/?来源=TOP所有&lots_id={% verbatim %}{{ d.lots_id }}{% endverbatim %}"  class="layui-table-link">加入商品库</a>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{#  返回顶部底部按钮#}
+<div id="floatPanel">
+	<div class="ctrolPanel">
+		<a class="arrow" href="#"><span>顶部</span></a>
+		<a class="arrow" href="#"><span>底部</span></a>
+	</div>
+</div>
+{#  图表统计#}
+<div id="tongjiChart" style="display: none;">
+     <div id="tongjiChartMain" style="width: 600px; height: 500px;"></div>
+</div>
+
+  <script src="../../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'table','form', 'laydate','flow','jquery'], function(){
+    var table = layui.table;
+    var laydate = layui.laydate;
+    var form = layui.form;
+    var $ = layui.$;
+    var flow = layui.flow;
+
+    //表格控制，表格主体，采用方法渲染
+    table.render({
+      elem: '#top-statistiics-table'
+      ,url: '/common_functions/TOP_statistics/'
+      {#,height: 700#}
+      ,cellMinWidth: 110
+      ,cols: [[
+         {type:'checkbox'}
+        ,{title: '编号/产品ID', width:120, align: 'center',templet: '#top-statistiics-table-chanpingbianhao'}
+        ,{title: '标准ID', width:120, align: 'center',templet: '#top-statistiics-table-biaozhunid'}
+        ,{title: '配件',width:120, align:'center', templet: '#top-statistiics-table-peijian'}
+        ,{title: '商品图',width:110, align: 'center',templet: '#top-statistiics-table-tupian'}
+        {#,{title: '安排总数',width:100,field:'product_sum',  align: 'center',sort: true}#}
+        ,{title: '总订单数',width:100,field:'valid_orders',  align: 'center',sort: true}
+        ,{title: '起拍价',width:100,field:'starting_bid_amount',  align: 'center',sort: true}
+        ,{title: '成交价/运费',width:120,field:'hammer_price_local',  align: 'center', sort: true,
+                templet: function(d){return  d.hammer_price_local +' / '+ d.shipping_price_local}}
+        ,{title: '成交价(含运费)',width:110,field:'hammer_shipping_price',  align: 'center'}
+        ,{title: '评分/评论数/收藏数',width:150,field:'ratings_average',align: 'center',sort: true,templet: '#top-statistiics-table-pingfen'}
+        ,{title: '卖家姓名/卖家ID',width:180, align: 'center',templet: '#top-statistiics-table-seller'}
+        ,{title: '备注信息',  align: 'center', templet: '#top-statistiics-table-beizhuxinxi'}
+        ,{title: '操作',  align: 'center', templet: '#top-statistiics-table-caozuo'}
+      ]]
+      ,initSort: {
+            field: 'valid_orders' //排序字段，对应 cols 设定的各字段名
+            ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+          }
+      ,autoSort: false //禁用前端自动排序。
+      ,where: {
+           start_time: $('#start_time').val(),
+           end_time: $('#end_time').val(),
+           seller_id: $('#seller_id').val(),
+           standard_product_id: $('#standard_product_id').val()
+        }
+      ,page: true
+      ,limit:'20'
+      ,limits: [20, 50, 100, 200, 300, 500]
+      ,loading:true
+      {#,toolbar: 'default'#}
+      //初次进去的图片懒加载
+      ,done:  function () {flow.lazyimg({elem: '#top-statistiics-table-tupian-flow img'});}
+    });
+    //图片懒加载
+    flow.lazyimg({
+       elem: '#top-statistiics-table-tupian-flow img'
+    });
+
+    //监听配件工具条
+    table.on('tool(top-statistiics-table)', function(obj){
+      var data = obj.data;
+      //配件数据处理
+      var lot_upsells_description_1 ;
+      var lot_upsells_description_2 ;
+      if(data.lot_upsells_description_1==null)
+      {lot_upsells_description_1 = ''}
+      else {lot_upsells_description_1=data.lot_upsells_description_1}
+      if(data.lot_upsells_description_2==null)
+      {lot_upsells_description_2 = ''}
+      else {lot_upsells_description_2=data.lot_upsells_description_2}
+      //详情数据处理
+      var facets_em=new Array(4);
+      for(let i = 0; i < 4 ; i++){
+           if(data.facets_em[i]){facets_em[i] = data.facets_em[i]}
+           else{facets_em[i] = ''}
+        }
+      //将小图处理成大图
+      var image_urls;
+      image_urls = data.image_urls.slice(0,-10) + 'original.jpg'
+
+
+      //配件（逻辑）
+      if(obj.event === 'peijian'){
+        layer.open({
+          title:'配件信息--'+ data.lots_id,
+          type: 1,
+          skin: 'layui-layer-admin',
+          closeBtn: 2,
+          area: '400px',
+          anim: 5,
+          shadeClose: true,
+          content: '<a style="text-align:left;color: #f1a02f">描述：</a><a>'+ lot_upsells_description_1+'</a><br>\
+                    <a style="text-align:left;color: #f1a02f">价格：</a><a>'+ data.lot_upsells_amount_1 +'</a><br>\
+                    <a style="text-align:left;color: #f1a02f">详情：</a><a>'+ data.lot_upsells_full_description_1 +'</a><br><br>\
+                    <a style="text-align:left;color: #f1a02f">描述：</a><a>'+ lot_upsells_description_2+'</a><br>\
+                    <a style="text-align:left;color: #f1a02f">价格：</a><a>'+ data.lot_upsells_amount_2 +'</a><br>\
+                    <a style="text-align:left;color: #f1a02f">详情：</a><a>'+ data.lot_upsells_full_description_2 +'</a><br><br>'
+        });
+      }
+      //详情（逻辑）
+      else if(obj.event === 'xiangqing'){
+        layer.open({
+          title:'详情--'+ data.lots_id,
+          type: 1,
+          skin: 'layui-layer-admin',
+          closeBtn: 2,
+          area: '800px',
+          anim: 5,
+          shadeClose: true,
+          content: '\
+                    <h4 style="text-align:left;color: #f1a02f">商品名称：</h4>\
+                    <a>'+ data.title +'</a>\
+                    <h4 style="text-align:left;color: #f1a02f">其他：</h4>\
+                    '+ facets_em[0] +'<br> '+ facets_em[1] +'<br>\
+                    '+ facets_em[2] +'<br> '+ facets_em[3] +'<br>\
+                    <h4 style="text-align:left;color: #f1a02f">商品描述：</h4>\
+                    '+  data.description
+        });
+      }
+      //1688图片匹配搜索（逻辑）
+      else if(obj.event === 'jinru1688')
+      {
+        layer.msg('加载中', {
+          icon: 16
+          ,shade: 0.01
+        });
+        $.ajax({
+            url:'/common_functions/TOP_statistics/',
+            type:'get',
+            data:{top_img_url:data.image_urls},
+            success:
+                function (response)
+                {
+                    var index = layer.msg();
+                    layer.close(index);
+                    var ret = JSON.parse(response);
+                    if (ret.img_url) { //上传成功
+                        {#location.href='https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://ndmc.shop/static/TOPIMG/'+ret.img_url;#}
+                        window.open('https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://sksj.shop//static/user_files_directory/TOP_img_to_own/'+ret.img_url,'target')
+                    }
+                }
+            })
+      }
+      else if(obj.event === 'tupianfangda')
+      {
+        layer.open({
+          title:'详图--'+ data.lots_id,
+          type: 1,
+          skin: 'layui-layer-admin',
+          area: '400px',
+          closeBtn: 2,
+          shadeClose: true,
+          content: '<img src="'+ image_urls +'"  alt="" width=350px height=350px>'
+        });
+      }
+      else if(obj.event === 'seller_edit')
+      {
+          layer.prompt({
+              title: '卖家备注（'+ data.user_id+')',
+              value: data.CN_seller_name,
+          },
+          function(value,index){
+          $.ajax({
+            url:'/common_functions/TOP_statistics/',
+            type:'get',
+            data:{
+                   CN_user_id:data.user_id,
+                   CN_seller_name:value,
+                 },
+            success:
+                function (response)
+                {
+                  layer.close(index);
+                  var ret = JSON.parse(response);
+                  layer.msg(ret.msg_e + ':'+data.user_id +'（'+ value+'）');
+                }
+            })
+        });
+      }
+      else if(obj.event === 'seller_fenxi')
+      {
+        var start_time= $('#start_time').val();
+    	var end_time= $('#end_time').val();
+		layer.open({
+			  type: 1,
+			  title: '将跳转到卖家分析页面' ,
+			  shadeClose: true,
+			  shade: 0.2,
+              {#btn: ['关闭'],#}
+			  {#area:['300px', '200px'],#}
+			  content:'<br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;<a>起始时间：'+ start_time +'</a><br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;<a>结束时间：'+ end_time +'</a><br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;<a>卖家ID：'+ data.user_id +'</a>' +
+                      '<br><br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                      '<a class="layui-btn layui-btn-sm layui-btn-normal" lay-href="/common_functions/TOP_seller/?seller_id=' + data.user_id + '&start_time='+ start_time + '&end_time='+ end_time+ '" lay-text="卖家分析" >卖家分析</a>' +
+                      '<br><br>'
+			});
+      }
+      else if(obj.event === 'xinxibeizhu')
+      {
+		layer.open({
+			  type: 0,
+			  title: '备注详情：'+'标准ID（' +data.standard_product_id+'）' ,
+			  shadeClose: true,
+			  shade: 0.8,
+              btn: ['确认', '取消'],
+			  area:['350px', '500px'],
+			  content:' <div class="layui-form-item" >\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" >进价(￥)</label>\
+                              <div class="layui-input-inline"  >\
+                                <input value = "'+ data.own_all_product_price +'" type="text" name="own_all_product_price" id="own_all_product_price"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" >重量(g)</label>\
+                              <div class="layui-input-inline"  >\
+                                <input value = "'+ data.own_all_product_weight +'" type="text" name="own_all_product_weight" id="own_all_product_weight"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" >备注名称</label>\
+                              <div class="layui-input-inline"  >\
+                                <input value = "'+ data.own_all_product_name +'" type="text" name="own_all_product_name" id="own_all_product_name"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                               <label class="layui-form-label">备住品类</label>\
+                                  <div class="layui-input-inline" >\
+                                      <select lay-search class="layui-inline layui-input-inline" name="own_all_product_taxonomy" id="own_all_product_taxonomy" >\
+                                        <option value="'+data.own_all_product_taxonomy +'">'+data.own_all_product_taxonomy+'</option>\
+                                        <option value="">None</option>\
+                                        <option value="Accessories">Accessories</option>\
+                                        <option value="Apparel">Apparel</option>\
+                                        <option value="Beauty">Beauty</option>\
+                                        <option value="Branded_Bags">Branded_Bags</option>\
+                                        <option value="Collectibles">Collectibles</option>\
+                                        <option value="Edibles">Edibles</option>\
+                                        <option value="Electronics">Electronics</option>\
+                                        <option value="Fine_Jewelry">Fine_Jewelry</option>\
+                                        <option value="Home">Home</option>\
+                                        <option value="Jewelry">Jewelry</option>\
+                                        <option value="Kids">Kids</option>\
+                                        <option value="Shoes">Shoes</option>\
+                                        <option value="Supplies">Supplies</option>\
+                                        <option value="Other">Other</option>\
+                                      </select>\
+                              </div>\
+                            </div>\
+                            \<div class="layui-inline" >\
+                              <label class="layui-form-label" >1688地址</label>\
+                              <div class="layui-input-inline" >\
+                                <input value = "'+ data.own_all_product_1688addrass +'" type="text" name="own_all_product_1688addrass" id="own_all_product_1688addrass"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            \<div class="layui-inline" >\
+                              <label class="layui-form-label" >均SFB($)</label>\
+                              <div class="layui-input-inline" >\
+                                <input value = "'+ data.own_all_product_ave_sfb +'" type="text" name="own_all_product_ave_sfb" id="own_all_product_ave_sfb"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            \<div class="layui-inline" >\
+                              <label class="layui-form-label" >收藏商品</label>\
+                              <div class="layui-input-inline" >\
+                                <select lay-search class="layui-inline layui-input-inline" name="own_all_product_colloct" id="own_all_product_colloct" >\
+                                    <option value="'+data.own_all_product_colloct +'">'+data.own_all_product_colloct+'</option>\
+                                    <option value="收藏">收藏</option>\
+                                    <option value="取消">取消</option>\
+                                </select>\
+                             </div>\
+                            </div>\
+                            \<div class="layui-inline" >\
+                              <label class="layui-form-label" >详细备注</label>\
+                              <div class="layui-input-inline" >\
+                                <textarea type="text" name="own_all_product_beizhu" id="own_all_product_beizhu"  placeholder="请输入" class="layui-textarea" >'+ data.own_all_product_beizhu +'</textarea>\
+                              </div>\
+                            </div>\
+                         </div>',
+
+			  yes:function(index){
+			      var own_all_product_price       =$("#own_all_product_price").val();
+			      var own_all_product_weight      =$("#own_all_product_weight").val();
+			      var own_all_product_name        =$("#own_all_product_name").val();
+			      var own_all_product_taxonomy    =$("#own_all_product_taxonomy").val();
+			      var own_all_product_1688addrass =$("#own_all_product_1688addrass").val();
+			      var own_all_product_ave_sfb     =$("#own_all_product_ave_sfb").val();
+			      var own_all_product_colloct     =$("#own_all_product_colloct").val();
+			      var own_all_product_beizhu      =$("#own_all_product_beizhu").val();
+                  $.ajax({
+                    url:'/common_functions/TOP_statistics/',
+                    type:'get',
+                    data:{
+                        own_all_standard_product_id:data.standard_product_id,
+                        own_all_product_price:own_all_product_price,
+                        own_all_product_weight:own_all_product_weight,
+                        own_all_product_name:own_all_product_name,
+                        own_all_product_taxonomy:own_all_product_taxonomy,
+                        own_all_product_1688addrass:own_all_product_1688addrass,
+                        own_all_product_ave_sfb:own_all_product_ave_sfb,
+                        own_all_product_colloct:own_all_product_colloct,
+                        own_all_product_beizhu:own_all_product_beizhu
+                         },
+                    success:
+                        function (response)
+                        {
+                          var ret = JSON.parse(response);
+                          layer.msg(ret.msg_e + ':'+data.standard_product_id );
+                        }
+                    })
+				  {#layer.close(index);#}
+				  }
+			});
+      }
+      else if(obj.event === 'tongxingshangping')
+      {
+        var start_time= $('#start_time');
+    	var end_time= $('#end_time');
+    	var Lots_id= $('#Lots_id');
+    	var standard_product_id= $('#standard_product_id');
+    	var seller_name= $('#seller_name');
+    	var seller_id= $('#seller_id');
+    	var product_name= $('#product_name');
+    	var product_taxonomy= $('#product_taxonomy');
+    	var price_min= $('#price_min');
+    	var price_max= $('#price_max');
+    	var product_type= $('#product_type');
+    	var product_collection= $('#product_collection');
+        //执行重载
+        table.reload('top-statistiics-table', {
+          page: {curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+                     'start_time':          start_time.val(),
+                     'end_time':            end_time.val(),
+                     'Lots_id':             Lots_id.val(),
+                     'standard_product_id': data.standard_product_id,
+                     'seller_name':         seller_name.val(),
+                     'seller_id':           seller_id.val(),
+                     'product_name':        product_name.val(),
+                     'product_taxonomy':    product_taxonomy.val(),
+                     'price_min':           price_min.val(),
+                     'price_max':           price_max.val(),
+                     'product_type':        product_type.val(),
+                     'product_collection':  product_collection.val(),
+          }
+        });
+       standard_product_id.val(data.standard_product_id);
+      }
+      else if(obj.event === 'shangpingfenxi')
+      {
+        var start_time= $('#start_time').val();
+    	var end_time= $('#end_time').val();
+		layer.open({
+			  type: 1,
+			  title: '将跳转到商品分析页面' ,
+			  shadeClose: true,
+			  shade: 0.2,
+              {#btn: ['关闭'],#}
+			  {#area:['300px', '200px'],#}
+			  content:'<br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;<a>起始时间：'+ start_time +'</a><br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;<a>结束时间：'+ end_time +'</a><br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;<a>商品标准ID：'+ data.standard_product_id +'</a>' +
+                      '<br><br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                      '<a class="layui-btn layui-btn-sm layui-btn-normal" lay-href="/common_functions/TOP_goodslist/?standard_product_id=' + data.standard_product_id + '&start_time='+ start_time + '&end_time='+ end_time+ '" lay-text="商品分析" >商品分析</a>' +
+                      '<br><br>'
+			});
+      }
+      else if(obj.event === 'maijiasuoyoushangping')
+      {
+        var start_time= $('#start_time');
+    	var end_time= $('#end_time');
+    	var Lots_id= $('#Lots_id');
+    	var standard_product_id= $('#standard_product_id');
+    	var seller_name= $('#seller_name');
+    	var seller_id= $('#seller_id');
+    	var product_name= $('#product_name');
+    	var product_taxonomy= $('#product_taxonomy');
+    	var price_min= $('#price_min');
+    	var price_max= $('#price_max');
+    	var product_type= $('#product_type');
+    	var product_collection= $('#product_collection');
+        //执行重载
+        table.reload('top-statistiics-table', {
+          page: {curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+                     'start_time':          start_time.val(),
+                     'end_time':            end_time.val(),
+                     'Lots_id':             Lots_id.val(),
+                     'standard_product_id': standard_product_id.val(),
+                     'seller_name':         seller_name.val(),
+                     'seller_id':           data.user_id,
+                     'product_name':        product_name.val(),
+                     'product_taxonomy':    product_taxonomy.val(),
+                     'price_min':           price_min.val(),
+                     'price_max':           price_max.val(),
+                     'product_type':        product_type.val(),
+                     'product_collection':  product_collection.val(),
+          }
+        });
+       seller_id.val(data.user_id);
+      }
+      else if(obj.event === 'tubiaotongji')
+      {
+		layer.open({
+			  type: 1,
+			  title: '订单日期统计图--'+'产品编号（' +data.lots_id+'）' ,
+			  shadeClose: true,
+			  shade: 0.2,
+              {#btn: ['关闭'],#}
+			  area:['600px', '550px'],
+			  content:$("#tongjiChart"),
+
+			  success:function(index){
+			      layer.msg('加载中…', {icon: 16 ,shade: 0.2,time: 120000});
+                  $.ajax({
+                    url:'/common_functions/TOP_show/',
+                    type:'get',
+                    data:{product_parent_id:data.product_parent_id},
+                    success:
+                        function (response)
+                        {
+                          var index_load =  layer.msg();
+                          layer.close(index_load);
+                          var ret = JSON.parse(response);
+                           // 基于准备好的dom，初始化echarts实例
+                            var myChart1 = echarts.init(document.getElementById('tongjiChartMain'));
+                            // 指定图表的配置项和数据
+                            option = {
+                                title: {
+                                    {#text: '销售数量及均价总览',#}
+                                    {#subtext: '数据来自西安兰特水电测控技术有限公司',#}
+                                    {#x: 'center'#}
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                                  type: 'cross'
+                                                  }
+                                },
+                                legend: {
+                                    data:['拍卖数量','一口价数量','总数量','平均成交价'],
+                                    x: 'left',
+                                    {#top:"6%",#}
+                                },
+                                toolbox: {
+                                    feature: {
+                                        dataZoom: {
+                                            yAxisIndex: 'none'
+                                        },
+                                        restore: {},
+                                        dataView: {show: true, readOnly: false},
+                                        saveAsImage: {}
+                                    }
+                                },
+                                axisPointer: {
+                                    link: {xAxisIndex: 'all'}
+                                },
+                                dataZoom: [
+                                    {
+                                        show: true,
+                                        realtime: true,
+                                        start: 50,
+                                        end: 100,
+                                        xAxisIndex: [0, 1]
+                                    },
+                                    {
+                                        type: 'inside',
+                                        realtime: true,
+                                        start: 0,
+                                        end: 100,
+                                        xAxisIndex: [0, 1]
+                                    }
+                                ],
+                                grid: [{
+                                    left: 70,
+                                    right: 50,
+                                    top: '13%',
+                                    height: '35%'
+                                }, {
+                                    left: 70,
+                                    right: 50,
+                                    top: '60%',
+                                    height: '28%'
+                                }],
+                                xAxis : [
+                                    {
+                                        type : 'time',
+                                        boundaryGap : false,
+                                        axisLine: {onZero: true},
+                                        {#data: timeData#}
+                                    },
+                                    {
+                                        gridIndex: 1,
+                                        type : 'time',
+                                        boundaryGap : false,
+                                        axisLine: {onZero: true},
+                                        {#data: timeData,#}
+                                        {#position: 'top'#}
+                                    }
+                                ],
+                                yAxis : [
+                                    {
+                                        name : '单量',
+                                        type : 'value',
+                                        position:'left',
+                                        axisLabel: {
+                                                        formatter: '{value} 单'
+                                                    }
+                                    },
+                                    {
+                                        gridIndex: 1,
+                                        name : '价格',
+                                        position:'left',
+                                        type : 'value',
+                                        axisLabel: {
+                                                        formatter: '{value} 美元'
+                                                    }
+
+                                    }
+                                ],
+                                series : [
+                                    {
+                                        name:'拍卖数量',
+                                        type:'bar',
+                                        barWidth:'6',
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        {#stack:'数量',#}
+                                        data: ret.Table_bid_oders,
+                                        markPoint: {
+                                                        data: [
+                                                            {type: 'max', name: '最大值'},
+                                                            {type: 'min', name: '最小值'}
+                                                        ]
+                                                    },
+                                    },
+                                    {
+                                        name:'一口价数量',
+                                        type:'bar',
+                                        barWidth:'6',
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        {#stack:'数量',#}
+                                        data: ret.Table_buy_now_oders,
+                                        markPoint: {
+                                                        data: [
+                                                            {type: 'max', name: '最大值'},
+                                                            {type: 'min', name: '最小值'}
+                                                        ]
+                                                    },
+                                    },
+                                    {
+                                        name:'总数量',
+                                        type:'line',
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        data:ret.Table_product_sum,
+                                        markLine: {
+                                                data: [
+                                                    {type: 'average', name: '总数量'}
+                                                ]
+                                            }
+                                    },
+
+                                    {
+                                        name:'平均成交价',
+                                        type:'line',
+                                        xAxisIndex: 1,
+                                        yAxisIndex: 1,
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        data:ret.Table_hammer_price_local,
+                                        markLine: {
+                                                data: [
+                                                    {type: 'average', name: '平均成交价'}
+                                                ]
+                                            }
+
+                                    }
+                                ]
+                            };
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart1.setOption(option);
+                            window.addEventListener("resize", function() {myChart1.resize();});
+                        }
+                    })
+				  {#layer.close(index);#}
+				  }
+			});
+      }
+    });
+
+    //触发排序事件
+    table.on('sort(top-statistiics-table)', function(obj){
+      table.reload('top-statistiics-table', {
+        initSort: obj
+        ,where: {
+           Sort_field: obj.field //排序字段
+          ,Sort_order: obj.type //排序方式
+        }
+      });
+    });
+
+//提交
+    form.on('submit(chaxunshuju)', function(data){
+    	{#layer.load(2);#}
+    	var start_time= $('#start_time');
+    	var end_time= $('#end_time');
+    	var Lots_id= $('#Lots_id');
+    	var standard_product_id= $('#standard_product_id');
+    	var seller_name= $('#seller_name');
+    	var seller_id= $('#seller_id');
+    	var product_name= $('#product_name');
+    	var product_taxonomy= $('#product_taxonomy');
+    	var price_min= $('#price_min');
+    	var price_max= $('#price_max');
+    	var product_type= $('#product_type');
+    	var product_collection= $('#product_collection');
+        //执行重载
+        table.reload('top-statistiics-table', {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+                     'start_time':          start_time.val(),
+                     'end_time':            end_time.val(),
+                     'Lots_id':             Lots_id.val(),
+                     'standard_product_id': standard_product_id.val(),
+                     'seller_name':         seller_name.val(),
+                     'seller_id':           seller_id.val(),
+                     'product_name':        product_name.val(),
+                     'product_taxonomy':    product_taxonomy.val(),
+                     'price_min':           price_min.val(),
+                     'price_max':           price_max.val(),
+                     'product_type':        product_type.val(),
+                     'product_collection':  product_collection.val(),
+          }
+        });
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+//导出
+    form.on('submit(daochushangping)', function(data){
+        var checkStatus = table.checkStatus('top-statistiics-table');
+        var checkStatu_lots_id = new Array();
+        for (var i=0;i<checkStatus.data.length;i++)
+        {checkStatu_lots_id[i] = checkStatus.data[i].lots_id}
+        var 导出类型= $('#导出类型').val();
+        layer.msg('正在导出，请稍后…', {icon: 16 ,shade: 0.01,time: 120000});
+        $.ajax({
+            url:'/common_functions/TOP_statistics/',
+            type:'get',
+            data:{
+                导出类型 : 导出类型,
+                操作 : '操作',
+                checkStatus: JSON.stringify(checkStatu_lots_id)
+            },
+            success: function (response)
+                {
+                    var ret = JSON.parse(response);
+                    var index = layer.msg();
+                    layer.close(index);
+                    if (ret.Detailed_orders == '1') { //上传成功
+                       location.href='http://sksj.shop/static/user_files_directory/导出平台数据/商品详情.csv'; //导出的文件地址。
+                    }
+                    else if (ret.Detailed_orders == '0'){
+                       layer.msg(ret.msge, {shade: 0.2});
+                    }
+                }
+            })
+        //执行
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+//加入
+    form.on('submit(jiarushangpingku)', function(data){
+    	var checkStatus = table.checkStatus('top-statistiics-table');
+        var checkStatu_lots_id = new Array();
+        for (var i=0;i<checkStatus.data.length;i++)
+        {checkStatu_lots_id[i] = checkStatus.data[i].lots_id}
+        var 加入商品库= $('#加入商品库').val();
+        layer.msg('正在加入商品库，请稍后…', {icon: 16 ,shade: 0.01,time: 120000});
+        $.ajax({
+            url:'/common_functions/TOP_statistics/',
+            type:'get',
+            data:{
+                加入商品库 : 加入商品库,
+                操作 : '操作',
+                checkStatus: JSON.stringify(checkStatu_lots_id)
+            },
+            success: function (response)
+                {
+                    var ret = JSON.parse(response);
+                    var index = layer.msg();
+                    layer.close(index);
+                    if (ret.Detailed_orders == '1') { //上传成功
+                       layer.msg(ret.msge, {shade: 0.2});
+                    }
+                    else if (ret.Detailed_orders == '0'){
+                       layer.msg(ret.msge, {shade: 0.2});
+                    }
+                }
+            })
+        //执行
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+//所有备注卖家
+    form.on('submit(所有备注卖家)', function(data){
+        layer.open({
+                      type: 0,
+                      title: '所有备注卖家' ,
+                      shadeClose: true,
+                      {#offset: 'r',#}
+                      shade: 0.2,
+                      anim: 2,
+                      btn: ['关闭'],
+                      area:['800px', '520px'],
+                      content:'<div>'+
+                                '{% for collect_seller in collect_sellers %}'+
+                                    '<div class="layui-inline" >'+
+                                      '<label class="layui-form-label" style="text-align: center;width: 100%">（{{ collect_seller.CN_user_id }}）：{{ collect_seller.CN_seller_name }}</label>'+
+                                    '</div>'+
+                               '{% endfor %}'+
+                               '</div>',
+                   });
+        //执行
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+//时间控制
+    //日期时间选择器
+    laydate.render({
+      elem: '#start_time'
+      ,type: 'date'
+      ,theme: '#393D49'
+      ,format:'yyyy-MM-dd HH:mm'
+      ,max:0
+      {#,value:getRecentDay(-1)#}
+    });
+    laydate.render({
+      elem: '#end_time'
+      ,type: 'date'
+      ,theme: '#393D49'
+      ,format:'yyyy-MM-dd HH:mm'
+      ,max:0
+      {#,value:getRecentDay(0)#}
+    });
+    //通过时区获取时间
+    function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+    //获取近N天
+    function getRecentDay(day){
+        var today = getLocalTime(-7)  //new Date();
+        var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+        today.setTime(targetday_milliseconds);
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = doHandleMonth(tMonth + 1);
+        tDate = doHandleMonth(tDate);
+        return tYear+"-"+tMonth+"-"+tDate+' 00:00';
+    }
+    function doHandleMonth(month){
+        var m = month;
+        if(month.toString().length == 1){
+            m = "0" + month;
+        }
+        return m;
+    }
+{#页面到底到顶#}
+    $(function(){
+	// 页面浮动面板
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(0).click(function(){
+		$("html,body").animate({scrollTop :0}, 800);
+		return false;
+	});
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(1).click(function(){
+		$("html,body").animate({scrollTop : $(document).height()}, 800);
+		return false;
+	});
+});
+//the file id end//
+  });
+</script>
+</body>
+</html>

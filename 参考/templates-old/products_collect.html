@@ -1,0 +1,1333 @@
+﻿{% load staticfiles %}
+<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<meta name="msapplication-TileColor" content="#0670f0">
+		<meta name="theme-color" content="#2ddcd3">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+
+
+		<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon"/>
+		<link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+
+		<!-- Title -->
+		<title>摇钱数（商品库）</title>
+		<link rel="stylesheet" href="{% static 'assets/fonts/fonts/font-awesome.min.css' %}" />
+
+		<!-- Bootstrap Css -->
+		<link href="{% static 'assets/plugins/bootstrap-4.1.3/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+		<!-- Sidemenu Css -->
+		<link href="{% static 'assets/plugins/fullside-menu/css/style.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/fullside-menu/waves.min.css' %}" rel="stylesheet" />
+
+		<!-- Dashboard Css -->
+		<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+
+		<!-- c3.js Charts Plugin -->
+		<link href="{% static 'assets/plugins/charts-c3/c3-chart.css' %}" rel="stylesheet" />
+
+		<!-- Data table css -->
+		<link href="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+
+		<!-- Slect2 css -->
+		<link href="{% static 'assets/plugins/select2/select2.min.css' %}" rel="stylesheet" />
+
+		<!-- Custom scroll bar css-->
+		<link href="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" />
+
+		<!---Font icons-->
+		<link href="{% static 'assets/plugins/iconfonts/plugin.css' %}" rel="stylesheet" />
+
+        <!---计算器-->
+        <link href="{% static 'jisuanqi/css/sidebar.css' %}" rel="stylesheet" type="text/css" />
+
+	</head>
+	<body>
+		<div id="loading"></div>
+		<div class="page">
+			<div class="page-main">
+                <!-- 页眉目录栏 -->
+				<div class="app-header1 header py-1 d-flex">
+					<div class="container-fluid">
+						<div class="d-flex">
+							<a class="header-brand" href="">
+								<img src="{% static 'images/logo1.png' %}" class="header-brand-img" alt="Uplor  logo">
+							</a>
+							<div class="menu-toggle-button">
+								<a class="nav-link wave-effect" href="#" id="sidebarCollapse">
+									<span class="fa fa-bars"></span>
+								</a>
+							</div>
+							<div>
+								<div class="searching">
+									<a href="javascript:void(0)" class="search-open searching1">
+										<i class="fa fa-search"></i>
+									</a>
+									<div class="search-inline">
+										<form>
+											<input type="text" class="form-control" placeholder="Searching...">
+											<button type="submit">
+												<i class="fa fa-search"></i>
+											</button>
+											<a href="javascript:void(0)" class="search-close">
+												<i class="fa fa-times"></i>
+											</a>
+										</form>
+									</div>
+								</div>
+							</div>
+                            <div class="d-flex order-lg-1 ml-auto"  style="color: white" id="showdate"></div> <!--#太平洋时间 -->
+							<div class="d-flex order-lg-2 ml-auto">
+								<div class="dropdown d-none d-md-flex" >
+									<a  class="nav-link icon full-screen-link">
+										<i class="fe fe-maximize floating"  id="fullscreen-button"></i>
+									</a>
+							</div>
+                            <div class="profile_info">
+								<h2><a  href="/logout/">退出登录</a></h2>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wrapper">
+					<!-- 侧边目录栏 -->
+					<nav id="sidebar" class="nav-sidebar">
+						<div class="profile clearfix">
+							<div class="profile_pic">
+								<img src="{% static 'images/aaa.png' %}" alt="..." class="img-circle profile_img">
+{#								<a href="editprofile.html" class="profile-img">#}
+{#									<span class="fa fa-pencil" aria-hidden="true"></span>#}
+{#								</a>#}
+							</div>
+							<div class="profile_info">
+								<h3>天道酬勤 地道酬善</h3>
+								<h3>人道酬诚 商道酬信</h3>
+							</div>
+						</div>
+						<ul class="list-unstyled components" id="accordion">
+							<li class="border-0"><h3>Tophatter</h3><li>
+                        {#高权限用户下面才可见 #}
+                        {% if user != 'up_data' %}
+                            <li>
+								<a href="/information_aggregation/" class=" wave-effect accordion-toggle " target="_blank"><i class="fa fa-diamond mr-2 sidebarpink"></i> 信息汇总展示</a>
+							</li>
+							<li>
+								<a href="#Submenu1" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-rocket mr-2 sidebarprimary"></i> 平台分析
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu1" data-parent="#accordion">
+									<li>
+										<a href="/index/" target="_blank">平台商品统计</a>
+									</li>
+									<li>
+										<a href="/goodslist/" target="_blank">商品分析</a>
+									</li>
+									<li>
+										<a href="/seller/" target="_blank">卖家分析</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#Submenu2" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 利润统计
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu2" data-parent="#accordion">
+									<li>
+										<a href="/profitStatistics/" target="_blank">订单统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_2/" target="_blank">拍卖统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_3/" target="_blank">拍卖统计(原始)</a>
+									</li>
+									<li>
+										<a href="/buy_nows/" target="_blank">一口价统计</a>
+									</li>
+                                    <li>
+										<a href="/buy_nows_page/" target="_blank">一口价（页面数据）</a>
+									</li>
+								</ul>
+							</li>
+                        {% endif %}
+
+                            <li>
+								<a href="#Submenu3" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu3" data-parent="#accordion">
+                                    <li>
+										<a href="/products_operate/ " target="_blank">批量上传</a>
+									</li>
+                                    <li>
+										<a href="/products_operate_single/" target="_blank">上传商品</a>
+									</li>
+									<li>
+										<a href="/products/" target="_blank">店铺所有商品</a>
+									</li>
+                                    <li>
+										<a href="/products_collect/" >商品库</a>
+									</li>
+                                    {#高权限用户下面才可见 #}
+                                    {% if user != 'up_data' %}
+                                    <li>
+										<a href="/products_parets/" target="_blank">配件库</a>
+									</li>
+									<li>
+										<a href="/SKU_list_2/" target="_blank">商品信息录入</a>
+									</li>
+                                    {% endif %}
+								</ul>
+							</li>
+
+                        {#高权限用户下面才可见 #}
+                        {% if user != 'up_data' %}
+                            <li >
+								<a href="#Submenu7" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-table mr-2 sidebarpurple"></i> 发货物流
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu7" data-parent="#accordion">
+									<li>
+										<a href="/logistics_statistic/" target="_blank">物流规则 </a>
+									</li>
+									<li>
+										<a href="/return_performance/" target="_blank">退货表现</a>
+									</li>
+                                    <li>
+										<a href="/refund_orders/" target="_blank">订单退货</a>
+									</li>
+								</ul>
+							</li>
+							<li >
+								<a href="#Submenu8" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-sun-o mr-2 sidebarpink"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu8" data-parent="#accordion">
+									<li>
+										<a href="/founds/" target="_blank">资金统计 </a>
+									</li>
+									<li>
+										<a href="/fund_analysis/" target="_blank">资金表现</a>
+									</li>
+								</ul>
+							</li>
+                        {% endif %}
+                            <li><h3>5miles</h3><li>
+							<li>
+								<a href="#Submenu4" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu4" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_products_5miles/" target="_blank">所有商品</a>
+									</li>
+                                    <li>
+										<a href="/five_miles/up_products_5miles/" target="_blank">上传商品</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu5" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 订单管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu5" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_oders_5miles/" target="_blank">所有订单</a>
+									</li>
+								</ul>
+							</li>
+                        {#高权限用户下面才可见 #}
+                        {% if user != 'up_data' %}
+                            <li>
+								<a href="#Submenu6" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu6" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/funds_5miles/" target="_blank">余额状态</a>
+									</li>
+								</ul>
+							</li>
+                            <li><h3>其他电商平台</h3><li>
+                            <li >
+								<a href="#Submenu10" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-shopping-cart mr-2 sidebarsuccess"></i> 速卖通
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu10" data-parent="#accordion">
+									<li>
+										<a href="/Function_1/" target="_blank">价格计算</a>
+									</li>
+								</ul>
+							</li>
+							<li><h3>服务</h3><li>
+							<li>
+								<a href="#Submenu9" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 拓展功能
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu9" data-parent="#accordion">
+									<li>
+										<a href="/brand/" target="_blank" >平台商标统计</a>
+									</li>
+                                    <li>
+										<a href="/e_commerce_platform/" target="_blank">各类电商平台介绍</a>
+									</li>
+								</ul>
+							</li>
+                        {% endif %}
+						</ul>
+					</nav>
+
+                    <!-- 内容区域 -->
+                    <div class=" content-area overflow-hidden">
+						<div class="row">
+							<div class="col-md-12 col-lg-12">
+								<div class="card">
+									<div class="card-header">
+                                        <form id="searchForm"  method="post" action="" target="_top">
+                                            {% csrf_token %}
+                                            <div style="height: 40px;">
+                                                <div style="width: 200px; height: 40px; float: left">
+                                                    <span style="">摇钱数ID：</span>
+                                                     <input id="摇钱数ID" style="width: 100px; height: 36px; border-radius: 4px;" type="text" name="摇钱数ID" placeholder="请输入"value={{ 摇钱数ID }}>
+                                                </div>
+                                                <div style="width: 200px; height: 40px; float: left">
+                                                        <span style="">是否收藏：</span>
+                                                        <select style="width: 100px; height: 36px; border-radius: 4px;" name="colect_pruduct" id="colect_pruduct">
+                                                        <option value="所有商品">所有商品</option>
+                                                        <option value="收藏商品">收藏商品</option>
+                                                        <option value="未收藏商品">未收藏商品</option>
+                                                        <option selected="selected" style="color:whitesmoke" value={{ colect_pruduct }}>{{ colect_pruduct }}</option>
+                                                        </select>
+                                                </div>
+                                                <div style="width:  350px; height: 40px; float: left">
+                                                    <span style="">商品名称：</span><!--font-size: 15px; margin-left: 40px;-->
+                                                    <input id="商品名称" style="width: 250px; height: 36px; border-radius: 4px;" type="text" name="商品名称" placeholder="请输入SKU关键字"value={{ 商品名称 }}>
+                                                </div>
+                                                <div style="width: 230px; height: 40px; float: left">
+                                                        <span style="">排序方式：</span>
+                                                        <select style="width: 120px; height: 30px; border-radius: 4px;" name="SerialNumber" id="SerialNumber"value={{ SerialNumber }}>
+                                                            <option value="创建时间降序">创建时间降序</option>
+                                                            <option value="创建时间升序">创建时间升序</option>
+                                                            <option value="更新时间降序">更新时间降序</option>
+                                                            <option value="更新时间升序">更新时间升序</option>
+                                                            <option selected="selected" value={{ SerialNumber }}>{{ SerialNumber }}</option>
+                                                        </select>
+                                                    </div>
+                                                <div style="width: 300px; height: 60px; float: left;vertical-align: middle">
+                                                    <input id="quantity" style="width: 80px; height: 30px; border-radius: 10px;" type="number" name="quantity" min="0" max="99999" placeholder="数量"value={{ quantity }}>
+                                                    <input style="width: 120px;height: 30px;background: #4ebc30"type="submit" value="查询数据">
+                                                </div><br>
+                                                <div style="width: 300px; height: 40px; float: left;vertical-align: middle">
+                                                        <select style="width: 120px; height: 30px; border-radius: 4px;" name="导出类型" id="导出类型" value="">
+                                                            <option value="">--请选择格式--</option>
+                                                            <option value="导出选择商品">导出选择商品</option>
+{#                                                            <option value="导出合并订单">导出合并订单</option>#}
+                                                        </select>
+                                                        <button type="button" onClick='get_orders()' style="background: #00bcd4 ;height: 30px; border-radius: 4px;" class="" id="" >导出商品库数据</button><br>
+                                                        <span class="sp_33"></span>
+                                                        <script language=javascript>
+                                                                function get_orders(){
+                                                                var chk_value = [];
+                                                                var str_1 = '正在导出……';
+                                                                var str_2 = '导出完成，等待下载';
+                                                                $('.sp_33').html(str_1).css("color", "red");
+
+                                                                //选择框的值
+                                                                $('input[name="test"]:checked').each(function () {
+                                                                    chk_value.push($(this).val());
+                                                                });
+                                                                var value = chk_value.join('');//把复选框的值以数组形式存放
+
+                                                                 $.ajax({
+                                                                            url:'/products_collect/',
+                                                                            type:'get',
+                                                                            data:
+                                                                                {
+                                                                                valss: value,
+                                                                                导出类型:$('#导出类型').val(),
+                                                                                csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                                                                 },
+
+                                                                            success: function (response) {
+                                                                                                            var ret = JSON.parse(response);
+                                                                                                            if (ret.Detailed_orders) { //上传成功
+                                                                                                               location.href='http://ndmc.shop/static/Products_files/商品详情_商品库.csv';
+                                                                                                               //location.href='http://127.0.0.1:8000/E_commerce/static/导出平台商品/商品详情.csv';
+                                                                                                               // window.open('https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://ndmc.shop/static/TOPIMG/'+ret.img_url,'target')
+                                                                                                                $('.sp_33').html(str_2).css("color", "red");
+                                                                                                            }
+                                                                                                        }
+
+                                                                            })
+                                                                 }
+                                                         </script>
+                                                    </div>
+                                            </div>
+                                        </form>
+{#										<h4 class="page-title">商品管理</h4>#}
+										<div class="card-options">
+											<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+											<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+										</div>
+									</div>
+									<!-- table-wrapper -->
+								</div>
+								<!-- section-wrapper -->
+							</div>
+							<div class="col-md-12 col-lg-12">
+								<div class="card">
+                                <form>
+                                    {% csrf_token %}
+                                    <div class="">
+                                        <span><a>传TOP&nbsp;&nbsp;
+
+                                                  <select style="width:80px; height: 36px; border-radius: 4px;" name="" id="store_name">
+                                                        <option value="A">A</option>
+                                                        <option value="B">B</option>
+                                                        <option value="C">C</option>
+                                                        <option value="E">E</option>
+                                                        <option value="G">G</option>
+                                                        <option value="I">I</option>
+                                                        <option value="J">J</option>
+                                                        <option value="M">M</option>
+                                                        <option value="P">P</option>
+                                                        <option value="Q">Q</option>
+
+                                                        <option value="B6">B6</option>
+                                                        <option value="B10">B10</option>
+                                                        <option value="PY">PY</option>
+                                                        <option value="YL">YL</option>
+                                                        <option value="YM">YM</option>
+                                                        <option value="YH">YH</option>
+                                                        <option value="YMW">YMW</option>
+                                                        <option selected="selected" value={{ store_name }}>{{ store_name }}</option>
+                                                  </select>
+
+
+                                                  <button style="color: black" type="button" class="btn btn-primary" data-toggle="modal" data-target="#up_product" >上传选中产品到选定的店铺</button>
+                                                  <!-- 上传产品弹出框 -->
+                                                  <div id="up_product" class="modal fade">
+                                                        <div class="modal-dialog" role="document"><!--modal-sm -->
+                                                            <div class="modal-content">
+                                                                <div class="modal-body">
+                                                                    <p>你将要把选中的产品上传到选定的店铺
+                                                                        一定要确认上传的产品的信息完整度啊！
+                                                                       如果真的没错，请点击“确认”</p>
+                                                                </div><!-- modal-body -->
+                                                                <div class="modal-footer">
+                                                                    <span class="sp_3"></span><br>
+                                                                    <button style="color: black" type="button" onclick="jqchk1(this)" class="btn btn-primary" id="bt" >确认</button>
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <a>上传成功：<span class="sp_1"></span></a><br>
+                                                                    <a>上传失败：<span class="sp_2"></span></a><br>
+                                                                    <span class="sp_4"></span><br>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- modal-dialog -->
+                                                    </div><!-- modal -->
+                                              </a>
+                                        </span>
+                                        <br>
+
+{#                                        <span><a>传5M&nbsp;&nbsp;#}
+{#                                                  <select style="width:80px; height: 36px; border-radius: 4px;" name="" id="store_name">#}
+{#                                                        <option value="A">A</option>#}
+{#                                                        <option value="B">B</option>#}
+{#                                                        <option value="C">C</option>#}
+{#                                                        <option value="E">E</option>#}
+{#                                                        <option selected="selected" value={{ store_name }}>{{ store_name }}</option>#}
+{#                                                  </select>#}
+{#                                                  <button style="color: black" type="button" class="btn btn-primary" data-toggle="modal" data-target="#up_product" >上传选中产品到选定的店铺</button>#}
+{#                                                  <!-- 上传产品弹出框 -->#}
+{#                                                  <div id="up_product" class="modal fade">#}
+{#                                                        <div class="modal-dialog" role="document"><!--modal-sm -->#}
+{#                                                            <div class="modal-content">#}
+{#                                                                <div class="modal-body">#}
+{#                                                                    <p>你将要把选中的产品上传到选定的店铺#}
+{#                                                                        一定要确认上传的产品的信息完整度啊！#}
+{#                                                                       如果真的没错，请点击“确认”</p>#}
+{#                                                                </div><!-- modal-body -->#}
+{#                                                                <div class="modal-footer">#}
+{#                                                                    <span class="sp_3"></span><br>#}
+{#                                                                    <button style="color: black" type="button" onclick="jqchk1(this)" class="btn btn-primary" id="bt" >确认</button>#}
+{#                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>#}
+{#                                                                </div>#}
+{#                                                                <div class="modal-body">#}
+{#                                                                    <a>上传成功：<span class="sp_1"></span></a><br>#}
+{#                                                                    <a>上传失败：<span class="sp_2"></span></a><br>#}
+{#                                                                    <span class="sp_4"></span><br>#}
+{#                                                                </div>#}
+{#                                                            </div>#}
+{#                                                        </div><!-- modal-dialog -->#}
+{#                                                    </div><!-- modal -->#}
+{#                                              </a>#}
+{#                                        </span>#}
+                                        <br>
+
+                                        <span>
+                                            <a>
+                                                <button style="color: black" type="button" class="btn btn-primary" data-toggle="modal" data-target="#delect_product" >删除选中产品</button>
+                                                  <!-- 删除选中产品弹出框 -->
+                                                <div id="delect_product" class="modal fade">
+                                                        <div class="modal-dialog modal-sm" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body">
+                                                                    <p>确认不是手贱点错了吧？<br>如果不是请点击“确认”</p>
+                                                                </div><!-- modal-body -->
+                                                                <div class="modal-footer">
+                                                                    <button style="color: black" type="button" onclick="jqchk2(this)" class="btn btn-primary" id="bt" >确认</button>
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- modal-dialog -->
+                                                    </div><!-- modal -->
+                                            </a>
+                                        </span>
+{#                                        <div class="card-options">#}
+{#											<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>#}
+{#											<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>#}
+{#										</div>#}
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+                                            <table id="" class="hover table-bordered" style="width: 100%;min-width:1000px " >
+                                                <thead style="background: #0ec0e1">
+                                                    <tr style="height: 60px">
+                                                        <td style="text-align: center;width: 70px"><input id="checkAll" type="checkbox"/></td>
+                                                        <td style="text-align: center;width: 200px">创建时间<br>ID/更新时间</td>
+                                                        <td style="text-align: center;width: 150px">商品名称</td>
+                                                        <td style="text-align: center;width: 150px">商品图</td><!--SKU-->
+                                                        <td style="text-align: center;width: 200px">基本信息</td><!--SKU-->
+                                                        <td style="text-align: center;width: 100px">建议一口价($)<br>TOP/5M</td>
+                                                        <td style="text-align: center;width: 100px">商品(¥)</td>
+                                                        <td style="text-align: center;width: 100px">买送一</td>
+                                                        <td style="text-align: center;width: 100px">配件</td>
+                                                        <td style="text-align: center;width: 150px">价格信息</td>
+                                                        <td style="text-align: center;width: 100px">运输相关</td>
+                                                        <td style="text-align: center;width: 100px">CAMPAIGN</td>
+                                                        <td style="text-align: center;width: 100px">收藏</td>
+                                                        <td style="text-align: center;width: 160px">编辑</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for StoreData in StoreDatas %}
+                                                        <tr   >
+                                                            <td style="text-align: center;"><!--选择框-->
+                                                                <input type="checkbox"  name="test" value="{{ StoreData.id}},"/>
+                                                            </td>
+                                                            <td style="text-align: center;"><!--收藏时间-->
+                                                                创建：{{ StoreData.created_at }}<br>
+                                                                更新：{{ StoreData.updated_at }}<br>
+                                                                <a style="color: #00bcd4">摇钱数ID：{{ StoreData.id}}</a><br>
+                                                            </td>
+                                                            <td style="text-align: center;"><!--SKU-->
+                                                                <p>{{ StoreData.product_name}}</p>
+                                                                <button style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" onClick='img_lode("{{ StoreData.primary_image }}")'  class="" id="" >1688同款</button>
+                                                                <script language=javascript>
+                                                                            function img_lode(img){
+                                                                         $.ajax({
+                                                                                    url:'/products/',
+                                                                                    type:'get',
+                                                                                    data:
+                                                                                        {
+                                                                                        img_url:img,
+                                                                                        csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                                                                         },
+                                                                                    success: function (response) {
+                                                                                                                    var ret = JSON.parse(response);
+                                                                                                                    {#alert(ret.img_url)#}
+                                                                                                                    if (ret.img_url) { //上传成功
+                                                                                                                        {#location.href='https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://ndmc.shop/static/TOPIMG/'+ret.img_url;#}
+                                                                                                                        window.open('https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://ndmc.shop/static/TOPIMG/'+ret.img_url,'target')
+                                                                                                                    }
+                                                                                                                }
+
+                                                                                    })
+                                                                         }
+                                                                        </script>
+                                                            </td>
+                                                            <td style="text-align: center;" ><!--主图-->
+                                                                <div >
+                                                                    <a data-toggle="modal" data-target="#a{{ StoreData.product_name}}b">
+                                                                    <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}" width=80% height=80%></a>
+                                                                </div>
+                                                                            <!-- 弹出框信息 -->
+                                                                <div class="modal fade" id="a{{ StoreData.product_name}}b" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered " role="document" >
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="example-Modal3">{{ StoreData.product_name}}</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <img class="lazy" src="{% static 'images/loading.gif' %}"  data-echo="{{StoreData.primary_image}}">
+{#                                                                                    {% for img in StoreData.imgs %}#}
+{#                                                                                        <img class="lazy" src="{% static 'images/loading.gif' %}" width="200px" data-echo="{{img}}">#}
+{#                                                                                    {% endfor %}#}
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td><!--主图/SKU-->
+                                                            <td style="text-align: center"><!--基本信息-->
+                                                                尺寸：<p style="width: 200px">{{ StoreData.size}}</p>
+                                                                颜色：<p style="width: 200px">{{ StoreData.color}}</p>
+                                                                <a style="color: #00bcd4" type="button"  data-toggle="modal" data-target="#A{{ StoreData.product_name}}c">其他基本信息</a>
+                                                                <!-- 弹出框信息 -->
+                                                                <div class="modal fade" id="A{{ StoreData.product_name}}c" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" >
+                                                                                <a style="color: #f1a02f">{{StoreData.product_name}}</a>
+                                                                                </h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="form-group">
+                                                                                     <h4 style="text-align:left"><a style="color: #f1a02f">商品名称：</a>{{ StoreData.title }}</h4>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                     <h4 style="text-align:left"><a style="color: #f1a02f">商品状况：</a>{{ StoreData.condition }}</h4>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                     <h4 style="text-align:left"><a style="color: #f1a02f">商品材料：</a>{{ StoreData.material }}</h4>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                     <h4 style="text-align:left"><a style="color: #f1a02f">库存数量：</a>{{ StoreData.available_quantity }}</h4>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                     <h4 style="text-align:left"><a style="color: #f1a02f">商品分类：</a>{{ StoreData.category }}</h4>
+                                                                                </div>
+                                                                                <div class="form-group" >
+                                                                                    <h4 style="text-align:left;color: #f1a02f">商品描述：</h4>
+                                                                                    <a>{{ StoreData.description }}</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td style="text-align: center">TOP:{{ StoreData.suggest_buynows_price }}<br>
+                                                                             5M:{{ StoreData.suggest_buynows_price_5M }}
+                                                            </td><!--建议一口价-->
+
+                                                            {% if StoreData.SKU_price  > '0.00' or StoreData.SKU_freight  > '0.00' %}
+                                                                <td style="text-align: center"><p>货价:{{ StoreData.SKU_price }}</p><!--主商品采购-->
+                                                                                <p>运费:{{ StoreData.SKU_freight }}</p></td><!--主商品运费-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">未输入</td>
+                                                            {% endif %}
+
+                                                            {% if StoreData.SKU_price  > '0.00' or StoreData.SKU_buy_one_freight  > '0.00' %}
+                                                            <td style="text-align: center"><p>进价:{{ StoreData.SKU_price}}</p><!--买一送一进价-->
+                                                                            <p>运费:{{ StoreData.SKU_buy_one_freight}}</p><!--买一送一运费-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">未输入</td>
+                                                            {% endif %}
+
+                                                            {% if StoreData.SKU_parts_price  > '0.00' or StoreData.SKU_parts_freight  > '0.00' %}
+                                                            <td style="text-align: center"><p>配件:{{ StoreData.SKU_parts_price}}</p><!--配件采购-->
+                                                                            <p>运费:{{ StoreData.SKU_parts_freight}}</p><!--配件运费-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">未输入</td>
+                                                            {% endif %}
+
+                                                            <td style="text-align: center">&nbsp;<br>
+                                                                            SFB：{{ StoreData.scheduling_fee_bid}}<br>
+                                                                            一口价：{{ StoreData.buy_now_price}}<br>
+                                                                            目标价：{{ StoreData.cost_basis}}<br>
+                                                                            底价：{{ StoreData.reserve_price}}<br>
+                                                                            零售价：{{ StoreData.retail_price}}<br>
+                                                                            起拍价：{{ StoreData.minimum_bid_amount}}<br><br>
+                                                            </td><!--价格信息-->
+                                                            <td style="text-align: center;"><!--运输信息-->
+                                                                运费：{{ StoreData.shipping_price}}<br>
+                                                                <a style="color: #00bcd4" type="button"  data-toggle="modal" data-target="#AA{{ StoreData.product_name}}c">运输相关</a><br>
+                                                                <!-- 详细信息弹出框 -->
+                                                                <div class="modal fade" id="AA{{ StoreData.product_name}}c" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" >
+                                                                                <a style="color: #f1a02f">{{StoreData.product_name}}</a>
+                                                                                </h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+{#                                                                                <div class="form-group">#}
+{#                                                                                     <h4 style="text-align:left"><a style="color: #f1a02f">发货地：</a>{{ StoreData.shipping_origin }}</h4>#}
+{#                                                                                </div>#}
+                                                                                <div class="form-group">
+                                                                                     <h4 style="text-align:left"><a style="color: #f1a02f">发货重量：</a>{{ StoreData.weight }}</h4>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                     <h4 style="text-align:left"><a style="color: #f1a02f">处理定单时间：</a>{{ StoreData.days_to_deliver }}</h4>
+                                                                                </div>
+{#                                                                                <div class="form-group">#}
+{#                                                                                     <h4 style="text-align:left"><a style="color: #f1a02f">买一得一：</a>{{ StoreData.buy_one_get_one_available }}</h4>#}
+{#                                                                                </div>#}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- 配件 -->
+                                                                {% if  StoreData.accessory_price  != '' and StoreData.accessory_description  != '' %}
+                                                                    <a style="color: #00bcd4" type="button"  data-toggle="modal" data-target="#AaA{{ StoreData.product_name}}c">配件</a>
+                                                                    <!-- 信息弹出框 -->
+                                                                    <div class="modal fade" id="AaA{{ StoreData.product_name}}c" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" >
+                                                                                    <a style="color: #f1a02f">{{StoreData.product_name}}</a>
+                                                                                    </h5>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div class="form-group">
+                                                                                         <h4 style="text-align:left"><a style="color: #f1a02f">配件价格：</a>{{ StoreData.accessory_price }}</h4>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                         <h4 style="text-align:left"><a style="color: #f1a02f">配件描述：</a>{{ StoreData.accessory_description }}</h4>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% else %}
+                                                                    <a style="text-align: center;color:orangered"></a>
+                                                                {% endif %}
+{#                                                                <!-- 买一得一 -->#}
+{#                                                                {% if  StoreData.buy_one_get_one_available == 'Yes' %}#}
+{#                                                                    <br><a style="text-align: center;color: blue">买一得一</a>#}
+{#                                                                {% else %}#}
+{#                                                                    <br><a style="text-align: center;color:orangered"></a>#}
+{#                                                                {% endif %}#}
+                                                            </td>
+                                                            <td style="text-align: center;">{{ StoreData.campaign_name }}</td><!--CAMPAIGN-->
+
+                                                            {% if StoreData.user_collect == '111' %}
+                                                                <td style="text-align: center;color:blue">已收藏</td>
+                                                            {% else %}
+                                                                 <td style="text-align: center">未收藏</td>
+                                                            {% endif %}
+
+                                                            <td style="text-align: center" >
+                                                            <div >
+                                                                <button style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" class="" data-toggle="modal" data-target="#q{{ StoreData.product_name}}c">
+                                                                    编辑相关</button>
+                                                            </div>
+                                                            <div >
+                                                               <a href="/products_collect_update/?商品名={{ StoreData.product_name}}&来源=商品库" target="_blank"  style="color: lightseagreen;background: white">更新参数</a>
+                                                            </div>
+{#                                                            <div >#}
+{#                                                               <a href="/products_operate_single/?Top主SKU={{ StoreData.product_name}}&平台=商品库" target="_blank"  style="color: lightseagreen;background: white">上传到TOP</a>#}
+{#                                                            </div>#}
+                                                            <div >
+                                                               <a href="/five_miles/up_products_5miles/?Top主SKU={{ StoreData.product_name}}&平台=商品库" target="_blank"  style="color: lightseagreen;background: white">上传到5miles</a>
+                                                            </div>
+                                                            <!-- 弹出框信息 -->
+                                                            <div class="modal fade" id="q{{ StoreData.product_name}}c" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" >
+                                                                            商品信息编辑  <a style="color: #f1a02f">{{ StoreData.product_name}}</a>
+                                                                            <a ><img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}" width="80" height="80"></a>
+                                                                        </h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+
+                                                                    <form >
+                                                                        <div class="modal-body">
+                                                                            <div class="form-group">
+                                                                                <span style="">商品名称</span>
+                                                                                <input style="" type="text" class="form-control" id="SKU_name"  name="SKU_name" placeholder="商品名称"value={{ StoreData.product_name }}>
+                                                                            </div>
+                                                                            <div class="form-group" >
+                                                                                <span style="text-align:left">货物进价(¥)</span>
+                                                                                <input  type="text" class="form-control" id="SKU_price"  name="SKU_price" placeholder="请输入货物进价"value={{ StoreData.SKU_price }}>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <span style="">货物重量(g)</span>
+                                                                                <input type="text" class="form-control" id="SKU_weight"  name="SKU_weight" placeholder="请输入货物重量"value={{ StoreData.SKU_weight }}>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <span style="">配件价格(¥)</span>
+                                                                                <input type="text" class="form-control" id="SKU_parts_price"  name="SKU_parts_price" placeholder="请输入配件价格"value={{ StoreData.SKU_parts_price }}>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <span style="">配件重量(g)</span>
+                                                                                <input type="text" class="form-control" id="SKU_parts_weight"  name="SKU_parts_weight"  placeholder="请输入配件重量"value={{ StoreData.SKU_parts_weight }}>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <span style="">货物种类：</span>
+
+                                                                                <select style="width: 80px; height: 36px; border-radius: 4px;" name="SKU_variety" id="SKU_variety" >
+                                                                                    <option value="普货">普货</option>
+                                                                                    <option value="带电">带电</option>
+                                                                                    <option value="特货">特货</option>
+                                                                                    <option value="海运">海运</option>
+                                                                                    <option value="平邮">平邮</option>
+                                                                                    <option style="color: #d1d1d3" selected="selected" value={{ StoreData.SKU_variety }}>{{ StoreData.SKU_variety }}</option>
+                                                                                </select>
+                                                                                <span style="">({{ StoreData.SKU_variety }})</span>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <span style="color: blue">海运运费(￥)：</span>
+                                                                                <input style="color: blue" type="text" class="form-control" id="HAI_SKU_freight"  name="HAI_SKU_freight"  placeholder="请输入海运运费"value={{ StoreData.HAI_SKU_freight }}>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <span style="color:lightseagreen">平邮成交价小于7运费(￥)：</span>
+                                                                                <input style="color: lightseagreen" type="text" class="form-control" id="Pingyou_min7_SKU_freight"  name="Pingyou_min7_SKU_freight"  placeholder="请输入平邮成交价小于7运费"value={{ StoreData.Pingyou_min7_SKU_freight }}>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <span style="color:lightseagreen">平邮成交价大于7运费(￥)：</span>
+                                                                                <input style="color:lightseagreen" type="text" class="form-control" id="Pingyou_max7_SKU_freight"  name="Pingyou_max7_SKU_freight"  placeholder="请输入平邮成交价大于7运费"value={{ StoreData.Pingyou_max7_SKU_freight }}>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <span style="">是否加入收藏夹：</span>
+                                                                                <select style="width: 80px; height: 36px; border-radius: 4px;" name="top_colect" id="top_colect" >
+                                                                                    <option selected = 'selected' value=""></option>
+                                                                                    <option value="1">加入收藏</option>
+                                                                                    <option value="0">取消收藏</option>
+                                                                                </select>
+                                                                            </div>
+
+
+                                                                            <div class="modal-footer"  >
+                                                                                <button type="button" onclick="displayResult(this)" class="btn btn-primary" id="111" >提交</button>
+                                                                            </div>
+                                                                             <script>
+                                                                              function displayResult(obj){
+                                                                                  var SKU_name=$(obj).                     parent().parent().eq(0).children().eq(0).children().eq(1).val();
+                                                                                  var SKU_price=$(obj).                    parent().parent().eq(0).children().eq(1).children().eq(1).val();
+                                                                                  var SKU_weight=$(obj).                   parent().parent().eq(0).children().eq(2).children().eq(1).val();
+                                                                                  var SKU_parts_price=$(obj).              parent().parent().eq(0).children().eq(3).children().eq(1).val();
+                                                                                  var SKU_parts_weight=$(obj).             parent().parent().eq(0).children().eq(4).children().eq(1).val();
+                                                                                  var SKU_variety=$(obj).                  parent().parent().eq(0).children().eq(5).children().eq(1).val();
+                                                                                  var HAI_SKU_freight=$(obj).              parent().parent().eq(0).children().eq(6).children().eq(1).val();
+                                                                                  var Pingyou_min7_SKU_freight=$(obj).     parent().parent().eq(0).children().eq(7).children().eq(1).val();
+                                                                                  var Pingyou_max7_SKU_freight=$(obj).     parent().parent().eq(0).children().eq(8).children().eq(1).val();
+                                                                                  var top_colect=$(obj).                   parent().parent().eq(0).children().eq(9).children().eq(1).val();
+
+
+
+                                                                             $.ajax({
+                                                                                        url:'/profitStatistics_2/',
+                                                                                        type:'post',
+                                                                                        data:
+                                                                                            {
+                                                                                            SKU_name:SKU_name,
+                                                                                            SKU_price:SKU_price,
+                                                                                            SKU_weight:SKU_weight,
+                                                                                            SKU_parts_price:SKU_parts_price,
+                                                                                            SKU_parts_weight:SKU_parts_weight,
+                                                                                            SKU_variety:SKU_variety,
+                                                                                            HAI_SKU_freight:HAI_SKU_freight,
+                                                                                            Pingyou_min7_SKU_freight:Pingyou_min7_SKU_freight,
+                                                                                            Pingyou_max7_SKU_freight:Pingyou_max7_SKU_freight,
+                                                                                            top_colect:top_colect,
+                                                                                            csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                                                                             }
+                                                                                        })
+                                                                             }
+                                                                            </script>
+
+                                                                        </div>
+                                                                    </form>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </td><!--编辑-->
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+										</div>
+									</div>
+                                </form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+            <!--分页代码-->
+            <footer class="footer">
+				<div class="container">
+					<div class="row align-items-center flex-row-reverse">
+						<div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+                            <form name="formpage" onkeydown="if(event.keyCode==13){return false;}">
+                                {% if page_of_objs.has_previous %}
+                                    <a aria-label="Previous" style="padding: 8px 13px;" href="?page={{ page_of_objs.previous_page_number }}&store_name={{ store_name }}&colect_pruduct={{ colect_pruduct }}&status_pruduct={{ status_pruduct }}&SKU={{ SKU }}&quantity={{ quantity }}&SerialNumber={{ SerialNumber }}" aria-label="Previous" style="padding: 8px 13px;">
+                                    <span aria-hidden="true" style="font-size: 13px;">上一页</span>
+                                    </a>
+                                {% else %}
+                                    <span aria-hidden="true"
+                                          style="font-size: 13px; margin-right: 1px;
+                                          padding:5.5px 13px 7.5px;">上一页</span>
+                                {% endif %}
+
+                                {% for page_num in page_range %}
+                                    {% if page_num == page_of_objs.number %}
+                                        <a style="background: #009688; color: white" href="?page={{ page_num }}&store_name={{ store_name }}&colect_pruduct={{ colect_pruduct }}&status_pruduct={{ status_pruduct }}&SKU={{ SKU }}&quantity={{ quantity }}&SerialNumber={{ SerialNumber }}" aria-label="Previous" style="padding: 8px 13px;">{{ page_num }}</a>
+                                    {% else %}
+                                        {% if page_num == '...' %}
+                                            <a>{{ page_num }}</a>
+                                        {% else %}
+                                            <a  href="?page={{ page_num }}&store_name={{ store_name }}&colect_pruduct={{ colect_pruduct }}&status_pruduct={{ status_pruduct }}&SKU={{ SKU }}&quantity={{ quantity }}&SerialNumber={{ SerialNumber }}" aria-label="Previous" style="padding: 8px 13px;">{{ page_num }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_of_objs.has_next %}
+                                    <a  aria-label="Next" style="padding:8px 13px;" href="?page={{ page_of_objs.next_page_number }}&store_name={{ store_name }}&colect_pruduct={{ colect_pruduct }}&status_pruduct={{ status_pruduct }}&SKU={{ SKU }}&quantity={{ quantity }}&SerialNumber={{ SerialNumber }}" aria-label="Previous" style="padding: 8px 13px;">
+                                        <span style="font-size: 13px;">下一页</span>
+                                    </a>
+                                {% else %}
+                                    <span style="font-size: 13px;">下一页</span>
+                                {% endif %}
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;<input name='submitSkip' type='button' onClick='GoPage("默认文件路径比如/文件夹/index.html")' value='转到'>
+                                第<input style="width: 50px;text-align: center" name='SkipPage' placeholder="数量"value={{ page_of_objs.number }} >页
+
+
+                                <span style="font-size: 13px;color: black">&nbsp;&nbsp;&nbsp;&nbsp;共&nbsp;{{ page_of_objs.paginator.count }}&nbsp;条数据&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            </form>
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!--footer-->
+			<footer class="footer">
+				<div class="container">
+					<div class="row align-items-center flex-row-reverse">
+						<div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+							Copyright © 2019 <a href="#">Uplor </a>. Designed by <a href="http://www.tophatter.com/">Ethan</a> All rights reserved.
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- End Footer-->
+		</div>
+		<!-- Back to top -->
+		<a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+        <!--计算器-->
+        <div class="scrollsidebar" id="hhService" style="box-shadow: darkgrey 10px 10px 30px 5px ;opacity:1;">
+            <div class="side_content">
+                <div class="side_list">
+                    <div class="side_title"><a title="隐藏" class="close_btn"><span>关闭</span></a></div>
+                    <div class="side_center" style="background:#f2f4f8">
+                        <form >
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品进价(￥)</span>
+                                      <input type="number" id="计_产品进价" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品重量(g)</span>
+                                      <input type="number" id="计_产品重量" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>物流商选择</span>
+                                      <select style="width: 100px; height: 40px; border-radius: 4px;" name="" id="计_物流商选择" >
+                                            <option value="普货">普货</option>
+                                            <option value="带电">带电</option>
+                                            <option value="特货">特货</option>
+                                            <option value="海运">输入</option>
+                                            <option style="color: #d1d1d3" selected="selected" value="">--请选择--</option>
+                                      </select>
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入运费(￥)</span>
+                                      <input type="number" id="计_输入运费" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>均SFB($)</span>
+                                      <input type="number" id="计_均SFB" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>成交率(%)</span>
+                                      <input type="number" id="计_成交率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="80" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style=""><a style="color: red">*</a>预估退货率(%)</span>
+                                      <input type="number" id="计_预估退货率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="5" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>当前汇率</span>
+                                      <input type="number" id="计_当前汇率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="{{ EXCHANGE_RATE }}" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;一口价利润(%)</span>
+                                      <input type="number" id="计_一口价利润" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="30" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;拍卖利润率(%)</span>
+                                      <input type="number" id="计_拍卖利润率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="0" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 45px; float: left">
+                            </div>
+
+
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运费(￥)</span>
+                                      <input type="number" id="sp_1" style="color:red;width: 100px;height: 40px;border-radius: 4px;"  value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拍卖利润(￥)</span>
+                                      <input type="number" id="sp_6" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;一口价利润(￥):</span>
+                                      <input type="number" id="sp_7" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;拍卖总成本(￥)</span>
+                                      <input type="number" id="sp_2" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">一口价总成本(￥)</span>
+                                      <input type="number" id="sp_4" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;建议一口价($):</span>
+                                      <input type="number" id="sp_5" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;拍卖预计价($):</span>
+                                      <input type="number" id="sp_3" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div class=""  >
+                                <button class="btn btn-primary" type="button"  data-container="body"
+                                        data-toggle="popover" data-popover-color="popdanger"
+                                        data-placement="bottom" title="计算公式："
+                                        data-content="拍卖预计价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率) + SFB/成交率 <br><br>
+                                                      一口建议价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率)">计算公式
+                                </button>
+                                <button  type="button" onclick="displayResult_count(this)" class="btn btn-primary"  id="111" >开始计算</button>
+                            </div>
+                            <script>
+                              function displayResult_count(obj){
+                             $.ajax({
+                                        url:'/profitStatistics_2/',
+                                        type:'get',
+                                        data:
+                                            {
+                                            计_产品进价:$('#计_产品进价').val(),
+                                            计_产品重量:$('#计_产品重量').val(),
+                                            计_均SFB:$('#计_均SFB').val(),
+                                            计_成交率:$('#计_成交率').val(),
+                                            计_预估退货率:$('#计_预估退货率').val(),
+                                            计_当前汇率:$('#计_当前汇率').val(),
+                                            计_物流商选择:$('#计_物流商选择').val(),
+                                            计_输入运费:$('#计_输入运费').val(),
+                                            计_一口价利润:$('#计_一口价利润').val(),
+                                            计_拍卖利润率:$('#计_拍卖利润率').val(),
+                                            csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                             },
+                                            success: function (response) {
+                                                    var ret = JSON.parse(response);
+
+                                                    $('.sp_0').html('qwerty').css("color", "red");
+
+                                                    document.getElementById('sp_1').value=ret.msg_e_1;
+                                                    document.getElementById('sp_2').value=ret.msg_e_2;
+                                                    document.getElementById('sp_3').value=ret.msg_e_3;
+                                                    document.getElementById('sp_4').value=ret.msg_e_4;
+                                                    document.getElementById('sp_5').value=ret.msg_e_5;
+                                                    document.getElementById('sp_6').value=ret.msg_e_6;
+                                                    document.getElementById('sp_7').value=ret.msg_e_7;
+                                                }
+                                        })
+                             }
+                            </script>
+                        </form>
+                    </div>
+                    <div class="side_bottom"></div>
+                </div>
+            </div>
+            <div class="show_btn"><span>在线客服</span></div>
+        </div><!--scrollsidebar end-->
+
+		<!-- Dashboard js -->
+		 <script src="{% static 'assets/js/vendors/jquery-3.2.1.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/popper.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/js/bootstrap.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/selectize.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/circle-progress.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/rating/jquery.rating-stars.js' %}"></script>
+
+		<!-- Fullside-menu Js-->
+		 <script src="{% static 'assets/plugins/fullside-menu/jquery.slimscroll.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/fullside-menu/waves.min.js' %}"></script>
+
+		<!-- Data tables -->
+		 <script src="{% static 'assets/plugins/datatable/jquery.dataTables.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.js' %}"></script>
+
+		<!-- Select2 js -->
+		 <script src="{% static 'assets/plugins/select2/select2.full.min.js' %}"></script>
+
+		<!-- Custom scroll bar Js-->
+		 <script src="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+
+		<!-- Custom Js-->
+		 <script src="{% static 'assets/js/custom.js' %}"></script>
+
+        <!-- Data table js -->
+        <script>
+        $(function(e) {
+        $('#example').DataTable();
+        } );
+        $(document).ready(function() {
+        $('#example2').DataTable();
+        } );
+        </script>
+
+        <!-- 图片懒加载 -->
+        <script src="{% static 'js/echo/echo.min.js' %}"></script>
+        <script>
+        Echo.init({
+            offset: 5,
+            throttle: 200
+        });
+        </script>
+
+       <!-- 输入页码跳转 -->
+        <script language=javascript>
+            function GoPage(Myself)
+            {
+            if (document.formpage.SkipPage.value > parseInt({{ page_of_objs.paginator.count }})/parseInt({{ quantity}}))
+            {   alert('请输入正确的的页码').css("color", "red")} //绝对路径可自己设置
+            else{
+            window.location.href="?page="+document.formpage.SkipPage.value+ "&store_name={{ store_name }}&colect_pruduct={{ colect_pruduct }}&status_pruduct={{ status_pruduct }}&SKU={{ SKU }}&quantity={{ quantity }}&SerialNumber={{ SerialNumber }}";
+            }
+            }
+        </script>
+
+        <!-- html太平洋时间 -->
+        <script>
+        // 时间设置
+        var  timezone = -7; // 时区 ： 东区时区1~12  西区时区-1~-12
+        var  date;
+
+         date = getLocalTime(timezone)
+          .toString()
+           .split("GMT+")[0]
+           .toString();
+        $("#showdate").html(date);
+
+       function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+       // 时间设置end
+       window.onload = function() {
+       // 调用时间
+       var setdate = setInterval(() => {
+       date = getLocalTime(timezone)
+         var year = date.getFullYear();
+         var month = date.getMonth()+1;
+         var Date = date.getDate();
+         var hour = date.getHours();  //获得小时、分钟、秒
+         var minute = date.getMinutes();
+         var second = date.getSeconds();
+         var weekday = 0;
+         switch(date.getDay()){
+            case 0:
+            weekday = "星期日";
+            break;
+            case 1:
+            weekday = "星期一";
+            break;
+            case 2:
+            weekday = "星期二";
+            break;
+            case 3:
+            weekday = "星期三";
+            break;
+            case 4:
+            weekday = "星期四";
+            break;
+            case 5:
+            weekday = "星期五";
+            break;
+            case 6:
+            weekday = "星期六";
+            break;
+         }
+        document.getElementById("showdate").innerHTML="<br>当前太平洋时间："+year+"年"+month+"月"+Date+"日&nbsp&nbsp;"+hour+":"+minute+":"+second+"&nbsp&nbsp;"+weekday;
+       }, 1000);
+       // 调用时间end
+        };
+      </script>
+
+        <!---选择框(上传产品，删除产品)-->
+        <script>
+            function jqchk1() { //jquery获取复选框值
+                var chk_value = [];
+                var str_1 = '正在上传,请稍后……';
+                var str_2 = '完成';
+                var str_3 = '错误信息：';
+                var str_4 = '';
+
+                //正在上传（状态文字）
+                $('.sp_3').html(str_1).css("color", "red");
+                $('.sp_1').html(str_4).css("color", "red");
+                $('.sp_2').html(str_4).css("color", "red");
+                $('.sp_4').html(str_4).css("color", "red");
+
+                //选择框的值
+                $('input[name="test"]:checked').each(function () {
+                    chk_value.push($(this).val());
+                });
+                var value = chk_value.join('');//把复选框的值以数组形式存放
+
+                $.ajax({
+                    type: "post",
+                    url: "/products_collect/",
+                    data: {
+                        valss: value,
+                        FIG:'FIG1',
+                        store_name:$('#store_name').val(),
+                        csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    },
+                    success: function (response) {
+                        var ret = JSON.parse(response);
+                        {#alert(ret.msg_1.msg_1)#}
+                        if (ret.msg_1) { //上传成功
+                            $('.sp_1').html(ret.msg_1).css("color", "red");
+                        }
+
+                        if (ret.msg_2) { //上传失败
+                            $('.sp_2').html(ret.msg_2).css("color", "red");
+                        }
+                        //上传完成
+                        $('.sp_3').html(str_2).css("color", "red");
+
+                        if (ret.msg_e) {//上传文件错误
+                            $('.sp_4').html(str_3 + ret.msg_e).css("color", "red");
+                        }
+                    }
+                })
+            }
+        </script><!---上传产品-->
+        <script>
+            function jqchk2() { //jquery获取复选框值
+                var chk_value = [];
+                var str_1 = '正在上传……';
+                var str_2 = '上传完成';
+                var str_3 = '文件错误：';
+
+                //正在上传（状态文字）
+                $('.sp_3').html(str_1).css("color", "red");
+
+                //选择框的值
+                $('input[name="test"]:checked').each(function () {
+                    chk_value.push($(this).val());
+                });
+                var value = chk_value.join('');//把复选框的值以数组形式存放
+
+                $.ajax({
+                    type: "post",
+                    url: "/products_collect/",
+                    data: {
+                        valss: value,
+                        FIG:'FIG2',
+                        csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    },
+                    success: function (response) {
+                        var ret = JSON.parse(response);
+                        alert(ret.msg_e)
+                    }
+                })
+            }
+        </script><!---删除产品-->
+        <script type="text/javascript">
+        $(function() {
+           $("#checkAll").click(function() {
+                $('input[name="test"]').prop("checked",this.checked);
+            });
+            var $subBox = $("input[name='test']");
+            $subBox.click(function(){
+                $("#checkAll").prop("checked",$subBox.length == $("input[name='test']:checked").length ? true : false);
+            });
+        });
+    </script>
+
+        <!--计算器-->
+        <script type="text/javascript" src="{% static 'jisuanqi/js/jquery.hhService.js' %}"></script>
+        <script type="text/javascript">
+            $(function(){
+            //悬浮计算器
+            $("#hhService").fix({
+                float : 'right',	      //默认设置 “left” or “right”
+                minStatue : true,     //默认设置 “false” or “true”
+                skin : 'blue',	    //默认设置 “blue”  “orange”  “green”  “red”  “pink”
+                durationTime : 400
+            });
+        });
+        </script>
+
+	</body>
+</html>

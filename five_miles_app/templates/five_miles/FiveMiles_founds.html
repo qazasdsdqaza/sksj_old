@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TOP资金统计</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../static/style/admin.css" media="all">
+  {#  回到顶部底部#}
+  <link rel="stylesheet" href="../../../static/myself_static_files/top_down/style.css" media="all">
+    <!---ECharts图表库-->
+  <script src="https://unpkg.com/echarts@4.8.0/dist/echarts.js" charset="utf-8"></script>
+  <style>
+        .layui-input,.layui-inline{
+            height:30px;
+        }
+        .layui-form-item .layui-input-inline{
+            width: 150px;
+        }
+  </style>
+</head>
+<body >
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body"  >
+            <table class="layui-hide" id="top-statistiics-table" lay-filter="top-statistiics-table"></table>
+            <script type="text/html" id="top-statistiics-table-总共">
+                  {% verbatim %}
+                        <a >{{ d.SUM_UP_PE }} / {{ d.SUM_UP_PE_REN }}</a>
+                  {% endverbatim %}
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{#  返回顶部底部按钮#}
+<div id="floatPanel">
+	<div class="ctrolPanel">
+		<a class="arrow" href="#"><span>顶部</span></a>
+		<a class="arrow" href="#"><span>底部</span></a>
+	</div>
+</div>
+
+  <script src="../../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'table','form', 'laydate','flow','jquery'], function(){
+    var table = layui.table;
+    var laydate = layui.laydate;
+    var form = layui.form;
+    var $ = layui.$;
+
+
+      $.ajax({
+        url:'/five_miles/FiveMiles_founds/',
+        type:'get',
+        data:{
+            cols:'cols',
+             },
+        success:function (response)
+            {
+             var res = JSON.parse(response);
+             var  col = [
+                     {type:'numbers'}
+                    ,{title: '时间',width:120,field:'Time_Date', align: 'center'}
+                    ,{title: '可提现($)',width:120,field:'可提', align: 'center'}
+                    ,{title: '待确认($)',width:120,field:'待确', align: 'center'}
+                    ,{title: '提现中($)',width:120,field:'提现', align: 'center'}
+                    ,{title: '总共($/¥)',width:200,field:'SUM_UP_PE', align: 'center',templet: '#top-statistiics-table-总共'}
+                    ,{title: '总共*0.92(¥)',width:130,field:'SUM_UP_PE_92', align: 'center'}
+                  ]
+
+                    length = res.store_name_users.length;
+                    for( i=0; i<length; i++){
+                        col.push({field: res.store_name_users[i].field, title: res.store_name_users[i].store_name+'($)',  align: 'center',width:240});
+                    }
+
+                    //表格控制，表格主体，采用方法渲染
+                    table.render({
+                      elem: '#top-statistiics-table'
+                      ,url: '/five_miles/FiveMiles_founds/'
+                      ,height: 'full-100'
+                      ,cellMinWidth: 110
+                      ,cols: [col]
+                      ,autoSort: false //禁用前端自动排序。
+                      ,page: true
+                      ,limit:'40'
+                    });
+            }
+        })
+
+
+    //触发排序事件
+    table.on('sort(top-statistiics-table)', function(obj){
+      table.reload('top-statistiics-table', {
+        initSort: obj
+        ,where: {
+           Sort_field: obj.field //排序字段
+          ,Sort_order: obj.type //排序方式
+        }
+      });
+    });
+
+{#页面到底到顶#}
+    $(function(){
+	// 页面浮动面板
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(0).click(function(){
+		$("html,body").animate({scrollTop :0}, 800);
+		return false;
+	});
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(1).click(function(){
+		$("html,body").animate({scrollTop : $(document).height()}, 800);
+		return false;
+	});
+});
+
+//the file id end//
+  });
+
+</script>
+</body>
+</html>

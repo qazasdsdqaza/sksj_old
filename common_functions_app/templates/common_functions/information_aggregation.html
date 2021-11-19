@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>卖家分析</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../static/style/admin.css" media="all">
+  {#  回到顶部底部#}
+  <link rel="stylesheet" href="../../../static/myself_static_files/top_down/style.css" media="all">
+  <!---ECharts图表库-->
+  <script src="https://unpkg.com/echarts@4.8.0/dist/echarts.js" charset="utf-8"></script>
+
+</head>
+<body>
+
+  <div class="layui-fluid" >
+    <div class="layui-row layui-col-space10">
+      <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+        <!-- 填充内容 -->
+        <div class="layui-card">
+          <div class="layui-card-header">销售数量及均价总览(近一个月)</div>
+          <div class="layui-card-body">
+              <div id="aabh1" style="width: 100%;height:550px;"></div>
+              <script type="text/javascript">
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('aabh1'));
+                    // 指定图表的配置项和数据
+                    option = {
+                                title: {
+                                    {#text: '销售数量及均价总览(近一个月)',#}
+                                    {#subtext: '数据来自西安兰特水电测控技术有限公司',#}
+                                    {#x: 'center'#}
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                                  type: 'cross'
+                                                  }
+                                },
+                                legend: {
+                                    data:['拍卖数量','一口价数量','总数量','平均成交价'],
+                                    x: 'center',
+                                    top:"5%",
+                                },
+                                toolbox: {
+                                    feature: {
+                                        dataZoom: {
+                                            yAxisIndex: 'none'
+                                        },
+                                        restore: {},
+                                        dataView: {show: true, readOnly: false},
+                                        saveAsImage: {}
+                                    }
+                                },
+                                axisPointer: {
+                                    link: {xAxisIndex: 'all'}
+                                },
+                                dataZoom: [
+                                    {
+                                        show: true,
+                                        realtime: true,
+                                        start: 70,
+                                        end: 100,
+                                        xAxisIndex: [0, 1]
+                                    },
+                                    {
+                                        type: 'inside',
+                                        realtime: true,
+                                        start: 0,
+                                        end: 100,
+                                        xAxisIndex: [0, 1]
+                                    }
+                                ],
+                                grid: [{
+                                    left: 70,
+                                    right: 50,
+                                    top: '15%',
+                                    height: '35%'
+                                }, {
+                                    left: 70,
+                                    right: 50,
+                                    top: '62%',
+                                    height: '25%'
+                                }],
+                                xAxis : [
+                                    {
+                                        type : 'time',
+                                        boundaryGap : false,
+                                        axisLine: {onZero: true},
+                                        {#data: timeData#}
+                                    },
+                                    {
+                                        gridIndex: 1,
+                                        type : 'time',
+                                        boundaryGap : false,
+                                        axisLine: {onZero: true},
+                                        {#data: timeData,#}
+                                        {#position: 'top'#}
+                                    }
+                                ],
+                                yAxis : [
+                                    {
+                                        name : '单量',
+                                        type : 'value',
+                                        position:'left',
+                                        axisLabel: {
+                                                        formatter: '{value} 单'
+                                                    }
+                                    },
+                                    {
+                                        gridIndex: 1,
+                                        name : '价格',
+                                        position:'left',
+                                        type : 'value',
+                                        axisLabel: {
+                                                        formatter: '{value} 美元'
+                                                    }
+
+                                    }
+                                ],
+                                series : [
+                                    {
+                                        name:'拍卖数量',
+                                        type:'bar',
+                                        barWidth:'6',
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        {#stack:'数量',#}
+                                        data:{{ Table_bid_oders }},
+                                        markPoint: {
+                                                        data: [
+                                                            {type: 'max', name: '最大值'},
+                                                            {type: 'min', name: '最小值'}
+                                                        ]
+                                                    },
+                                    },
+                                    {
+                                        name:'一口价数量',
+                                        type:'bar',
+                                        barWidth:'6',
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        {#stack:'数量',#}
+                                        data: {{ Table_buy_now_oders }},
+                                        markPoint: {
+                                                        data: [
+                                                            {type: 'max', name: '最大值'},
+                                                            {type: 'min', name: '最小值'}
+                                                        ]
+                                                    },
+                                    },
+                                    {
+                                        name:'总数量',
+                                        type:'line',
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        data:{{ Table_product_sum }},
+                                        markLine: {
+                                                data: [
+                                                    {type: 'average', name: '总数量'}
+                                                ]
+                                            }
+                                    },
+
+                                    {
+                                        name:'平均成交价',
+                                        type:'line',
+                                        xAxisIndex: 1,
+                                        yAxisIndex: 1,
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        data:{{ Table_hammer_price_local }},
+                                        markLine: {
+                                                data: [
+                                                    {type: 'average', name: '平均成交价'}
+                                                ]
+                                            }
+
+                                    }
+                                ]
+                            };
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                    window.addEventListener("resize", function() {myChart.resize();});
+              </script>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
+        <div class="layui-card">
+          <div class="layui-card-header">卖家排行_TOP30（一周）</div>
+          <div class="layui-card-body">
+               <div id="aabh2" style="width: 100%;height:400px;"></div>
+          </div>
+            <script type="text/javascript">
+                // 基于准备好的dom，初始化echarts实例
+                var myChart2 = echarts.init(document.getElementById('aabh2'));
+                var seller = '{{ Table_seller }}';
+                seller = seller.replace(/&amp;/g,"&");
+                seller=seller.split(",");
+                // 指定图表的配置项和数据
+                option = {
+                        title: {
+                            text: '条件：卖出数量',
+                            {#subtext: '数据来自网络'#}
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        toolbox: {
+                                feature: {
+                                    restore: {},
+                                    dataView: {show: true, readOnly: false},
+                                    saveAsImage: {}
+                                }
+                            },
+                        legend: {
+                            data: ['1周'],
+                            {#selected:{'1周': true,'1个月':false,'3个月':false}#}
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'value',
+                            boundaryGap: [0, 0.01]
+                        },
+                        yAxis: {
+                            name:'卖家姓名',
+                            type: 'category',
+                            {#data: ['TOP20', 'TOP19', 'TOP18', 'TOP17', 'TOP16', 'TOP15','TOP14', 'TOP13', 'TOP12', 'TOP11','TOP10', 'TOP9', 'TOP8', 'TOP7', 'TOP6', 'TOP5','TOP4', 'TOP3', 'TOP2', 'TOP1']#}
+                            data: seller
+
+                        },
+                        series: [
+                            {
+                                name: '1周',
+                                type: 'bar',
+                                barWidth:'6',
+                                symbolSize: 8,
+                                {#data: [1, 2, 3, 4, 5,6, 7, 8, 9, 10, 11,12, 13, 14, 15, 16, 17,18,19,20],#}
+                                data:{{ Table_seller_TOP }},
+                                label: {
+                                            show: true,
+                                            position: 'right',
+                                            {#formatter: '{{ seller }}',#}
+                                        },
+                            }
+                        ]
+                    };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart2.setOption(option);
+                window.addEventListener("resize", function() {myChart2.resize();});
+            </script>
+        </div>
+      </div>
+      <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
+        <div class="layui-card">
+          <div class="layui-card-header">卖家排行_TOP30（一个月）</div>
+          <div class="layui-card-body">
+                <div id="aabh22" style="width: 100%;height:400px;"></div>
+          </div>
+          <script type="text/javascript">
+                                        // 基于准备好的dom，初始化echarts实例
+                                        var myChart22 = echarts.init(document.getElementById('aabh22'));
+                                        var seller_mouth = '{{ Table_seller_mouth }}';
+                                        seller_mouth = seller_mouth.replace(/&amp;/g,"&");
+                                        seller_mouth=seller_mouth.split(",");
+                                        // 指定图表的配置项和数据
+                                        option = {
+                                                title: {
+                                                    text: '条件：卖出数量',
+                                                    {#subtext: '数据来自网络'#}
+                                                },
+                                                tooltip: {
+                                                    trigger: 'axis',
+                                                    axisPointer: {
+                                                        type: 'shadow'
+                                                    }
+                                                },
+                                                toolbox: {
+                                                        feature: {
+                                                            restore: {},
+                                                            dataView: {show: true, readOnly: false},
+                                                            saveAsImage: {}
+                                                        }
+                                                    },
+                                                legend: {
+                                                    data: ['1个月'],
+                                                    {#selected:{'1周': true,'1个月':false,'3个月':false}#}
+                                                },
+                                                grid: {
+                                                    left: '3%',
+                                                    right: '4%',
+                                                    bottom: '3%',
+                                                    containLabel: true
+                                                },
+                                                xAxis: {
+                                                    type: 'value',
+                                                    boundaryGap: [0, 0.01]
+                                                },
+                                                yAxis: {
+                                                    name:'卖家姓名',
+                                                    type: 'category',
+                                                    {#data: ['TOP20', 'TOP19', 'TOP18', 'TOP17', 'TOP16', 'TOP15','TOP14', 'TOP13', 'TOP12', 'TOP11','TOP10', 'TOP9', 'TOP8', 'TOP7', 'TOP6', 'TOP5','TOP4', 'TOP3', 'TOP2', 'TOP1']#}
+                                                    data: seller_mouth
+
+                                                },
+                                                series: [
+                                                    {
+                                                        name: '1个月',
+                                                        type: 'bar',
+                                                        barWidth:'6',
+                                                        symbolSize: 8,
+
+                                                        {#data: [1, 2, 3, 4, 5,6, 7, 8, 9, 10, 11,12, 13, 14, 15, 16, 17,18,19,20],#}
+                                                        data:{{ Table_seller_TOP_mouth }},
+                                                        label: {
+                                                                    show: true,
+                                                                    position: 'right',
+                                                                    {#formatter: '{{ seller }}',#}
+                                                                },
+                                                    }
+                                                ]
+                                            };
+                                        // 使用刚指定的配置项和数据显示图表。
+                                        myChart22.setOption(option);
+                                        window.addEventListener("resize", function() {myChart22.resize();});
+                                    </script>
+        </div>
+      </div>
+      <div class="layui-col-xs6 layui-col-sm7 layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">到底了</div>
+          <div class="layui-card-body"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index']);
+  </script>
+</body>
+</html>

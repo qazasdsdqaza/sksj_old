@@ -1,0 +1,146 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<title>
+            账户登录</title>
+		<meta name="description" content="Restyling jQuery UI Widgets and Elements" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/ace-fonts.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/ace.min.css' %}" id="main-ace-style" />
+		<!--[if lte IE 9]>
+			<link rel="stylesheet" href="{% static 'css/ace-part2.min.css' %}" />
+		<![endif]-->
+		<!--[if lte IE 9]>
+		  <link rel="stylesheet" href="{% static 'css/ace-ie.min.css' %}" />
+		<![endif]-->
+		<script src="{% static 'js/ace-extra.min.js' %}"></script>
+		<!--[if lte IE 8]>
+		<script src="{% static 'js/html5shiv.min.js' %}"></script>
+		<script src="{% static 'js/respond.min.js' %}"></script>
+		<![endif]-->
+	</head>
+	</head>
+
+	<body style="background: url({% static 'images/aaa_login.png' %}) no-repeat center; height:100%; width: 100%;background-size:cover;filter: alpha(opacity=70);opacity: 0.7;" class="login-layout blur-login">
+
+		<div class="main-container">
+			<div class="main-content">
+				<div class="row">
+					<div class="col-sm-10 col-sm-offset-1">
+						<div class="login-container">
+{#							<div class="center">#}
+{#								<h1>#}
+{#									<span class="white">这里放后台登录名称</span>#}
+{#								</h1>#}
+{#							</div>#}
+							<div  class="space-6"></div>
+
+							<div   class="position-relative">
+								<div id="login-box" style="position: relative; top: 200px;border: 1px solid #999999;border-radius: 5px" class="login-box visible widget-box no-border">
+									<div class="widget-body" style="border-radius: 5px;">
+										<div class="widget-main" style="border-radius: 5px; height: 280px">
+
+                                                <h4 class="header blue lighter bigger">
+                                                    &nbsp;<a style="color:black">用户登录</a>
+                                                      <a style="color:cadetblue; float: right"href="/admin/">管理员</a>
+                                                </h4>
+
+                                                <div class="space-6"></div>
+
+                                                <form action="">
+                                                    {% csrf_token %}
+                                                    <fieldset>
+                                                        <label class="block clearfix">
+                                                            <span class="block input-icon input-icon-right">
+                                                                <input type="text" id="username" style="width: 299px;height: 40px;" class="form-control" placeholder="请输入账号" />
+                                                            </span>
+                                                        </label>
+
+                                                        <label style="margin-top: 15px;" class="block clearfix">
+                                                            <span class="block input-icon input-icon-right">
+                                                                <input type="password" id="password" style="width: 299px;height: 40px;" class="form-control" placeholder="请输入密码" />
+                                                            </span>
+                                                        </label>
+
+                                                        <div class="space"></div>
+
+                                                        <div class="clearfix">
+                                                            <button style="position: relative;left: 98px; height: 40px;
+                                                            border: 1px solid #000000;width: 31%;
+                                                            background-color:#545C64;color: white;
+                                                            border-radius: 5px;" type="button">
+                                                                <span class="" id="bt">登录</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="space-4"></div>
+                                                        <div>
+                                                            <span class="sp"></span>
+                                                        </div>
+                                                    </fieldset>
+                                                </form>
+                                        </div>
+									</div><!-- /.widget-body -->
+								</div><!-- /.login-box -->
+							</div><!-- /.position-relative -->
+						</div>
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div><!-- /.main-content -->
+		</div><!-- /.main-container -->
+
+
+        <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+        <script>
+            $('#bt').click(function () {
+                $.ajax({
+                    url:'/login/',
+                    type:'post',
+                    data:{
+                        username:$('#username').val(),
+                        password:$('#password').val(),
+                        csrfmiddlewaretoken:$("[name=csrfmiddlewaretoken]").val()
+                    },
+                    success:function (response) {
+                        var ret = JSON.parse(response);
+                        $('.sp').html('正在登录，请稍后……').css("color", "red");
+                        if (ret.user){
+                            //登录成功, 发送请求到主页
+                            if (ret.user=='aliexpress'){
+                                   //速卖通账号，只能进入计算页面
+                                   location.href='/Function_1/'
+                                }
+                            else if (ret.user=='up_data'){
+                                   //上传产品，
+                                   location.href='/products/'
+                                }
+                            else if (ret.user=='zhg' || ret.user=='zq' || ret.user=='lsx' || ret.user=='a97306030' || ret.user=='SYL'|| ret.user=='fangling'){
+                                   //上传产品，
+                                   location.href='/index/'
+                                }
+                            else {
+                                //后台用户，能进入所有后台
+                                location.href='/profitStatistics_3/'
+                                }
+
+                            }
+                        else {
+                            //登录失败
+                            $('.sp').html('').css("color", "red");
+                            $('.sp').html(ret.errmsg).css("color", "red");
+                            //让错误信息不一直显示，规定显示1秒钟之后就消失
+                            setTimeout(function () {
+                                $('.sp').html("")
+                            }, 3000)
+                        }
+                    }
+                })
+            })
+        </script>
+    </body>
+</html>

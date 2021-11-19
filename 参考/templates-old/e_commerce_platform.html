@@ -1,0 +1,934 @@
+﻿{% load staticfiles %}
+<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<meta name="msapplication-TileColor" content="#0670f0">
+		<meta name="theme-color" content="#2ddcd3">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+
+
+		<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon"/>
+		<link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+
+		<!-- Title -->
+		<title>摇钱数（其他平台）</title>
+		<link rel="stylesheet" href="{% static 'assets/fonts/fonts/font-awesome.min.css' %}" />
+
+		<!-- Bootstrap Css -->
+		<link href="{% static 'assets/plugins/bootstrap-4.1.3/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+		<!-- Sidemenu Css -->
+		<link href="{% static 'assets/plugins/fullside-menu/css/style.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/fullside-menu/waves.min.css' %}" rel="stylesheet" />
+
+		<!-- Dashboard Css -->
+		<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+
+		<!-- c3.js Charts Plugin -->
+		<link href="{% static 'assets/plugins/charts-c3/c3-chart.css' %}" rel="stylesheet" />
+
+		<!-- Data table css -->
+		<link href="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+
+		<!-- Slect2 css -->
+		<link href="{% static 'assets/plugins/select2/select2.min.css' %}" rel="stylesheet" />
+
+		<!-- Custom scroll bar css-->
+		<link href="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" />
+
+		<!---Font icons-->
+		<link href="{% static 'assets/plugins/iconfonts/plugin.css' %}" rel="stylesheet" />
+
+        <!---Highcharts图表库-->
+        <script src="https://code.highcharts.com.cn/jquery/jquery-1.8.3.min.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/data.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/series-label.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/oldie.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/themes/grid-light.js"></script>
+	</head>
+	<body>
+		<div id="loading"></div>
+		<div class="page">
+			<div class="page-main">
+                <!-- 页眉目录栏 -->
+				<div class="app-header1 header py-1 d-flex">
+					<div class="container-fluid">
+						<div class="d-flex">
+							<a class="header-brand" href="">
+								<img src="{% static 'images/logo1.png' %}" class="header-brand-img" alt="Uplor  logo">
+							</a>
+							<div class="menu-toggle-button">
+								<a class="nav-link wave-effect" href="#" id="sidebarCollapse">
+									<span class="fa fa-bars"></span>
+								</a>
+							</div>
+							<div>
+								<div class="searching">
+									<a href="javascript:void(0)" class="search-open searching1">
+										<i class="fa fa-search"></i>
+									</a>
+									<div class="search-inline">
+										<form>
+											<input type="text" class="form-control" placeholder="Searching...">
+											<button type="submit">
+												<i class="fa fa-search"></i>
+											</button>
+											<a href="javascript:void(0)" class="search-close">
+												<i class="fa fa-times"></i>
+											</a>
+										</form>
+									</div>
+								</div>
+							</div>
+                            <div class="d-flex order-lg-1 ml-auto"  style="color: white" id="showdate"></div> <!--#太平洋时间 -->
+							<div class="d-flex order-lg-2 ml-auto">
+								<div class="dropdown d-none d-md-flex" >
+									<a  class="nav-link icon full-screen-link">
+										<i class="fe fe-maximize floating"  id="fullscreen-button"></i>
+									</a>
+							</div>
+                            <div class="profile_info">
+								<h2><a  href="/logout/">退出登录</a></h2>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wrapper">
+					<!-- 侧边目录栏 -->
+					<nav id="sidebar" class="nav-sidebar">
+						<div class="profile clearfix">
+							<div class="profile_pic">
+								<img src="{% static 'images/aaa.png' %}" alt="..." class="img-circle profile_img">
+{#								<a href="editprofile.html" class="profile-img">#}
+{#									<span class="fa fa-pencil" aria-hidden="true"></span>#}
+{#								</a>#}
+							</div>
+							<div class="profile_info">
+								<h3>天道酬勤 地道酬善</h3>
+								<h3>人道酬诚 商道酬信</h3>
+							</div>
+						</div>
+						<ul class="list-unstyled components" id="accordion">
+							<li class="border-0"><h3>Tophatter</h3><li>
+                            <li>
+								<a href="/information_aggregation/" class=" wave-effect accordion-toggle " target="_blank"><i class="fa fa-diamond mr-2 sidebarpink"></i> 信息汇总展示</a>
+							</li>
+							<li>
+								<a href="#Submenu1" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-rocket mr-2 sidebarprimary"></i> 平台分析
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu1" data-parent="#accordion">
+									<li>
+										<a href="/index/" target="_blank">平台商品统计</a>
+									</li>
+									<li>
+										<a href="/goodslist/" target="_blank">商品分析</a>
+									</li>
+									<li>
+										<a href="/seller/" target="_blank">卖家分析</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#Submenu2" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 利润统计
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu2" data-parent="#accordion">
+									<li>
+										<a href="/profitStatistics/" target="_blank">订单统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_2/" target="_blank">拍卖统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_3/" target="_blank">拍卖统计(原始)</a>
+									</li>
+									<li>
+										<a href="/buy_nows/" target="_blank">一口价统计</a>
+									</li>
+                                    <li>
+										<a href="/buy_nows_page/" target="_blank">一口价（页面数据）</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu3" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu3" data-parent="#accordion">
+                                    <li>
+										<a href="/products_operate/ " target="_blank">批量上传</a>
+									</li>
+                                    <li>
+										<a href="/products_operate_single/" target="_blank">上传商品</a>
+									</li>
+									<li>
+										<a href="/products/" target="_blank">店铺所有商品</a>
+									</li>
+                                    <li>
+										<a href="/products_collect/" target="_blank">商品库</a>
+									</li>
+                                    <li>
+										<a href="/products_parets/" target="_blank">配件库</a>
+									</li>
+									<li>
+										<a href="/SKU_list_2/" target="_blank">商品信息录入</a>
+									</li>
+								</ul>
+							</li>
+                            <li >
+								<a href="#Submenu7" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-table mr-2 sidebarpurple"></i> 发货物流
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu7" data-parent="#accordion">
+									<li>
+										<a href="/logistics_statistic/" target="_blank">物流规则 </a>
+									</li>
+									<li>
+										<a href="/return_performance/" target="_blank">退货表现</a>
+									</li>
+                                    <li>
+										<a href="/refund_orders/" target="_blank">订单退货</a>
+									</li>
+								</ul>
+							</li>
+							<li >
+								<a href="#Submenu8" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-sun-o mr-2 sidebarpink"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu8" data-parent="#accordion">
+									<li>
+										<a href="/founds/" target="_blank">资金统计 </a>
+									</li>
+									<li>
+										<a href="/fund_analysis/" target="_blank">资金表现</a>
+									</li>
+								</ul>
+							</li>
+                            <li><h3>5miles</h3><li>
+							<li>
+								<a href="#Submenu4" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu4" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_products_5miles/" target="_blank">所有商品</a>
+									</li>
+                                    <li>
+										<a href="/five_miles/up_products_5miles/" target="_blank">上传商品</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu5" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 订单管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu5" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_oders_5miles/" target="_blank">所有订单</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu6" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu6" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/funds_5miles/" target="_blank">余额状态</a>
+									</li>
+								</ul>
+							</li>
+                            <li><h3>其他电商平台</h3><li>
+                            <li >
+								<a href="#Submenu10" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-shopping-cart mr-2 sidebarsuccess"></i> 速卖通
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu10" data-parent="#accordion">
+									<li>
+										<a href="/Function_1/" target="_blank">价格计算</a>
+									</li>
+								</ul>
+							</li>
+							<li><h3>服务</h3><li>
+							<li>
+								<a href="#Submenu9" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 拓展功能
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu9" data-parent="#accordion">
+									<li>
+										<a href="/brand/" target="_blank" >平台商标统计</a>
+									</li>
+                                    <li>
+										<a href="/e_commerce_platform/" >各类电商平台介绍</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+                    <!-- 内容区域 -->
+{#					<div class=" content-area overflow-hidden">#}
+{#						<div class="row">#}
+{#							<div class="col-md-12 col-lg-12">#}
+{#								<div class="card">#}
+{#									<div class="card-header">#}
+{#                                        <form id="searchForm"  method="post" action="" target="_top">#}
+{#                                                {% csrf_token %}#}
+{#                                                <div style="width: 1500px;height: 60px;">#}
+{#                                                    <div style="width: 180px; height: 40px; float: left">#}
+{#                                                        <span style="">账户选择：</span>#}
+{#                                                        <select style="width: 80px; height: 36px; border-radius: 4px;" name="store_name" id="store_name">#}
+{#                                                            <option value="all">all</option>#}
+{#                                                            <option value="A">A</option>#}
+{#                                                            <option value="B">B</option>#}
+{#                                                            <option value="C">C</option>#}
+{#                                                            <option value="D">D</option>#}
+{#                                                            <option value="E">E</option>#}
+{#                                                            <option value="F">F</option>#}
+{#                                                            <option value="G">G</option>#}
+{#                                                            <option value="H">H</option>#}
+{#                                                            <option value="I">I</option>#}
+{#                                                            <option value="J">J</option>#}
+{#                                                            <option value="K">K</option>#}
+{#                                                            <option value="L">L</option>#}
+{#                                                            <option value="M">M</option>#}
+{#                                                            <option value="N">N</option>#}
+{#                                                            <option value="O">O</option>#}
+{#                                                            <option value="P">P</option>#}
+                                {#                            <option value="刷新">刷新</option>#}
+{#                                                            <option selected="selected" style="color:whitesmoke" value={{ store_name }}>{{ store_name }}</option>#}
+{#                                                        </select>#}
+{#                                                    </div>#}
+{#                                                    <div style="width: 180px; height: 40px; float: left">#}
+{#                                                        <span style="">时间段：</span>#}
+{#                                                        <select style="width: 80px; height: 36px; border-radius: 4px;" name="time_local" id="time_local">#}
+{#                                                            <option value="">时间段</option>#}
+{#                                                            <option value="today">today</option>#}
+{#                                                            <option value="yesterday">yesterday</option>#}
+{#                                                            <option value="yesterday1">前天</option>#}
+{#                                                            <option value="yesterday2">大前天</option>#}
+{#                                                            <option value="last_7_days">last_7_days</option>#}
+{#                                                            <option value="last_30_days">last_30_days</option>#}
+{#                                                            <option value="last_60_days">last_60_days</option>#}
+{#                                                            <option value="last_90_days">last_90_days</option>#}
+{#                                                            <option value="all_time">all_time</option>#}
+{#                                                        </select>#}
+{#                                                    </div>#}
+{#                                                    <div style="width:   250px; height: 40px; float: left">#}
+{#                                                        <span style="">起始时间</a>:</span>#}
+{#                                                        <input id="start_time" style="width: 160px; height: 36px; border-radius: 4px;" type="date" name="start_time"value={{ start_time }}>#}
+{#                                                    </div>#}
+{#                                                     <div style="width:   250px; height: 40px; float: left">#}
+{#                                                        <span style="">结束时间：</span>#}
+{#                                                        <input id="end_time" style="width: 150px; height: 36px; border-radius: 4px;" type="date" name="end_time"value={{ end_time }}>#}
+{#                                                    </div>#}
+{#                                                    <div style="width: 220px; height: 40px; float: left">#}
+{#                                                        <span style="">SKU：</span>#}
+{#                                                        <input id="product_identifier" style="width: 160px; height: 36px; border-radius: 4px;" type="text" name="product_identifier" placeholder="请输入SKU关键字"value={{ product_identifier }}>#}
+{#                                                    </div>#}
+{#                                                    <div style="width: 180px; height: 40px; float: left">#}
+{#                                                        <span style="">结果数量：</span>#}
+{#                                                        <input id="results_number" style="width: 80px; height: 36px; border-radius: 4px;" type="text" name="results_number" placeholder="请输入数值"value={{ results_number }}>#}
+{#                                                    </div>#}
+{#                                                    <div style="width:  150px; height: 60px; float: left;vertical-align: middle">#}
+{#                                                            <input style="width: 120px;height: 30px;background: #4ebc30"type="submit" value="查询数据">#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </form>#}
+{#										<h4 class="page-title">订单统计</h4>#}
+{#										<div class="card-options">#}
+{#											<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>#}
+{#											<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>#}
+{#										</div>#}
+{#									</div>#}
+{##}
+{#									<div class="card-body">#}
+{#										<div class="table-responsive">#}
+{#											<table  class="table table-striped table-bordered" >#}
+{#												<thead style="background: #5bc0de">#}
+{#                                                    <tr id="my_tr" >#}
+{#                                                        <th style="text-align: center">预估成交率(两个月内)</th>#}
+{#                                                        <th style="text-align: center">均SFB($)(两个月内)</th>#}
+{#                                                        <th style="text-align: center">总订单数</th>#}
+{#                                                        <th style="text-align: center">退货数(自己/买家/总)</th>#}
+{#                                                        <th style="text-align: center">退货率(自己/买家/总)</th>#}
+{#                                                        <th style="text-align: center">退货费(¥)(自己/买家/总)</th>#}
+{#                                                        <th style="text-align: center">汇率</th>#}
+{#                                                        <th style="text-align: center">平均到手价($/¥)</th>#}
+{#                                                        <th style="text-align: center">总成本(¥)</th>#}
+{#                                                        <th style="text-align: center">总毛利润(¥)</th>#}
+{#                                                        <th style="text-align: center">总利润率</th>#}
+{#                                                    </tr>#}
+{#												</thead>#}
+{#												<tbody>#}
+{#                                                    <tr id="my_tr2" style="font-size: 15px;">#}
+{#                                                        <td style="text-align: center">76.24%</td><!--预估成交率-->#}
+{#                                                        <td style="text-align: center">1.02</td><!--均SFB-->#}
+{#                                                        <td style="text-align: center">{{ PAID_SUM}}</td><!--订单数-->#}
+{#                                                        <td style="text-align: center">{{REFUN_SUM_OWN}} / {{REFUN_SUM_BUYER}} / {{ REFUN_SUM}}</td><!--退货数-->#}
+{#                                                        <td style="text-align: center">{{PROFIT_REFUN_OWN}}% / {{PROFIT_REFUN_BUYER}}% / {{ PROFIT_REFUN}}%</td><!--退货率-->#}
+{#                                                        <td style="text-align: center">{{REFUND_AMOUNT_OWN}} / {{REFUND_AMOUNT_BUYER}} / {{ REFUND_AMOUNT}}</td><!--总退货费-->#}
+{#                                                        <td style="text-align: center">{{EXCHANGE_RATE}}</td>#}
+{#                                                        <td style="text-align: center">{{ DIS_AMOUT1_AVG}} / {{DIS_AMOUT2_AVG}}</td>#}
+{#                                                        <td style="text-align: center">{{ COSTF_OF}}</td>#}
+{##}
+{#                                                        {% if NET_PROFIT > 0  %}#}
+{#                                                            <td style="text-align: center">{{ NET_PROFIT}}</td><!--总毛利润-->#}
+{#                                                        {% else %}#}
+{#                                                            <td style="text-align: center;color:orangered">{{ NET_PROFIT}}</td><!--总毛利润-->#}
+{#                                                        {% endif %}#}
+{##}
+{#                                                        {% if PROFIT_MARGIN > 0  %}#}
+{#                                                            <td style="text-align: center">{{ PROFIT_MARGIN}}%</td><!--总利润率-->#}
+{#                                                        {% else %}#}
+{#                                                            <td style="text-align: center;color:orangered">{{ PROFIT_MARGIN}}%</td><!--总利润率-->#}
+{#                                                        {% endif %}#}
+{#                                                    </tr>#}
+{#												</tbody>#}
+{#											</table>#}
+{#										</div>#}
+{#									</div>#}
+{#									<!-- table-wrapper -->#}
+{#								</div>#}
+{#								<!-- section-wrapper -->#}
+{#							</div>#}
+{#							<div class="col-md-12 col-lg-12">#}
+{#								<div class="card">#}
+{#                                    <div class="card-header">#}
+{#                                        <div class="card-options">#}
+{#											<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>#}
+{#											<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>#}
+{#										</div>#}
+{#									</div>#}
+{#									<div class="card-body">#}
+{#										<div class="table-responsive">#}
+{#											<table id="example2" class="hover table-bordered" >#}
+{#												<thead style="background: #0ec0e1">#}
+{#                                                    <tr >#}
+{#                                                        <td style="text-align: center;width: 50px">账户</td>#}
+{#                                                        <td style="text-align: center;width: 80px">商品图</td>#}
+{#                                                        <td style="text-align: center;width: 50px">利润率</td>#}
+{#                                                        <td style="text-align: center;width: 50px">均毛利(¥)</td>#}
+{#                                                        <td style="text-align: center;width: 40px">总订单</td>#}
+{#                                                        <td style="text-align: center;width: 100px">订单状态</td>#}
+{#                                                        <td style="text-align: center;width: 50px">退货率</td>#}
+{#                                                        <td style="text-align: center;width: 50px">退货费(¥)</td>#}
+{#                                                        <td style="text-align: center;width: 50px">均到手价($/¥)</td>#}
+{#                                                        <td style="text-align: center;width: 50px">商品(¥)</td>#}
+{#                                                        <td style="text-align: center;width: 80px">买送一</td>#}
+{#                                                        <td style="text-align: center;width: 120px">配件</td>#}
+{#                                                        <td style="text-align: center;width: 40px">成本(¥)</td>#}
+{#                                                        <td style="text-align: center;width: 40px">毛利润(¥)</td>#}
+{#                                                        <td style="text-align: center;width: 50px">编辑</td>#}
+{#                                                    </tr>#}
+{#												</thead>#}
+{#												<tbody>#}
+{#                                                    {% for StoreData in StoreDatas %}#}
+{#                                                        <tr   >#}
+{#                                                            <td style="text-align: center;"><!--账户名-->#}
+{#                                                                <p>{{ StoreData.store_name}}</p>#}
+{#                                                                <div >#}
+{#                                                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#{{ StoreData.SKU}}a">#}
+{#                                                                            统计</button> <!---->#}
+{#                                                                </div>#}
+{#                                                                            <!-- 弹出框信息 -->#}
+{#                                                                <div class="modal fade" id="{{ StoreData.SKU}}a" tabindex="-1" role="dialog"  aria-hidden="true"  >#}
+{#                                                                    <div  class="modal-dialog modal-lg modal-dialog-centered"  role="document"  >#}
+{#                                                                        <div class="modal-content" style="width: 1000px"  >#}
+{#                                                                            <div class="modal-header" >#}
+{#                                                                                <h5 class="modal-title">{{ StoreData.SKU}}</h5>#}
+{#                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                                                                                    <span aria-hidden="true">&times;</span>#}
+{#                                                                                </button>#}
+{#                                                                            </div>#}
+{#                                                                            <div class="modal-body"  >#}
+{#                                                                                 <div id="{{ StoreData.SKU}}aa" style="min-width:400px;height:400px"></div>#}
+{#                                                                            </div>#}
+{#                                                                        </div>#}
+{#                                                                    </div>#}
+{#                                                                </div>#}
+{##}
+{#                                                                <script>#}
+{#                                                                    var chart = null;#}
+{#                                                                    // 获取 CSV 数据并初始化图表#}
+{#                                                                    $.getJSON('https://data.jianshukeji.com/jsonp?filename=csv/analytics.csv&callback=?', function (csv) {#}
+{#                                                                        chart = Highcharts.chart('{{ StoreData.SKU}}aa', {#}
+{#                                                                            data: {#}
+{#                                                                                csv: csv#}
+{#                                                                            },#}
+{#                                                                            title: {#}
+{#                                                                                text: '某网站日常访问量'#}
+{#                                                                            },#}
+{#                                                                            subtitle: {#}
+{#                                                                                text: '数据来源: Google Analytics'#}
+{#                                                                            },#}
+{#                                                                            xAxis: {#}
+{#                                                                                tickInterval: 7 * 24 * 3600 * 1000, // 坐标轴刻度间隔为一星期#}
+{#                                                                                tickWidth: 0,#}
+{#                                                                                gridLineWidth: 1,#}
+{#                                                                                labels: {#}
+{#                                                                                    align: 'left',#}
+{#                                                                                    x: 3,#}
+{#                                                                                    y: -3#}
+{#                                                                                },#}
+{#                                                                                // 时间格式化字符#}
+{#                                                                                // 默认会根据当前的刻度间隔取对应的值，即当刻度间隔为一周时，取 week 值#}
+{#                                                                                dateTimeLabelFormats: {#}
+{#                                                                                    week: '%Y-%m-%d'#}
+{#                                                                                }#}
+{#                                                                            },#}
+{#                                                                            yAxis: [{ // 第一个 Y 轴，放置在左边（默认在坐标）#}
+{#                                                                                title: {#}
+{#                                                                                    text: null#}
+{#                                                                                },#}
+{#                                                                                labels: {#}
+{#                                                                                    align: 'left',#}
+{#                                                                                    x: 3,#}
+{#                                                                                    y: 16,#}
+{#                                                                                    format: '{value:.,0f}'#}
+{#                                                                                },#}
+{#                                                                                showFirstLabel: false#}
+{#                                                                            }, {    // 第二个坐标轴，放置在右边#}
+{#                                                                                linkedTo: 0,#}
+{#                                                                                gridLineWidth: 0,#}
+{#                                                                                opposite: true,  // 通过此参数设置坐标轴显示在对立面#}
+{#                                                                                title: {#}
+{#                                                                                    text: null#}
+{#                                                                                },#}
+{#                                                                                labels: {#}
+{#                                                                                    align: 'right',#}
+{#                                                                                    x: -3,#}
+{#                                                                                    y: 16,#}
+{#                                                                                    format: '{value:.,0f}'#}
+{#                                                                                },#}
+{#                                                                                showFirstLabel: false#}
+{#                                                                            }],#}
+{#                                                                            legend: {#}
+{#                                                                                align: 'left',#}
+{#                                                                                verticalAlign: 'top',#}
+{#                                                                                y: 20,#}
+{#                                                                                floating: true,#}
+{#                                                                                borderWidth: 0#}
+{#                                                                            },#}
+{#                                                                            tooltip: {#}
+{#                                                                                shared: true,#}
+{#                                                                                crosshairs: true,#}
+{#                                                                                // 时间格式化字符#}
+{#                                                                                // 默认会根据当前的数据点间隔取对应的值#}
+{#                                                                                // 当前图表中数据点间隔为 1天，所以配置 day 值即可#}
+{#                                                                                dateTimeLabelFormats: {#}
+{#                                                                                    day: '%Y-%m-%d'#}
+{#                                                                                }#}
+{#                                                                            },#}
+{#                                                                            plotOptions: {#}
+{#                                                                                series: {#}
+{#                                                                                    cursor: 'pointer',#}
+{#                                                                                    point: {#}
+{#                                                                                        events: {#}
+{#                                                                                            // 数据点点击事件#}
+{#                                                                                            // 其中 e 变量为事件对象，this 为当前数据点对象#}
+{#                                                                                            click: function (e) {#}
+{#                                                                                                $('.message').html( Highcharts.dateFormat('%Y-%m-%d', this.x) + ':<br/>  访问量：' +this.y );#}
+{#                                                                                            }#}
+{#                                                                                        }#}
+{#                                                                                    },#}
+{#                                                                                    marker: {#}
+{#                                                                                        lineWidth: 1#}
+{#                                                                                    }#}
+{#                                                                                }#}
+{#                                                                            }#}
+{#                                                                        });#}
+{#                                                                    });#}
+{#                                                                </script>#}
+{#                                                            </td><!--店铺名/统计-->#}
+{#                                                            <td style="text-align: center;" ><!--主图-->#}
+{#                                                                <div >#}
+{#                                                                    <a data-toggle="modal" data-target="#{{ StoreData.SKU}}b">#}
+{#                                                                        <img src="{{ StoreData.primary_image}}" width="80"  height="80"/></a>#}
+{#                                                                </div>#}
+{#                                                                <p>{{ StoreData.SKU}}</p>#}
+{#                                                                            <!-- 弹出框信息 -->#}
+{#                                                                <div class="modal fade" id="{{ StoreData.SKU}}b" tabindex="-1" role="dialog"  aria-hidden="true">#}
+{#                                                                    <div class="modal-dialog" role="document" >#}
+{#                                                                        <div class="modal-content">#}
+{#                                                                            <div class="modal-header">#}
+{#                                                                                <h5 class="modal-title" id="example-Modal3">{{ StoreData.SKU}}</h5>#}
+{#                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                                                                                    <span aria-hidden="true">&times;</span>#}
+{#                                                                                </button>#}
+{#                                                                            </div>#}
+{#                                                                            <div class="modal-body">#}
+{#                                                                                 <img src="{{ StoreData.primary_image}}" />#}
+{#                                                                            </div>#}
+{##}
+{#                                                                        </div>#}
+{#                                                                    </div>#}
+{#                                                                </div>#}
+{#                                                            </td><!--主图/SKU-->#}
+{##}
+{#                                                            {% if StoreData.profit_margin > 0  %}#}
+{#                                                                <td style="text-align: center">{{ StoreData.profit_margin}}%</td><!--利润率-->#}
+{#                                                            {% else %}#}
+{#                                                                <td style="text-align: center;color:orangered">{{ StoreData.profit_margin}}%</td><!--利润率-->#}
+{#                                                            {% endif %}#}
+{##}
+{#                                                            {% if StoreData.Net_profit_avg > 0  %}#}
+{#                                                                <td style="text-align: center">{{ StoreData.Net_profit_avg}}</td><!--平均毛利润-->#}
+{#                                                            {% else %}#}
+{#                                                                <td style="text-align: center;color:orangered">{{ StoreData.Net_profit_avg}}</td><!--平均毛利润-->#}
+{#                                                            {% endif %}#}
+{##}
+{##}
+{#                                                            <td style="text-align: center;background:#DCEBF7">{{ StoreData.paid_at}}</td><!--订单数-->#}
+{#                                                            <td style="text-align: center"><p style="color: green">已发货:{{ StoreData.status_shipped}}</p>#}
+{#                                                                            <p style="color: #f1a02f">未发货:{{ StoreData.status_paid}}</p>#}
+{#                                                                            <p style="color: deepskyblue">自己退货数:{{ StoreData.refunded_at_own}}</p>#}
+{#                                                                            <p style="color: dodgerblue">客户退货数:{{ StoreData.refunded_at_buyer}}</p></td>#}
+{##}
+{#                                                            {% if StoreData.closing_buyer < 5  %}#}
+{#                                                                <td style="text-align: center"><p style="">自己:{{ StoreData.closing_owe}}%</p><!--退货率-->#}
+{#                                                                                <p style="">客户:{{ StoreData.closing_buyer}}%</p></td>#}
+{#                                                            {% else %}#}
+{#                                                                <td style="text-align: center"><p style="">自己:{{ StoreData.closing_owe}}%</p><!--退货率-->#}
+{#                                                                                <p style="color: red">客户:{{ StoreData.closing_buyer}}%</p></td>#}
+{#                                                            {% endif %}#}
+{##}
+{##}
+{#                                                            <td style="text-align: center"><p style="">自己:{{ StoreData.refund_amount_own}}</p><!--退货费-->#}
+{#                                                                            <p style="">客户:{{ StoreData.refund_amount_buyer}}</p></td>#}
+{##}
+{#                                                            <td style="text-align: center;background:#DCEBF7">{{ StoreData.disbursement_amount1}}/{{StoreData.disbursement_amount2 }}</td><!--平均销售额-->#}
+{##}
+{#                                                             {% if StoreData.SKU_price  > '0.00' or StoreData.SKU_freight  > '0.00' %}#}
+{#                                                                <td style="text-align: center"><p>货价:{{ StoreData.SKU_price}}</p><!--主商品采购-->#}
+{#                                                                                <p>运费:{{ StoreData.SKU_freight}}</p></td><!--主商品运费-->#}
+{#                                                            {% else %}#}
+{#                                                                <td style="text-align: center;color:orangered">未输入</td>#}
+{#                                                            {% endif %}#}
+{##}
+{#                                                            <td style="text-align: center"><p>数量:{{ StoreData.upsells_type_description1}}</p><!--买一送一数量-->#}
+{#                                                                            <p>进价:{{ StoreData.SKU_price}}</p><!--买一送一进价-->#}
+{#                                                                            <p>运费:{{ StoreData.SKU_buy_one_freight}}</p><!--买一送一运费-->#}
+{#                                                                            <p style="color: lightseagreen">加售率:{{ StoreData.buy_one_closing}}%</p></td><!--买一送一运费-->#}
+{##}
+{##}
+{#                                                            <td style="text-align: center"><p>数量:{{ StoreData.upsells_type_description2}}</p><!--配件数量-->#}
+{#                                                                            <p>配件:{{ StoreData.SKU_parts_price}}</p><!--配件采购-->#}
+{#                                                                            <p>运费:{{ StoreData.SKU_parts_freight}}</p><!--配件运费-->#}
+{#                                                                            <p style="color: lightseagreen">配件率:{{ StoreData.parts_closing}}%</p></td><!--配件运费-->#}
+{##}
+{##}
+{#                                                            <td style="text-align: center">{{ StoreData.cost_of}}</td><!--总成本-->#}
+{##}
+{#                                                            {% if StoreData.Net_profit > 0  %}#}
+{#                                                                <td style="text-align: center">{{ StoreData.Net_profit}}</td><!--毛利润href="/SKU_list/" target="_blank"-->#}
+{#                                                            {% else %}#}
+{#                                                                <td style="text-align: center;color:orangered">{{ StoreData.Net_profit}}</td><!--毛利润-->#}
+{#                                                            {% endif %}#}
+{##}
+{#                                                            <td style="text-align: center" onclick="displayResult(this)" >#}
+{#                                                                <div >#}
+{#                                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#{{ StoreData.SKU}}c">#}
+{#                                                                            编辑</button>#}
+{#                                                                </div>#}
+{#                                                                            <!-- 弹出框信息 -->#}
+{#                                                                <div class="modal fade" id="{{ StoreData.SKU}}c" tabindex="-1" role="dialog"  aria-hidden="true">#}
+{#                                                                    <div class="modal-dialog" role="document">#}
+{#                                                                        <div class="modal-content">#}
+{#                                                                            <div class="modal-header">#}
+{#                                                                                <h5 class="modal-title" >#}
+{#                                                                                    商品信息编辑  <a style="color: #f1a02f">{{ StoreData.SKU}}</a>#}
+{#                                                                                </h5>#}
+{#                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                                                                                    <span aria-hidden="true">&times;</span>#}
+{#                                                                                </button>#}
+{#                                                                            </div>#}
+{#                                                                            <form>#}
+{#                                                                                <div class="modal-body">#}
+{#                                                                                    <div class="form-group" >#}
+{#                                                                                        <span style="text-align:left">货物进价(¥)</span>#}
+{#                                                                                        <input  type="text" class="form-control" id="recipient-name"  placeholder="请输入货物进价"value={{ product_identifier }}>#}
+{#                                                                                    </div>#}
+{#                                                                                    <div class="form-group">#}
+{#                                                                                        <span style="">发货重量(g)</span>#}
+{#                                                                                        <input type="text" class="form-control" id="recipient-name"  placeholder="请输入发货重量"value={{ product_identifier }}>#}
+{#                                                                                    </div>#}
+{#                                                                                    <div class="form-group">#}
+{#                                                                                        <span style="">配件价格(¥)</span>#}
+{#                                                                                        <input type="text" class="form-control" id="recipient-name"  placeholder="请输入配件价格"value={{ product_identifier }}>#}
+{#                                                                                    </div>#}
+{#                                                                                    <div class="form-group">#}
+{#                                                                                        <span style="">配件重量(g)</span>#}
+{#                                                                                        <input type="text" class="form-control" id="recipient-name"  placeholder="请输入配件重量"value={{ product_identifier }}>#}
+{#                                                                                    </div>#}
+{#                                                                                    <div class="form-group">#}
+{#                                                                                        <span style="">买送一运费(¥)</span>#}
+{#                                                                                        <input type="text" class="form-control" id="recipient-name"  placeholder="请输入买送一运费"value={{ product_identifier }}>#}
+{#                                                                                    </div>#}
+{#                                                                                </div>#}
+{#                                                                                <div class="modal-footer">#}
+{#                                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">退出</button>#}
+{#                                                                                    <button type="button" class="btn btn-primary">提交</button>#}
+{#                                                                                </div>#}
+{#                                                                            </form>#}
+{#                                                                        </div>#}
+{#                                                                    </div>#}
+{#                                                                </div>#}
+{#                                                            </td>#}
+{#                                                        </tr>#}
+{#                                                    {% endfor %}#}
+{#												</tbody>#}
+{#                                                <tfoot style="background: #0ec0e1">#}
+{#													<tr>#}
+{#                                                        <td style="text-align: center">账户</td>#}
+{#                                                        <td style="text-align: center">商品图</td>#}
+{#                                                        <td style="text-align: center">利润率</td>#}
+{#                                                        <td style="text-align: center">均毛利(¥)</td>#}
+{#                                                        <td style="text-align: center">总订单</td>#}
+{#                                                        <td style="text-align: center">订单状态</td>#}
+{#                                                        <td style="text-align: center">退货率</td>#}
+{#                                                        <td style="text-align: center">退货费(¥)</td>#}
+{#                                                        <td style="text-align: center">均到手价($/¥)</td>#}
+{#                                                        <td style="text-align: center">商品(¥)</td>#}
+{#                                                        <td style="text-align: center">买送一</td>#}
+{#                                                        <td style="text-align: center">配件</td>#}
+{#                                                        <td style="text-align: center">成本(¥)</td>#}
+{#                                                        <td style="text-align: center">毛利润(¥)</td>#}
+{#                                                        <td style="text-align: center">编辑</td>#}
+{#													</tr>#}
+{#												</tfoot>#}
+{#											</table>#}
+{#										</div>#}
+{#									</div>#}
+{#								</div>#}
+{#							</div>#}
+{#						</div>#}
+{#					</div>#}
+				</div>
+			</div>
+
+			<!--footer-->
+			<footer class="footer">
+				<div class="container">
+					<div class="row align-items-center flex-row-reverse">
+						<div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+							Copyright © 2019 <a href="#">Uplor </a>. Designed by <a href="http://www.tophatter.com/">Ethan</a> All rights reserved.
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- End Footer-->
+		</div>
+
+		<!-- Back to top -->
+		<a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+		<!-- Dashboard js -->
+		 <script src="{% static 'assets/js/vendors/jquery-3.2.1.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/popper.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/js/bootstrap.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/selectize.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/circle-progress.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/rating/jquery.rating-stars.js' %}"></script>
+
+		<!-- Fullside-menu Js-->
+		 <script src="{% static 'assets/plugins/fullside-menu/jquery.slimscroll.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/fullside-menu/waves.min.js' %}"></script>
+
+		<!-- Data tables -->
+		 <script src="{% static 'assets/plugins/datatable/jquery.dataTables.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.js' %}"></script>
+
+		<!-- Select2 js -->
+		 <script src="{% static 'assets/plugins/select2/select2.full.min.js' %}"></script>
+
+		<!-- Custom scroll bar Js-->
+		 <script src="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+
+		<!-- Custom Js-->
+		 <script src="{% static 'assets/js/custom.js' %}"></script>
+
+        <!-- Data table js -->
+        <script>
+        $(function(e) {
+        $('#example').DataTable();
+        } );
+        $(document).ready(function() {
+        $('#example2').DataTable();
+        } );
+        </script>
+
+        <!-- 基本曲线图表 -->
+        <script>
+        var chart = null;
+        // 获取 CSV 数据并初始化图表
+        $.getJSON('https://data.jianshukeji.com/jsonp?filename=csv/analytics.csv&callback=?', function (csv) {
+        chart = Highcharts.chart('container1', {
+        data: {
+        csv: csv
+        },
+        title: {
+        text: '某网站日常访问量'
+        },
+        subtitle: {
+        text: '数据来源: Google Analytics'
+        },
+        xAxis: {
+        tickInterval: 7 * 24 * 3600 * 1000, // 坐标轴刻度间隔为一星期
+        tickWidth: 0,
+        gridLineWidth: 1,
+        labels: {
+        align: 'left',
+        x: 3,
+        y: -3
+        },
+        // 时间格式化字符
+        // 默认会根据当前的刻度间隔取对应的值，即当刻度间隔为一周时，取 week 值
+        dateTimeLabelFormats: {
+        week: '%Y-%m-%d'
+        }
+        },
+        yAxis: [{ // 第一个 Y 轴，放置在左边（默认在坐标）
+        title: {
+        text: null
+        },
+        labels: {
+        align: 'left',
+        x: 3,
+        y: 16,
+        format: '{value:.,0f}'
+        },
+        showFirstLabel: false
+        }, {    // 第二个坐标轴，放置在右边
+        linkedTo: 0,
+        gridLineWidth: 0,
+        opposite: true,  // 通过此参数设置坐标轴显示在对立面
+        title: {
+        text: null
+        },
+        labels: {
+        align: 'right',
+        x: -3,
+        y: 16,
+        format: '{value:.,0f}'
+        },
+        showFirstLabel: false
+        }],
+        legend: {
+        align: 'left',
+        verticalAlign: 'top',
+        y: 20,
+        floating: true,
+        borderWidth: 0
+        },
+        tooltip: {
+        shared: true,
+        crosshairs: true,
+        // 时间格式化字符
+        // 默认会根据当前的数据点间隔取对应的值
+        // 当前图表中数据点间隔为 1天，所以配置 day 值即可
+        dateTimeLabelFormats: {
+        day: '%Y-%m-%d'
+        }
+        },
+        plotOptions: {
+        series: {
+        cursor: 'pointer',
+        point: {
+            events: {
+                // 数据点点击事件
+                // 其中 e 变量为事件对象，this 为当前数据点对象
+                click: function (e) {
+                    $('.message').html( Highcharts.dateFormat('%Y-%m-%d', this.x) + ':<br/>  访问量：' +this.y );
+                }
+            }
+        },
+        marker: {
+            lineWidth: 1
+        }
+        }
+        }
+        });
+        });
+        </script>
+
+        <!-- html太平洋时间 -->
+        <script>
+        // 时间设置
+        var  timezone = -7; // 时区 ： 东区时区1~12  西区时区-1~-12
+        var  date;
+
+         date = getLocalTime(timezone)
+          .toString()
+           .split("GMT+")[0]
+           .toString();
+        $("#showdate").html(date);
+
+       function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+       // 时间设置end
+       window.onload = function() {
+       // 调用时间
+       var setdate = setInterval(() => {
+       date = getLocalTime(timezone)
+         var year = date.getFullYear();
+         var month = date.getMonth()+1;
+         var Date = date.getDate();
+         var hour = date.getHours();  //获得小时、分钟、秒
+         var minute = date.getMinutes();
+         var second = date.getSeconds();
+         var weekday = 0;
+         switch(date.getDay()){
+            case 0:
+            weekday = "星期日";
+            break;
+            case 1:
+            weekday = "星期一";
+            break;
+            case 2:
+            weekday = "星期二";
+            break;
+            case 3:
+            weekday = "星期三";
+            break;
+            case 4:
+            weekday = "星期四";
+            break;
+            case 5:
+            weekday = "星期五";
+            break;
+            case 6:
+            weekday = "星期六";
+            break;
+         }
+        document.getElementById("showdate").innerHTML="<br>当前太平洋时间："+year+"年"+month+"月"+Date+"日&nbsp&nbsp;"+hour+":"+minute+":"+second+"&nbsp&nbsp;"+weekday;
+       }, 1000);
+       // 调用时间end
+        };
+      </script>
+
+	</body>
+</html>

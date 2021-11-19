@@ -1,0 +1,1128 @@
+﻿{% load staticfiles %}
+<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<meta name="msapplication-TileColor" content="#0670f0">
+		<meta name="theme-color" content="#2ddcd3">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+
+
+		<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon"/>
+		<link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+
+		<!-- Title -->
+		<title>摇钱数（订单详情）</title>
+		<link rel="stylesheet" href="{% static 'assets/fonts/fonts/font-awesome.min.css' %}" />
+
+		<!-- Bootstrap Css -->
+		<link href="{% static 'assets/plugins/bootstrap-4.1.3/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+		<!-- Sidemenu Css -->
+		<link href="{% static 'assets/plugins/fullside-menu/css/style.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/fullside-menu/waves.min.css' %}" rel="stylesheet" />
+
+		<!-- Dashboard Css -->
+		<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+
+		<!-- c3.js Charts Plugin -->
+		<link href="{% static 'assets/plugins/charts-c3/c3-chart.css' %}" rel="stylesheet" />
+
+		<!-- Data table css -->
+		<link href="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+
+		<!-- Slect2 css -->
+		<link href="{% static 'assets/plugins/select2/select2.min.css' %}" rel="stylesheet" />
+
+		<!-- Custom scroll bar css-->
+		<link href="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" />
+
+		<!---Font icons-->
+		<link href="{% static 'assets/plugins/iconfonts/plugin.css' %}" rel="stylesheet" />
+
+        <!---计算器-->
+        <link href="{% static 'jisuanqi/css/sidebar.css' %}" rel="stylesheet" type="text/css" />
+
+	</head>
+	<body>
+		<div id="loading"></div>
+		<div class="page">
+			<div class="page-main">
+                <!-- 页眉目录栏 -->
+				<div class="app-header1 header py-1 d-flex">
+					<div class="container-fluid">
+						<div class="d-flex">
+							<a class="header-brand" href="">
+								<img src="{% static 'images/logo1.png' %}" class="header-brand-img" alt="Uplor  logo">
+							</a>
+							<div class="menu-toggle-button">
+								<a class="nav-link wave-effect" href="#" id="sidebarCollapse">
+									<span class="fa fa-bars"></span>
+								</a>
+							</div>
+							<div>
+								<div class="searching">
+									<a href="javascript:void(0)" class="search-open searching1">
+										<i class="fa fa-search"></i>
+									</a>
+									<div class="search-inline">
+										<form>
+											<input type="text" class="form-control" placeholder="Searching...">
+											<button type="submit">
+												<i class="fa fa-search"></i>
+											</button>
+											<a href="javascript:void(0)" class="search-close">
+												<i class="fa fa-times"></i>
+											</a>
+										</form>
+									</div>
+								</div>
+							</div>
+                            <div class="d-flex order-lg-1 ml-auto"  style="color: white" id="showdate"></div> <!--#太平洋时间 -->
+							<div class="d-flex order-lg-2 ml-auto">
+								<div class="dropdown d-none d-md-flex" >
+									<a  class="nav-link icon full-screen-link">
+										<i class="fe fe-maximize floating"  id="fullscreen-button"></i>
+									</a>
+							</div>
+                            <div class="profile_info">
+								<h2><a  href="/logout/">退出登录</a></h2>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wrapper">
+					<!-- 侧边目录栏 -->
+					<nav id="sidebar" class="nav-sidebar">
+						<div class="profile clearfix">
+							<div class="profile_pic">
+								<img src="{% static 'images/aaa.png' %}" alt="..." class="img-circle profile_img">
+{#								<a href="editprofile.html" class="profile-img">#}
+{#									<span class="fa fa-pencil" aria-hidden="true"></span>#}
+{#								</a>#}
+							</div>
+							<div class="profile_info">
+								<h3>天道酬勤 地道酬善</h3>
+								<h3>人道酬诚 商道酬信</h3>
+							</div>
+						</div>
+						<ul class="list-unstyled components" id="accordion">
+							<li class="border-0"><h3>Tophatter</h3><li>
+                        {#高权限用户下面才可见 #}
+                        {% if user != 'up_data' %}
+                            <li>
+								<a href="/information_aggregation/" class=" wave-effect accordion-toggle " target="_blank"><i class="fa fa-diamond mr-2 sidebarpink"></i> 信息汇总展示</a>
+							</li>
+							<li>
+								<a href="#Submenu1" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-rocket mr-2 sidebarprimary"></i> 平台分析
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu1" data-parent="#accordion">
+									<li>
+										<a href="/index/" target="_blank">平台商品统计</a>
+									</li>
+									<li>
+										<a href="/goodslist/" target="_blank">商品分析</a>
+									</li>
+									<li>
+										<a href="/seller/" target="_blank">卖家分析</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#Submenu2" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 利润统计
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu2" data-parent="#accordion">
+									<li>
+										<a href="/profitStatistics/" target="_blank">订单统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_2/" target="_blank">拍卖统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_3/" target="_blank">拍卖统计(原始)</a>
+									</li>
+									<li>
+										<a href="/buy_nows/" target="_blank">一口价统计</a>
+									</li>
+                                    <li>
+										<a href="/buy_nows_page/" target="_blank">一口价（页面数据）</a>
+									</li>
+								</ul>
+							</li>
+                        {% endif %}
+
+                            <li>
+								<a href="#Submenu3" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu3" data-parent="#accordion">
+                                    <li>
+										<a href="/products_operate/ " target="_blank">批量上传</a>
+									</li>
+                                    <li>
+										<a href="/products_operate_single/" target="_blank">上传商品</a>
+									</li>
+									<li>
+										<a href="/products/" >店铺所有商品</a>
+									</li>
+                                    <li>
+										<a href="/products_collect/" target="_blank">商品库</a>
+									</li>
+                                    {#高权限用户下面才可见 #}
+                                    {% if user != 'up_data' %}
+                                    <li>
+										<a href="/products_parets/" target="_blank">配件库</a>
+									</li>
+									<li>
+										<a href="/SKU_list_2/" target="_blank">商品信息录入</a>
+									</li>
+                                    {% endif %}
+								</ul>
+							</li>
+
+                        {#高权限用户下面才可见 #}
+                        {% if user != 'up_data' %}
+                            <li >
+								<a href="#Submenu7" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-table mr-2 sidebarpurple"></i> 发货物流
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu7" data-parent="#accordion">
+									<li>
+										<a href="/logistics_statistic/" target="_blank">物流规则 </a>
+									</li>
+									<li>
+										<a href="/return_performance/" target="_blank">退货表现</a>
+									</li>
+                                    <li>
+										<a href="/refund_orders/" target="_blank">订单退货</a>
+									</li>
+								</ul>
+							</li>
+							<li >
+								<a href="#Submenu8" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-sun-o mr-2 sidebarpink"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu8" data-parent="#accordion">
+									<li>
+										<a href="/founds/" target="_blank">资金统计 </a>
+									</li>
+									<li>
+										<a href="/fund_analysis/" target="_blank">资金表现</a>
+									</li>
+								</ul>
+							</li>
+                        {% endif %}
+                            <li><h3>5miles</h3><li>
+							<li>
+								<a href="#Submenu4" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu4" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_products_5miles/" target="_blank">所有商品</a>
+									</li>
+                                    <li>
+										<a href="/five_miles/up_products_5miles/" target="_blank">上传商品</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu5" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 订单管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu5" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_oders_5miles/" target="_blank">所有订单</a>
+									</li>
+								</ul>
+							</li>
+                        {#高权限用户下面才可见 #}
+                        {% if user != 'up_data' %}
+                            <li>
+								<a href="#Submenu6" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu6" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/funds_5miles/" target="_blank">余额状态</a>
+									</li>
+								</ul>
+							</li>
+                            <li><h3>其他电商平台</h3><li>
+                            <li >
+								<a href="#Submenu10" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-shopping-cart mr-2 sidebarsuccess"></i> 速卖通
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu10" data-parent="#accordion">
+									<li>
+										<a href="/Function_1/" target="_blank">价格计算</a>
+									</li>
+								</ul>
+							</li>
+							<li><h3>服务</h3><li>
+							<li>
+								<a href="#Submenu9" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 拓展功能
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu9" data-parent="#accordion">
+									<li>
+										<a href="/brand/" target="_blank" >平台商标统计</a>
+									</li>
+                                    <li>
+										<a href="/e_commerce_platform/" target="_blank">各类电商平台介绍</a>
+									</li>
+								</ul>
+							</li>
+                        {% endif %}
+						</ul>
+					</nav>
+
+                    <!-- 内容区域 -->
+                    <div class=" content-area overflow-hidden">
+						<div class="row">
+							<div class="col-md-12 col-lg-12">
+								<div class="card">
+									<div class="card-header">
+                                        <form id="searchForm"  method="post" action="" target="_top">
+                                            {% csrf_token %}
+                                            <div style="height: 100px;">
+                                                <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">账户选择：</span>
+                                                        <select style="width: 100px; height: 30px; border-radius: 4px;" name="store_name" id="store_name">
+                                                        <option value="all">all</option>
+                                                        <option value="A">A</option>
+                                                        <option value="B">B</option>
+                                                        <option value="C">C</option>
+                                                        <option value="E">E</option>
+                                                        <option value="G">G</option>
+                                                        <option value="I">I</option>
+                                                        <option value="J">J</option>
+                                                        <option value="M">M</option>
+                                                        <option value="P">P</option>
+                                                        <option value="Q">Q</option>
+
+                                                        <option value="B6">B6</option>
+                                                        <option value="B10">B10</option>
+                                                        <option value="PY">PY</option>
+                                                        <option value="YL">YL</option>
+                                                        <option value="YM">YM</option>
+                                                        <option value="YH">YH</option>
+                                                        <option value="YMW">YMW</option>
+                                                        <option selected="selected" style="color:whitesmoke" value={{ store_name }}>{{ store_name }}</option>
+                                                        </select>
+                                                </div>
+                                                <div style="width:  300px; height: 40px; float: left">
+                                                    <span style="">订单ID：</span><!--font-size: 15px; margin-left: 40px;-->
+                                                    <input id="订单ID" style="width: 150px; height: 30px; border-radius: 4px;" type="text" name="订单ID" placeholder="请输入订单ID"value={{ 订单ID }}>
+                                                </div>
+                                                <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">订单状态：</span>
+                                                        <select style="width: 150px; height: 30px; border-radius: 4px;" name="订单状态" id="订单状态">
+                                                        <option value="">all</option>
+                                                        <option value="canceled">canceled</option>
+                                                        <option value="paid">paid</option>
+                                                        <option value="pending_verification">pending_verification</option>
+                                                        <option value="processing_payment">processing_payment</option>
+                                                        <option value="refunded">refunded</option>
+                                                        <option value="shipped">shipped</option>
+                                                        <option value="unpaid">unpaid</option>
+                                                        <option selected="selected" style="color:whitesmoke" value={{ 订单状态 }}>{{ 订单状态 }}</option>
+                                                        </select>
+                                                </div>
+                                                <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">订单类型：</span>
+                                                        <select style="width: 140px; height: 30px; border-radius: 4px;" name="订单类型" id="订单类型" value="{{ 订单类型 }}">
+                                                            <option value="全部订单">全部订单</option>
+                                                            <option value="一口价">一口价</option>
+                                                            <option value="竞拍价">竞拍价</option>
+                                                            <option selected="selected" value="{{ 订单类型 }}">{{ 订单类型 }}</option>
+                                                        </select>
+                                                </div>
+                                                <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">关系订单：</span>
+                                                        <select style="width: 120px; height: 30px; border-radius: 4px;" name="related_order_ids" id="related_order_ids" value="{{ related_order_ids }}">
+                                                            <option value="全部订单">全部订单</option>
+                                                            <option value="关系订单">关系订单</option>
+                                                            <option value="非关系订单">非关系订单</option>
+                                                            <option selected="selected" value="{{ related_order_ids }}">{{ related_order_ids }}</option>
+                                                        </select>
+                                                </div>
+                                                <div style="width:   300px; height: 40px; float: left">
+                                                    <span style="">起始时间:</span>
+                                                    <input id="start_time" style="width: 160px; height: 30px; border-radius: 4px;" type="date" name="start_time"value={{ start_time }}>
+                                                </div>
+                                                <div style="width:   300px; height: 40px; float: left">
+                                                    <span style="">结束时间：</span>
+                                                    <input id="end_time" style="width: 150px; height: 30px; border-radius: 4px;" type="date" name="end_time"value={{ end_time }}>
+                                                </div>
+                                                <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">服务类型：</span>
+                                                        <select style="width: 130px; height: 30px; border-radius: 4px;" name="service_type" id="service_type" value="{{ service_type }}">
+                                                            <option value="">所有订单</option>
+                                                            <option value="全程追踪">全程追踪</option>
+                                                            <option value="部分追踪">部分追踪</option>
+                                                            <option value="没有最后一英里追踪">没有最后一英里追踪</option>
+                                                            <option selected="selected" value="{{ service_type }}">{{ service_type }}</option>
+                                                        </select>
+                                                </div>
+                                                <div style="width: 300px; height: 40px; float: left">
+                                                    <span style="">已回款订单：</span>
+                                                    <select style="width: 130px; height: 30px; border-radius: 4px;" name="input_order_type" id="input_order_type" value="{{ input_order_type }}">
+                                                        <option value="">所有订单</option>
+                                                        <option value="有状态订单">有状态订单</option>
+                                                        <option value="Delivered">Delivered</option>
+                                                        <option value="Exception">Exception</option>
+                                                        <option value="InfoReceived">InfoReceived</option>
+                                                        <option value="InTransit">InTransit</option>
+                                                        <option value="OutForDelivery">OutForDelivery</option>
+                                                        <option selected="selected" value="{{ input_order_type }}">{{ input_order_type }}</option>
+                                                    </select>
+                                                </div>
+                                                <div style="width: 300px; height: 40px; float: left">
+                                                    <span style="">承运商：</span>
+                                                    <select style="width: 130px; height: 30px; border-radius: 4px;" name="承运商" id="承运商" value="{{ 承运商 }}">
+                                                        <option value="">所有订单</option>
+                                                            <option value="有承运商订单">有承运商订单</option>
+                                                            <option value="无承运商订单">无承运商订单</option>
+                                                            <option value="ec-firstclass">ec-firstclass</option>
+                                                            <option value="wanbexpress">wanbexpress</option>
+                                                            <option value="sfb2c">sfb2c</option>
+                                                            <option value="hh-exp">hh-exp</option>
+                                                            <option value="china-ems">china-ems</option>
+                                                            <option value="yunexpress">yunexpress</option>
+                                                            <option value="usps">usps</option>
+                                                            <option value="4px">4px</option>
+                                                            <option value="sf-express">sf-express</option>
+                                                            <option value="flytexpress">flytexpress</option>
+                                                            <option value="flytexpress">flytexpress</option>
+                                                            <option value="dhl-global-mail">dhl-global-mail</option>
+                                                            <option value="topyou">topyou</option>
+                                                            <option value="china-post">china-post</option>
+                                                            <option value="fedex">fedex</option>
+                                                            <option value="canada-post">canada-post</option>
+                                                            <option value="ups">ups</option>
+                                                            <option selected="selected" value="{{ 承运商 }}">{{ 承运商 }}</option>
+                                                    </select>
+                                                </div>
+                                                <div style="width:  350px; height: 40px; float: left">
+                                                    <span style="">SKU：</span><!--font-size: 15px; margin-left: 40px;-->
+                                                    <input id="SKU" style="width: 250px; height: 30px; border-radius: 4px;" type="text" name="SKU" placeholder="请输入SKU关键字"value={{ SKU }}>
+                                                </div>
+                                                <div style="width: 300px; height: 40px; float: left;vertical-align: middle">
+                                                    <input id="quantity" style="width: 80px; height: 30px; border-radius: 10px;" type="number" name="quantity" min="0" max="99999" placeholder="数量"value={{ quantity }}>
+                                                    <input style="width: 120px;height: 30px;background: #4ebc30"type="submit" value="查询数据">
+                                                </div>
+                                            </div>
+                                        </form>
+{#										<h4 class="page-title">商品管理</h4>#}
+										<div class="card-options">
+											<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+											<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+										</div>
+									</div>
+									<!-- table-wrapper -->
+								</div>
+								<!-- section-wrapper -->
+							</div>
+							<div class="col-md-12 col-lg-12">
+								<div class="card">
+                                    <div class="card-header">
+                                        <span><h3>订单详情</h3></span>
+                                        <div class="card-options">
+											<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+											<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+										</div>
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+											<table id="" class="hover table-bordered" style="width: 100%;min-width:1000px">
+												<thead style="background: #0ec0e1">
+                                                    <tr style="height: 60px" >
+                                                        <td style="text-align: center;width: 150px">账户名/<br>订单ID</td>
+                                                        <td style="text-align: center;width: 150px">关系订单ID</td>
+                                                        <td style="text-align: center;width: 150px">回款订单<br>状态</td>
+                                                        <td style="text-align: center;width: 150px">SKU/商品ID</td><!--SKU-->
+                                                        <td style="text-align: center;width: 150px">主图</td><!--SKU-->
+                                                        <td style="text-align: center;width: 150px">订单状态<br>创建时间</td>
+                                                        <td style="text-align: center;width: 150px">订单类型<br>服务类型</td>
+                                                        <td style="text-align: center;width: 150px">运输信息</td>
+                                                        <td style="text-align: center;width: 250px">买家信息</td>
+                                                        <td style="text-align: center;width: 100px">到手价($)</td>
+                                                        <td style="text-align: center;width: 100px">总花费($)</td>
+                                                        <td style="text-align: center;width: 100px">SFB($)</td>
+                                                        <td style="text-align: center;width: 100px">追销</td>
+                                                        <td style="text-align: center;width: 100px">数量</td>
+                                                        <td style="text-align: center;width: 200px">成本价(￥)</td>
+                                                        <td style="text-align: center;width: 150px">利润(￥)</td>
+                                                        <td style="text-align: center ;width: 150px">商品操作</td>
+                                                    </tr>
+												</thead>
+												<tbody>
+                                                    {% for StoreData in StoreDatas %}
+                                                        <tr   >
+                                                            <td style="text-align: center;"><!--账户名-->
+                                                                {{ StoreData.store_name}}<br>
+                                                                <a href="/orders_detail/?订单ID={{ StoreData.order_id}}&start_time={{ start_time }}&end_time={{ end_time }}" target="_blank"  style="color: #0c85d0">{{ StoreData.order_id }}</a>
+                                                            </td><!--店铺名/统计-->
+                                                            <td style="text-align: center;"><!--关系订单ID-->
+                                                                {% for related_order_id in StoreData.related_order_ids %}
+                                                                     <a href="/orders_detail/?订单ID={{ related_order_id}}&start_time={{ start_time }}&end_time={{ end_time }}" target="_blank"  style="color: #0c85d0">{{ related_order_id }}</a><br>
+                                                                {% endfor %}
+                                                            </td>
+                                                            <td style="text-align: center">{{ StoreData.ht_物流状态}}</td><!--买家-->
+                                                            <td style="text-align: center;"><!--SKU-->
+                                                                <p>{{ StoreData.product_identifier}}</p>
+                                                                 <div >
+                                                                      <button style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" class="" data-toggle="modal" data-target="#a{{ StoreData.order_id}}c">&nbsp;详情&nbsp;</button><br>
+                                                                      <button style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" onClick='img_lode("{{ StoreData.primary_image }}")'  class="" id="" >1688同款</button>
+                                                                      <script language=javascript>
+                                                                            function img_lode(img){
+                                                                         $.ajax({
+                                                                                    url:'/products/',
+                                                                                    type:'get',
+                                                                                    data:
+                                                                                        {
+                                                                                        img_url:img,
+                                                                                        csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                                                                         },
+                                                                                    success: function (response) {
+                                                                                                                    var ret = JSON.parse(response);
+                                                                                                                    {#alert(ret.img_url)#}
+                                                                                                                    if (ret.img_url) { //上传成功
+                                                                                                                        {#location.href='https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://ndmc.shop/static/TOPIMG/'+ret.img_url;#}
+                                                                                                                        window.open('https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://ndmc.shop/static/TOPIMG/'+ret.img_url,'target')
+                                                                                                                    }
+                                                                                                                }
+
+                                                                                    })
+                                                                         }
+                                                                        </script>
+                                                                </div>
+                                                            <!-- 弹出框信息 -->
+                                                                <div class="modal fade" id="a{{ StoreData.order_id}}c" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" >
+                                                                                <a style="color: #f1a02f">{{ StoreData.product_identifier}}</a>
+                                                                                </h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div class="form-group">
+                                                                                    <h4 style="text-align:left"><a style="color: #f1a02f">商品名称：</a>{{ StoreData.product_name }}</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td><!--SKU-->
+                                                            <td style="text-align: center;" ><!--主图-->
+                                                                <div >
+                                                                    <a data-toggle="modal" data-target="#a{{ StoreData.order_id}}b">
+                                                                        <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}" width="80" height="80"></a>
+                                                                </div>
+                                                                            <!-- 弹出框信息 -->
+                                                                <div class="modal fade" id="a{{ StoreData.order_id}}b" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg modal-dialog-centered " role="document" >{# modal-lg #}
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="example-Modal3">{{ StoreData.product_identifier}}</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <img class="lazy" src="{% static 'images/loading.gif' %}"  data-echo="{{StoreData.primary_image}}">
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td><!--主图-->
+
+                                                            <td style="text-align: center;background:#DCEBF7">{{ StoreData.status }}<br>
+                                                                            {% if StoreData.refunded_at_buyer %}
+                                                                                <a style="text-align: center;color:blue">(客户)</a>
+                                                                            {% elif StoreData.refunded_at_own %}
+                                                                                <a style="text-align: center;color:blue">(自己)</a>
+                                                                            {% endif %}
+                                                                            <br><br>
+                                                                            <a style=";color:#117a8b">{{ StoreData.created_at }}</a></td><!--状态-->
+                                                            {% if StoreData.seller_fees_type_buy_nows == '' %}<!--类型-->
+                                                                <td style="text-align: center">拍卖<br>{{ StoreData.service_type }}</td>
+                                                            {% else %}
+                                                                 <td style="text-align: center">一口价<br>{{ StoreData.service_type }}</td>
+                                                            {% endif %}
+
+                                                            <td style="text-align: center">承运商：{{ StoreData.carrier}}<br>
+                                                                            <button data-toggle="modal" data-target="#aaa{{ StoreData.order_id}}" type="button"  onClick='doTrack("{{ StoreData.tracking_number }}")'> <!--class="btn btn-info"-->
+                                                                            {{ StoreData.tracking_number }}</button> <!---->
+                                                                            <!-- 弹出框信息 -->
+                                                                            <div class="modal fade" id="aaa{{ StoreData.order_id}}" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                                <div class="modal-dialog modal-lg modal-dialog-centered " role="document" >{# modal-lg #}
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <h5 class="modal-title" id="example-Modal3">{{ StoreData.product_identifier}}
+                                                                                               <a ><img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}" width="80" height="80"></a>
+                                                                                            </h5>
+                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                <span aria-hidden="true">&times;</span>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                            <div id="{{ StoreData.tracking_number }}"></div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <script type="text/javascript">
+                                                                                function doTrack(tracking_number) {
+                                                                                    var num = tracking_number;
+                                                                                    if(num===""){
+                                                                                        alert("Enter your number.");
+                                                                                        return;
+                                                                                    }
+                                                                                    YQV5.trackSingle({
+                                                                                        //必须，指定承载内容的容器ID。
+                                                                                        YQ_ContainerId:tracking_number,
+                                                                                        //可选，指定查询结果高度，最大为800px，默认为560px。
+                                                                                        YQ_Height:790,
+                                                                                        //可选，指定运输商，默认为自动识别。
+                                                                                        YQ_Fc:"0",
+                                                                                        //可选，指定UI语言，默认根据浏览器自动识别。
+                                                                                        YQ_Lang:"zh-CN",
+                                                                                        //必须，指定要查询的单号。
+                                                                                        YQ_Num:num
+                                                                                    });
+                                                                                }
+                                                                            </script>
+                                                            </td><!--运输-->
+
+                                                            <td style="text-align: center">买家ID：{{ StoreData.customer_id}}<br>
+                                                                            买家姓名：{{ StoreData.customer_name}}<br>
+                                                                            买家地址：{{ StoreData.country}}—{{  StoreData.state }}—{{  StoreData.city }}</td><!--买家-->
+                                                            <td style="text-align: center">{{ StoreData.disbursement_amount}}</td><!--到手价-->
+                                                            <td style="text-align: center">{{ StoreData.seller_fees_amount}}</td><!--买家花费-->
+                                                            <td style="text-align: center">{{ StoreData.seller_fees_amount_sfb}}</td><!--SFB-->
+                                                            <td style="text-align: center">{{ StoreData.upsells_type_description1}}：{{ StoreData.upsells_amount1}}<br>
+                                                                            {{ StoreData.upsells_type_description2}}：{{ StoreData.upsells_amount2}}</td><!--追销-->
+                                                            <td style="text-align: center">{{ StoreData.product_quantity}}</td><!--数量-->
+                                                            <td style="text-align: center;background:#DCEBF7">进价：{{ StoreData.SKU_price}}<br>
+                                                                            运费：{{ StoreData.SKU_freight}}<br>
+                                                                            配件进价：{{ StoreData.SKU_parts_price}}<br>
+                                                                            配件运费：{{ StoreData.SKU_parts_freight}}</td><!--成本-->
+                                                            {% if StoreData.SKU_price > 0  and  StoreData.SKU_freight > 0 %}<!--利润-->
+                                                                {% if StoreData.profit > 0 %}<!--利润-->
+                                                                    <td style="text-align: center">{{ StoreData.profit }}</td>
+                                                                {% else %}
+                                                                     <td style="text-align: center;color:red">{{ StoreData.profit }}</td>
+                                                                {% endif %}
+                                                            {% else %}
+                                                                <td style="text-align: center;color:red">未输入</td>
+                                                            {% endif %}
+
+                                                            <td style="text-align: center;width: 40px" >
+                                                            <div ><br>
+                                                                  <button style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" class="" data-toggle="modal" data-target="#b{{ StoreData.order_id}}c">
+                                                                  &nbsp;编辑&nbsp;</button>
+                                                            </div>
+                                                            <!-- 弹出框信息 -->
+                                                            <div class="modal fade" id="b{{ StoreData.order_id}}c" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" >
+                                                                                商品信息编辑  <a style="color: #f1a02f">{{ StoreData.product_identifier}}</a>
+                                                                                <a ><img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}" width="80" height="80"></a>
+                                                                            </h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+
+                                                                        <form >
+                                                                            <div class="modal-body">
+                                                                                <div class="form-group">
+                                                                                    <span style="">商品名称</span>
+                                                                                    <input style="" type="text" class="form-control" id="SKU_name"  name="SKU_name" placeholder="商品名称"value={{ StoreData.product_identifier }}>
+                                                                                </div>
+                                                                                <div class="form-group" >
+                                                                                    <span style="text-align:left">货物进价(¥)</span>
+                                                                                    <input  type="text" class="form-control" id="SKU_price"  name="SKU_price" placeholder="请输入货物进价"value={{ StoreData.SKU_price_or }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">货物重量(g)</span>
+                                                                                    <input type="text" class="form-control" id="SKU_weight"  name="SKU_weight" placeholder="请输入货物重量"value={{ StoreData.SKU_weight_or }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">配件价格(¥)</span>
+                                                                                    <input type="text" class="form-control" id="SKU_parts_price"  name="SKU_parts_price" placeholder="请输入配件价格"value={{ StoreData.SKU_parts_price_or }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">配件重量(g)</span>
+                                                                                    <input type="text" class="form-control" id="SKU_parts_weight"  name="SKU_parts_weight"  placeholder="请输入配件重量"value={{ StoreData.SKU_parts_weight_or }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">货物种类：</span>
+
+                                                                                    <select style="width: 80px; height: 36px; border-radius: 4px;" name="SKU_variety" id="SKU_variety" >
+                                                                                        <option value="普货">普货</option>
+                                                                                        <option value="带电">带电</option>
+                                                                                        <option value="特货">特货</option>
+                                                                                        <option value="海运">海运</option>
+                                                                                        <option style="color: #d1d1d3" selected="selected" value={{ StoreData.SKU_variety_or }}>{{ StoreData.SKU_variety_or }}</option>
+                                                                                    </select>
+                                                                                    <span style="">({{ StoreData.SKU_variety }})</span>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="color: blue">海运运费(￥)</span>
+                                                                                    <input style="color: blue" type="text" class="form-control" id="HAI_SKU_freight"  name="HAI_SKU_freight"  placeholder="请输入海运运费"value={{ StoreData.HAI_SKU_freight_or }}>
+                                                                                </div>
+                                                                                <div class="modal-footer"  >
+                                                                                    <button type="button" onclick="displayResult(this)" class="btn btn-primary" id="111" >提交</button>
+                                                                                </div>
+                                                                                <script>
+                                                                                  function displayResult(obj){
+                                                                                      var SKU_name=$(obj).               parent().parent().eq(0).children().eq(0).children().eq(1).val();
+                                                                                      var SKU_price=$(obj).              parent().parent().eq(0).children().eq(1).children().eq(1).val();
+                                                                                      var SKU_weight=$(obj).             parent().parent().eq(0).children().eq(2).children().eq(1).val();
+                                                                                      var SKU_parts_price=$(obj).        parent().parent().eq(0).children().eq(3).children().eq(1).val();
+                                                                                      var SKU_parts_weight=$(obj).       parent().parent().eq(0).children().eq(4).children().eq(1).val();
+                                                                                      var SKU_variety=$(obj).            parent().parent().eq(0).children().eq(5).children().eq(1).val();
+                                                                                      var HAI_SKU_freight=$(obj).        parent().parent().eq(0).children().eq(6).children().eq(1).val();
+                                                                                      var top_colect=$(obj).             parent().parent().eq(0).children().eq(7).children().eq(1).val();
+                                                                                      var HAI_SKU_parts_freight=$(obj).  parent().parent().eq(0).children().eq(8).children().eq(1).val();
+                                                                                      var HAI_SKU_buy_one_freight=$(obj).parent().parent().eq(0).children().eq(9).children().eq(1).val();
+
+                                                                                 $.ajax({
+                                                                                            url:'/profitStatistics_2/',
+                                                                                            type:'post',
+                                                                                            data:
+                                                                                                {
+                                                                                                SKU_name:SKU_name,
+                                                                                                SKU_price:SKU_price,
+                                                                                                SKU_weight:SKU_weight,
+                                                                                                SKU_parts_price:SKU_parts_price,
+                                                                                                SKU_parts_weight:SKU_parts_weight,
+                                                                                                SKU_variety:SKU_variety,
+                                                                                                HAI_SKU_freight:HAI_SKU_freight,
+                                                                                                HAI_SKU_parts_freight:HAI_SKU_parts_freight,
+                                                                                                HAI_SKU_buy_one_freight:HAI_SKU_buy_one_freight,
+                                                                                                top_colect:top_colect,
+                                                                                                csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                                                                                 }
+                                                                                            })
+                                                                                 }
+                                                                                </script>
+                                                                            </div>
+                                                                        </form>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div >
+                                                               <a href="/products_operate_single/?Top主SKU={{ StoreData.product_identifier}}" target="_blank"  style="color: lightseagreen;background: white">上传到TOP</a>
+                                                            </div>
+                                                            <div >
+                                                               <a href="/five_miles/up_products_5miles/?Top主SKU={{ StoreData.product_identifier}}" target="_blank"  style="color: lightseagreen;background: white">上传到5M</a>
+                                                            </div>
+                                                            <div >
+                                                               <a href="/products_update/?Top主SKU={{ StoreData.product_identifier}}&店铺名={{ StoreData.store_name }}" target="_blank"  style="color: lightseagreen;background: white">商品信息更新</a>
+                                                            </div>
+                                                            <div >
+                                                               <a href="/products_collect_update/?Top主SKU={{ StoreData.product_identifier}}&来源=TOP后台" target="_blank"  style="color: lightseagreen;background: white">加入商品库</a>
+                                                            </div><br>
+
+                                                        </td><!--编辑-->
+                                                        </tr>
+                                                    {% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+            <!--分页代码-->
+            <footer class="footer">
+				<div class="container">
+					<div class="row align-items-center flex-row-reverse">
+						<div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+                            <form name="formpage" onkeydown="if(event.keyCode==13){return false;}">
+                                {% if page_of_objs.has_previous %}
+                                    <a aria-label="Previous" style="padding: 8px 13px;" href="?page={{ page_of_objs.previous_page_number }}&store_name={{ store_name }}&订单ID={{ 订单ID }}&订单状态={{ 订单状态 }}&订单类型={{ 订单类型 }}&SKU={{ SKU }}&quantity={{ quantity }}&SerialNumber={{ SerialNumber }}&start_time={{ start_time }}&end_time={{ end_time }}" aria-label="Previous" style="padding: 8px 13px;">
+                                    <span aria-hidden="true" style="font-size: 13px;">上一页</span>
+                                    </a>
+                                {% else %}
+                                    <span aria-hidden="true"
+                                          style="font-size: 13px; margin-right: 1px;
+                                          padding:5.5px 13px 7.5px;">上一页</span>
+                                {% endif %}
+
+                                {% for page_num in page_range %}
+                                    {% if page_num == page_of_objs.number %}
+                                        <a style="background: #009688; color: white" href="?page={{ page_num }}&store_name={{ store_name }}&订单ID={{ 订单ID }}&订单状态={{ 订单状态 }}&订单类型={{ 订单类型 }}&SKU={{ SKU }}&quantity={{ quantity }}&SerialNumber={{ SerialNumber }}&start_time={{ start_time }}&end_time={{ end_time }}" aria-label="Previous" style="padding: 8px 13px;">{{ page_num }}</a>
+                                    {% else %}
+                                        {% if page_num == '...' %}
+                                            <a>{{ page_num }}</a>
+                                        {% else %}
+                                            <a  href="?page={{ page_num }}&store_name={{ store_name }}&订单ID={{ 订单ID }}&订单状态={{ 订单状态 }}&订单类型={{ 订单类型 }}&SKU={{ SKU }}&quantity={{ quantity }}&SerialNumber={{ SerialNumber }}&start_time={{ start_time }}&end_time={{ end_time }}" aria-label="Previous" style="padding: 8px 13px;">{{ page_num }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_of_objs.has_next %}
+                                    <a  aria-label="Next" style="padding:8px 13px;" href="?page={{ page_of_objs.next_page_number }}&store_name={{ store_name }}&订单ID={{ 订单ID }}&订单状态={{ 订单状态 }}&订单类型={{ 订单类型 }}&SKU={{ SKU }}&quantity={{ quantity }}&SerialNumber={{ SerialNumber }}&start_time={{ start_time }}&end_time={{ end_time }}" aria-label="Previous" style="padding: 8px 13px;">
+                                        <span style="font-size: 13px;">下一页</span>
+                                    </a>
+                                {% else %}
+                                    <span style="font-size: 13px;">下一页</span>
+                                {% endif %}
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;<input name='submitSkip' type='button' onClick='GoPage("默认文件路径比如/文件夹/index.html")' value='转到'>
+                                第<input style="width: 50px;text-align: center" name='SkipPage' placeholder="数量"value={{ page_of_objs.number }} >页
+
+
+                                <span style="font-size: 13px;color: black">&nbsp;&nbsp;&nbsp;&nbsp;共&nbsp;{{ page_of_objs.paginator.count }}&nbsp;条数据&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            </form>
+						</div>
+					</div>
+				</div>
+			</footer>
+
+			<!--footer-->
+			<footer class="footer">
+				<div class="container">
+					<div class="row align-items-center flex-row-reverse">
+						<div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+							Copyright © 2019 <a href="#">Uplor </a>. Designed by <a href="http://www.tophatter.com/">Ethan</a> All rights reserved.
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- End Footer-->
+		</div>
+
+		<!-- Back to top -->
+		<a href="#" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+        <!--计算器-->
+        <div class="scrollsidebar" id="hhService" style="box-shadow: darkgrey 10px 10px 30px 5px ;opacity:1;">
+            <div class="side_content">
+                <div class="side_list">
+                    <div class="side_title"><a title="隐藏" class="close_btn"><span>关闭</span></a></div>
+                    <div class="side_center" style="background:#f2f4f8">
+                        <form >
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品进价(￥)</span>
+                                      <input type="number" id="计_产品进价" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品重量(g)</span>
+                                      <input type="number" id="计_产品重量" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>物流商选择</span>
+                                      <select style="width: 100px; height: 40px; border-radius: 4px;" name="" id="计_物流商选择" >
+                                            <option value="普货">普货</option>
+                                            <option value="带电">带电</option>
+                                            <option value="特货">特货</option>
+                                            <option value="海运">输入</option>
+                                            <option style="color: #d1d1d3" selected="selected" value="">--请选择--</option>
+                                      </select>
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入运费(￥)</span>
+                                      <input type="number" id="计_输入运费" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>均SFB($)</span>
+                                      <input type="number" id="计_均SFB" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>成交率(%)</span>
+                                      <input type="number" id="计_成交率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="80" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style=""><a style="color: red">*</a>预估退货率(%)</span>
+                                      <input type="number" id="计_预估退货率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="5" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>当前汇率</span>
+                                      <input type="number" id="计_当前汇率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="{{ EXCHANGE_RATE }}" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;一口价利润(%)</span>
+                                      <input type="number" id="计_一口价利润" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="30" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;拍卖利润率(%)</span>
+                                      <input type="number" id="计_拍卖利润率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="0" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 45px; float: left">
+                            </div>
+
+
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运费(￥)</span>
+                                      <input type="number" id="sp_1" style="color:red;width: 100px;height: 40px;border-radius: 4px;"  value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拍卖利润(￥)</span>
+                                      <input type="number" id="sp_6" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;一口价利润(￥):</span>
+                                      <input type="number" id="sp_7" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;拍卖总成本(￥)</span>
+                                      <input type="number" id="sp_2" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">一口价总成本(￥)</span>
+                                      <input type="number" id="sp_4" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;建议一口价($):</span>
+                                      <input type="number" id="sp_5" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;拍卖预计价($):</span>
+                                      <input type="number" id="sp_3" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div class=""  >
+                                <button class="btn btn-primary" type="button"  data-container="body"
+                                        data-toggle="popover" data-popover-color="popdanger"
+                                        data-placement="bottom" title="计算公式："
+                                        data-content="拍卖预计价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率) + SFB/成交率 <br><br>
+                                                      一口建议价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率)">计算公式
+                                </button>
+                                <button  type="button" onclick="displayResult_count(this)" class="btn btn-primary"  id="111" >开始计算</button>
+                            </div>
+                            <script>
+                              function displayResult_count(obj){
+                             $.ajax({
+                                        url:'/profitStatistics_2/',
+                                        type:'get',
+                                        data:
+                                            {
+                                            计_产品进价:$('#计_产品进价').val(),
+                                            计_产品重量:$('#计_产品重量').val(),
+                                            计_均SFB:$('#计_均SFB').val(),
+                                            计_成交率:$('#计_成交率').val(),
+                                            计_预估退货率:$('#计_预估退货率').val(),
+                                            计_当前汇率:$('#计_当前汇率').val(),
+                                            计_物流商选择:$('#计_物流商选择').val(),
+                                            计_输入运费:$('#计_输入运费').val(),
+                                            计_一口价利润:$('#计_一口价利润').val(),
+                                            计_拍卖利润率:$('#计_拍卖利润率').val(),
+                                            csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                             },
+                                            success: function (response) {
+                                                    var ret = JSON.parse(response);
+
+                                                    $('.sp_0').html('qwerty').css("color", "red");
+
+                                                    document.getElementById('sp_1').value=ret.msg_e_1;
+                                                    document.getElementById('sp_2').value=ret.msg_e_2;
+                                                    document.getElementById('sp_3').value=ret.msg_e_3;
+                                                    document.getElementById('sp_4').value=ret.msg_e_4;
+                                                    document.getElementById('sp_5').value=ret.msg_e_5;
+                                                    document.getElementById('sp_6').value=ret.msg_e_6;
+                                                    document.getElementById('sp_7').value=ret.msg_e_7;
+                                                }
+                                        })
+                             }
+                            </script>
+                        </form>
+                    </div>
+                    <div class="side_bottom"></div>
+                </div>
+            </div>
+            <div class="show_btn"><span>在线客服</span></div>
+        </div><!--scrollsidebar end-->
+
+		<!-- Dashboard js -->
+		 <script src="{% static 'assets/js/vendors/jquery-3.2.1.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/popper.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/js/bootstrap.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/selectize.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/circle-progress.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/rating/jquery.rating-stars.js' %}"></script>
+
+		<!-- Fullside-menu Js-->
+		 <script src="{% static 'assets/plugins/fullside-menu/jquery.slimscroll.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/fullside-menu/waves.min.js' %}"></script>
+
+		<!-- Data tables -->
+		 <script src="{% static 'assets/plugins/datatable/jquery.dataTables.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.js' %}"></script>
+
+		<!-- Select2 js -->
+		 <script src="{% static 'assets/plugins/select2/select2.full.min.js' %}"></script>
+
+		<!-- Custom scroll bar Js-->
+		 <script src="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+
+		<!-- Custom Js-->
+		 <script src="{% static 'assets/js/custom.js' %}"></script>
+
+        <!--17物流查询-->
+        <!--脚本代码可放于页面底部，等到页面最后执行。-->
+        <script type="text/javascript" src="https://www.17track.net/externalcall.js"></script>
+
+        <!-- Data table js -->
+        <script>
+        $(function(e) {
+        $('#example').DataTable();
+        } );
+        $(document).ready(function() {
+        $('#example2').DataTable();
+        } );
+        </script>
+
+        <!-- 图片懒加载 -->
+        <script src="{% static 'js/echo/echo.min.js' %}"></script>
+        <script>
+        Echo.init({
+            offset: 5,
+            throttle: 200
+        });
+        </script>
+
+       <!-- 输入页码跳转 -->
+        <script language=javascript>
+            function GoPage(Myself)
+            {
+            if (document.formpage.SkipPage.value > parseInt({{ page_of_objs.paginator.count }})/parseInt({{ quantity}}))
+            {   alert('请输入正确的的页码').css("color", "red")} //绝对路径可自己设置
+            else{
+            window.location.href="?page="+document.formpage.SkipPage.value+ "&store_name={{ store_name }}&订单ID={{ 订单ID }}&订单状态={{ 订单状态 }}&订单类型={{ 订单类型 }}&SKU={{ SKU }}&quantity={{ quantity }}&SerialNumber={{ SerialNumber }}&start_time={{ start_time }}&end_time={{ end_time }}";
+            }
+            }
+        </script>
+
+        <!-- html太平洋时间 -->
+        <script>
+        // 时间设置
+        var  timezone = -7; // 时区 ： 东区时区1~12  西区时区-1~-12
+        var  date;
+
+         date = getLocalTime(timezone)
+          .toString()
+           .split("GMT+")[0]
+           .toString();
+        $("#showdate").html(date);
+
+       function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+       // 时间设置end
+       window.onload = function() {
+       // 调用时间
+       var setdate = setInterval(() => {
+       date = getLocalTime(timezone)
+         var year = date.getFullYear();
+         var month = date.getMonth()+1;
+         var Date = date.getDate();
+         var hour = date.getHours();  //获得小时、分钟、秒
+         var minute = date.getMinutes();
+         var second = date.getSeconds();
+         var weekday = 0;
+         switch(date.getDay()){
+            case 0:
+            weekday = "星期日";
+            break;
+            case 1:
+            weekday = "星期一";
+            break;
+            case 2:
+            weekday = "星期二";
+            break;
+            case 3:
+            weekday = "星期三";
+            break;
+            case 4:
+            weekday = "星期四";
+            break;
+            case 5:
+            weekday = "星期五";
+            break;
+            case 6:
+            weekday = "星期六";
+            break;
+         }
+        document.getElementById("showdate").innerHTML="<br>当前太平洋时间："+year+"年"+month+"月"+Date+"日&nbsp&nbsp;"+hour+":"+minute+":"+second+"&nbsp&nbsp;"+weekday;
+       }, 1000);
+       // 调用时间end
+        };
+      </script>
+
+        <!--计算器-->
+        <script type="text/javascript" src="{% static 'jisuanqi/js/jquery.hhService.js' %}"></script>
+        <script type="text/javascript">
+            $(function(){
+            //悬浮计算器
+            $("#hhService").fix({
+                float : 'right',	      //默认设置 “left” or “right”
+                minStatue : true,     //默认设置 “false” or “true”
+                skin : 'blue',	    //默认设置 “blue”  “orange”  “green”  “red”  “pink”
+                durationTime : 400
+            });
+        });
+        </script>
+
+	</body>
+</html>
+

@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>卖家分析</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../static/style/admin.css" media="all">
+  {#  回到顶部底部#}
+  <link rel="stylesheet" href="../../../static/myself_static_files/top_down/style.css" media="all">
+    <!---ECharts图表库-->
+  <script src="https://unpkg.com/echarts@4.8.0/dist/echarts.js" charset="utf-8"></script>
+  <style>
+        .layui-input,.layui-inline{
+            height:30px;
+        }
+        .layui-form-item .layui-input-inline{
+            width: 150px;
+        }
+        .layui-table-cell {
+            font-size:14px;
+            padding:0 5px;
+            height:auto;
+            overflow:visible;
+            text-overflow:inherit;
+            white-space:normal;
+            word-break: break-all;
+        }
+  </style>
+</head>
+<body >
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+{#          搜索栏  #}
+          <div class="layui-fluid">
+            <div class="layui-card">
+{#              <div class="layui-card-body" style="padding: 15px;">#}
+                <div class="layui-form"  lay-filter="">
+                  <div class="layui-form-item" >
+                    <div class="layui-inline" >
+                      <label class="layui-form-label" >起始日期</label>
+                      <div class="layui-input-inline" >
+                        <input   type="text" value="{{ start_time }}" name="start_time" id="start_time" lay-verify="required" placeholder="yyyy-MM-dd HH:mm" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label" >结束日期</label>
+                      <div class="layui-input-inline" >
+                        <input type="text" value="{{ end_time }}" name="end_time" id="end_time" lay-verify="required" placeholder="yyyy-MM-dd HH:mm" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline"  >
+                      <label class="layui-form-label" >卖家姓名</label>
+                      <div class="layui-input-inline" >
+                        <input  type="text" name="seller_name" id="seller_name" lay-verify="" placeholder="请输入" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">卖家ID</label>
+                      <div class="layui-input-inline" >
+                        <input  type="text" name="seller_id" id="seller_id" value="{{ seller_id }}" lay-verify="" placeholder="请输入" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">特殊筛选</label>
+                      <div class="layui-input-inline" >
+                          <select name="特殊筛选" id="特殊筛选" lay-filter="" >
+                            <option value="全部商品"  >全部卖家</option>
+                            <option value="只做一口价">只做一口价卖家</option>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">查询数据</label>
+                      <div class="layui-input-inline"  >
+                        <button id =""  class="layui-btn layui-btn-sm" lay-submit lay-filter="chaxunshuju">按条件查询</button>
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <div class="layui-input-inline" >
+                        <a  class="layui-btn  layui-btn-sm" lay-submit="" lay-filter="所有备注卖家">所有备注卖家</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+{#              </div>#}
+            </div>
+          </div>
+          <div class="layui-card-body"  >
+            <table class="layui-hide" id="top-statistiics-table" lay-filter="top-statistiics-table"></table>
+{#              标准ID列#}
+            <script type="text/html" id="top-statistiics-table-sellerID">
+                   <a href="https://tophatter.com/users/{% verbatim %}{{d.user_id}}{% endverbatim %}" target="_blank" class="layui-table-link">{% verbatim %}{{d.user_id}}{% endverbatim %}</a>
+                   <br><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="tubiaotongji" >统计</a>
+            </script>
+{#              卖家姓名列#}
+            <script type="text/html" id="top-statistiics-table-sellername">
+                <a >{% verbatim %}{{ d.seller_name }}/{% endverbatim %}</a>
+                {% verbatim %}
+                {{#  if(d.CN_seller_name){ }}
+                    <a class="layui-table-link"  lay-event="seller_edit">{{ d.CN_seller_name }}</a>
+                {{#  } else { }}
+                    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="seller_edit">编辑</a>
+                {{#  }  }}
+                {% endverbatim %}
+            </script>
+{#              评分列#}
+            <script type="text/html" id="top-statistiics-table-pingfen">
+                  {% verbatim %}
+                  {{#  if(d.ratings_average){ }}
+                      <a >{{ d.ratings_average }} / {{ d.ratings_count }} / {{ d.alerts_count }}</a>
+                  {{#  } else { }}
+                      <a >-- / {{ d.ratings_count }} / {{ d.alerts_count }}</a>
+                  {{#  }  }}
+                  {% endverbatim %}
+            </script>
+{#              详情列#}
+            <script type="text/html" id="top-statistiics-table-xiangqing">
+                <a class="layui-btn layui-btn-primary layui-btn-xs"  lay-event="xiangqing" >详情</a>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{#  返回顶部底部按钮#}
+<div id="floatPanel">
+	<div class="ctrolPanel">
+		<a class="arrow" href="#"><span>顶部</span></a>
+		<a class="arrow" href="#"><span>底部</span></a>
+	</div>
+</div>
+{#  图表统计#}
+<div id="tongjiChart" style="display: none;">
+     <div id="tongjiChartMain" style="width: 600px; height: 500px;"></div>
+</div>
+
+  <script src="../../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'table','form', 'laydate','flow','jquery'], function(){
+    var table = layui.table;
+    var laydate = layui.laydate;
+    var form = layui.form;
+    var $ = layui.$;
+    var flow = layui.flow;
+
+    //表格控制，表格主体，采用方法渲染
+    table.render({
+      elem: '#top-statistiics-table'
+      ,url: '/common_functions/TOP_seller/'
+      {#,height: 700#}
+      ,cellMinWidth: 110
+      ,cols: [[
+         {type:'checkbox'}
+        ,{title: '卖家ID', width:150, align: 'center',templet: '#top-statistiics-table-sellerID'}
+        ,{title: '卖家名称',width:180, align: 'center',templet: '#top-statistiics-table-sellername'}
+        {#,{title: '安排总数',width:100,field:'product_sum',  align: 'center',sort: true}#}
+        ,{title: '总订单数',width:100,field:'valid_orders',  align: 'center',sort: true}
+        ,{title: '拍卖订单',width:100,field:'bid_oders',  align: 'center',sort: true}
+        ,{title: '一口价订单',width:100,field:'buy_now_oders',  align: 'center',sort: true}
+        ,{title: '买家总数',width:110,field:'buyer_id',  align: 'center', sort: true}
+        ,{title: 'listing数量',width:110,field:'products', align: 'center',sort: true}
+        ,{title: '均成交价',width:130,field:'hammer_price_local',  align: 'center', sort: true}
+        ,{title: '均成交价(含运费)',field:'hammer_shipping_price',  align: 'center'}
+        ,{title: '均评分/总评论/总收藏',field:'ratings_average',align: 'center',sort: true,templet: '#top-statistiics-table-pingfen'}
+        ,{title: '详情',align: 'center', templet: '#top-statistiics-table-xiangqing'}
+      ]]
+      ,initSort: {
+            field: 'valid_orders' //排序字段，对应 cols 设定的各字段名
+            ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+          }
+      ,autoSort: false //禁用前端自动排序。
+      ,where: {seller_id: $('#seller_id').val(),
+               start_time: $('#start_time').val(),
+               end_time: $('#end_time').val()
+              }
+      ,page: true
+      ,limit:'20'
+      ,loading:true
+      ,limits: [20, 50, 100, 200, 300, 500]
+    });
+    //监听配件工具条
+    table.on('tool(top-statistiics-table)', function(obj){
+      var data = obj.data;
+      //卖家备注
+      if(obj.event === 'seller_edit')
+      {
+          layer.prompt({
+              title: '卖家备注（'+ data.user_id+')',
+              value: data.CN_seller_name,
+          },
+          function(value,index){
+          $.ajax({
+            url:'/common_functions/TOP_statistics/',
+            type:'get',
+            data:{
+                   CN_user_id:data.user_id,
+                   CN_seller_name:value,
+                 },
+            success:
+                function (response)
+                {
+                  layer.close(index);
+                  var ret = JSON.parse(response);
+                  layer.msg(ret.msg_e + ':'+data.user_id +'（'+ value+'）');
+                }
+            })
+        });
+      }
+      else if(obj.event === 'tubiaotongji')
+      {
+		layer.open({
+			  type: 1,
+			  title: '订单日期统计图--'+'卖家ID（' +data.user_id+'）' ,
+			  shadeClose: true,
+			  shade: 0.2,
+              {#btn: ['关闭'],#}
+			  area:['600px', '550px'],
+			  content:$("#tongjiChart"),
+
+			  success:function(index){
+			      layer.msg('加载中…', {icon: 16 ,shade: 0.2,time: 120000});
+                  $.ajax({
+                    url:'/common_functions/TOP_show/',
+                    type:'get',
+                    data:{user_id:data.user_id},
+                    success:
+                        function (response)
+                        {
+                          var index_load =  layer.msg();
+                          layer.close(index_load);
+                          var ret = JSON.parse(response);
+                           // 基于准备好的dom，初始化echarts实例
+                            var myChart1 = echarts.init(document.getElementById('tongjiChartMain'));
+                            // 指定图表的配置项和数据
+                            option = {
+                                title: {
+                                    {#text: '销售数量及均价总览',#}
+                                    {#subtext: '数据来自西安兰特水电测控技术有限公司',#}
+                                    {#x: 'center'#}
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                                  type: 'cross'
+                                                  }
+                                },
+                                legend: {
+                                    data:['拍卖数量','一口价数量','总数量','平均成交价'],
+                                    x: 'left',
+                                    {#top:"6%",#}
+                                },
+                                toolbox: {
+                                    feature: {
+                                        dataZoom: {
+                                            yAxisIndex: 'none'
+                                        },
+                                        restore: {},
+                                        dataView: {show: true, readOnly: false},
+                                        saveAsImage: {}
+                                    }
+                                },
+                                axisPointer: {
+                                    link: {xAxisIndex: 'all'}
+                                },
+                                dataZoom: [
+                                    {
+                                        show: true,
+                                        realtime: true,
+                                        start: 50,
+                                        end: 100,
+                                        xAxisIndex: [0, 1]
+                                    },
+                                    {
+                                        type: 'inside',
+                                        realtime: true,
+                                        start: 0,
+                                        end: 100,
+                                        xAxisIndex: [0, 1]
+                                    }
+                                ],
+                                grid: [{
+                                    left: 70,
+                                    right: 50,
+                                    top: '13%',
+                                    height: '35%'
+                                }, {
+                                    left: 70,
+                                    right: 50,
+                                    top: '60%',
+                                    height: '28%'
+                                }],
+                                xAxis : [
+                                    {
+                                        type : 'time',
+                                        boundaryGap : false,
+                                        axisLine: {onZero: true},
+                                        {#data: timeData#}
+                                    },
+                                    {
+                                        gridIndex: 1,
+                                        type : 'time',
+                                        boundaryGap : false,
+                                        axisLine: {onZero: true},
+                                        {#data: timeData,#}
+                                        {#position: 'top'#}
+                                    }
+                                ],
+                                yAxis : [
+                                    {
+                                        name : '单量',
+                                        type : 'value',
+                                        position:'left',
+                                        axisLabel: {
+                                                        formatter: '{value} 单'
+                                                    }
+                                    },
+                                    {
+                                        gridIndex: 1,
+                                        name : '价格',
+                                        position:'left',
+                                        type : 'value',
+                                        axisLabel: {
+                                                        formatter: '{value} 美元'
+                                                    }
+
+                                    }
+                                ],
+                                series : [
+                                    {
+                                        name:'拍卖数量',
+                                        type:'bar',
+                                        barWidth:'6',
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        {#stack:'数量',#}
+                                        data: ret.Table_bid_oders,
+                                        markPoint: {
+                                                        data: [
+                                                            {type: 'max', name: '最大值'},
+                                                            {type: 'min', name: '最小值'}
+                                                        ]
+                                                    },
+                                    },
+                                    {
+                                        name:'一口价数量',
+                                        type:'bar',
+                                        barWidth:'6',
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        {#stack:'数量',#}
+                                        data: ret.Table_buy_now_oders,
+                                        markPoint: {
+                                                        data: [
+                                                            {type: 'max', name: '最大值'},
+                                                            {type: 'min', name: '最小值'}
+                                                        ]
+                                                    },
+                                    },
+                                    {
+                                        name:'总数量',
+                                        type:'line',
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        data:ret.Table_product_sum,
+                                        markLine: {
+                                                data: [
+                                                    {type: 'average', name: '总数量'}
+                                                ]
+                                            }
+                                    },
+
+                                    {
+                                        name:'平均成交价',
+                                        type:'line',
+                                        xAxisIndex: 1,
+                                        yAxisIndex: 1,
+                                        symbolSize: 8,
+                                        hoverAnimation: false,
+                                        data:ret.Table_hammer_price_local,
+                                        markLine: {
+                                                data: [
+                                                    {type: 'average', name: '平均成交价'}
+                                                ]
+                                            }
+
+                                    }
+                                ]
+                            };
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart1.setOption(option);
+                            window.addEventListener("resize", function() {myChart1.resize();});
+                        }
+                    })
+				  {#layer.close(index);#}
+				  }
+			});
+      }
+      else if(obj.event === 'xiangqing')
+      {
+        var start_time= $('#start_time').val();
+    	var end_time= $('#end_time').val();
+		layer.open({
+			  type: 1,
+			  title: '将跳转到平台统计页面' ,
+			  shadeClose: true,
+			  shade: 0.2,
+              {#btn: ['关闭'],#}
+			  {#area:['300px', '200px'],#}
+			  content:'<br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;<a>起始时间：'+ start_time +'</a><br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;<a>结束时间：'+ end_time +'</a><br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;<a>卖家ID：'+ data.user_id +'</a>' +
+                      '<br><br>' +
+                      '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                      '<a class="layui-btn layui-btn-sm layui-btn-normal" lay-href="/common_functions/TOP_statistics/?seller_id=' + data.user_id + '&start_time='+ start_time + '&end_time='+ end_time+ '" lay-text="平台统计" >详情</a>' +
+                      '<br><br>'
+			});
+      }
+    });
+
+    //触发排序事件
+    table.on('sort(top-statistiics-table)', function(obj){
+      table.reload('top-statistiics-table', {
+        initSort: obj
+        ,where: {
+           Sort_field: obj.field //排序字段
+          ,Sort_order: obj.type //排序方式
+        }
+      });
+    });
+
+//提交
+    form.on('submit(chaxunshuju)', function(data){
+    	{#layer.load(2);#}
+    	var start_time= $('#start_time');
+    	var end_time= $('#end_time');
+    	var seller_name= $('#seller_name');
+    	var seller_id= $('#seller_id');
+    	var 特殊筛选= $('#特殊筛选');
+        //执行重载
+        table.reload('top-statistiics-table', {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+                     'start_time':          start_time.val(),
+                     'end_time':            end_time.val(),
+                     'seller_name':         seller_name.val(),
+                     'seller_id':           seller_id.val(),
+                     '特殊筛选':            特殊筛选.val(),
+          }
+        });
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+//所有备注卖家
+    form.on('submit(所有备注卖家)', function(data){
+        layer.open({
+                      type: 0,
+                      title: '所有备注卖家' ,
+                      shadeClose: true,
+                      {#offset: 'r',#}
+                      shade: 0.2,
+                      anim: 2,
+                      btn: ['关闭'],
+                      area:['800px', '520px'],
+                      content:'<div>'+
+                                '{% for collect_seller in collect_sellers %}'+
+                                    '<div class="layui-inline" >'+
+                                      '<label class="layui-form-label" style="text-align: center;width: 100%">（{{ collect_seller.CN_user_id }}）：{{ collect_seller.CN_seller_name }}</label>'+
+                                    '</div>'+
+                               '{% endfor %}'+
+                               '</div>',
+                   });
+        //执行
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+
+//时间控制
+    //日期时间选择器
+    laydate.render({
+      elem: '#start_time'
+      ,type: 'date'
+      ,theme: '#393D49'
+      ,format:'yyyy-MM-dd HH:mm'
+      ,max:0
+      {#,value:getRecentDay(-1)#}
+    });
+    laydate.render({
+      elem: '#end_time'
+      ,type: 'date'
+      ,theme: '#393D49'
+      ,format:'yyyy-MM-dd HH:mm'
+      ,max:0
+      {#,value:getRecentDay(0)#}
+    });
+    //通过时区获取时间
+    function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+    //获取近N天
+    function getRecentDay(day){
+        var today = getLocalTime(-7)  //new Date();
+        var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+        today.setTime(targetday_milliseconds);
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = doHandleMonth(tMonth + 1);
+        tDate = doHandleMonth(tDate);
+        return tYear+"-"+tMonth+"-"+tDate+' 00:00';
+    }
+    function doHandleMonth(month){
+        var m = month;
+        if(month.toString().length == 1){
+            m = "0" + month;
+        }
+        return m;
+    }
+{#页面到底到顶#}
+    $(function(){
+	// 页面浮动面板
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(0).click(function(){
+		$("html,body").animate({scrollTop :0}, 800);
+		return false;
+	});
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(1).click(function(){
+		$("html,body").animate({scrollTop : $(document).height()}, 800);
+		return false;
+	});
+});
+
+//the file id end//
+  });
+
+</script>
+</body>
+</html>

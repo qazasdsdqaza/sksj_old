@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>campaign管理</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../static/style/admin.css" media="all">
+  {#  回到顶部底部#}
+  <link rel="stylesheet" href="../../../static/myself_static_files/top_down/style.css" media="all">
+    <!---ECharts图表库-->
+  <script src="https://unpkg.com/echarts@4.8.0/dist/echarts.js" charset="utf-8"></script>
+  <style>
+        .layui-input,.layui-inline{
+            height:30px;
+        }
+        .layui-form-item .layui-input-inline{
+            width: 150px;
+        }
+        .layui-table-cell {
+            font-size:14px;
+            padding:0 5px;
+            height:auto;
+            overflow:visible;
+            text-overflow:inherit;
+            white-space:normal;
+            word-break: break-all;
+            line-height:19px
+        }
+  </style>
+</head>
+<body >
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">创建campaign</div>
+            <div class="layui-form"  lay-filter="">
+              <div class="layui-form-item" >
+                <div class="layui-inline" >
+                  <label class="layui-form-label" >campaign名</label>
+                  <div class="layui-input-inline" >
+                    <input type="text" name="ADDcampaign_name" id="ADDcampaign_name" lay-product_identifier="" placeholder="请输入" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-inline" >
+                  <label class="layui-form-label">类型</label>
+                  <div class="layui-input-inline" >
+                      <select  name="ADDcampaign_type" id="ADDcampaign_type" lay-search=""  >
+                        <option value="" selected >--请选择--</option>
+                        <option value="AuctionCampaign">AuctionCampaign</option>
+                        <option value="ReminderCampaign">ReminderCampaign</option>
+                        <option value="BuyNowCampaign">BuyNowCampaign</option>
+                        <option value="NameYourPriceCampaign">NameYourPriceCampaign</option>
+                      </select>
+                  </div>
+                </div>
+{#                <div class="layui-inline" >#}
+{#                  <label class="layui-form-label">状态</label>#}
+{#                  <div class="layui-input-inline" >#}
+{#                      <select  name="ADDcampaign_status" id="ADDcampaign_status" lay-search=""  >#}
+{#                        <option value="" selected >--请选择--</option>#}
+{#                        <option value="active">active</option>#}
+{#                        <option value="paused">paused</option>#}
+{#                        <option value="expired">expired</option>#}
+{#                      </select>#}
+{#                  </div>#}
+{#                </div>#}
+                <div class="layui-inline" >
+                  <label class="layui-form-label" >报价</label>
+                  <div class="layui-input-inline" >
+                    <input type="text" name="ADDcampaign_bid_amount" id="ADDcampaign_bid_amount" lay-product_identifier="" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-inline" >
+                  <label class="layui-form-label" >日预算</label>
+                  <div class="layui-input-inline" >
+                    <input type="text" value="10000" name="ADDcampaign_daily_budget" id="ADDcampaign_daily_budget"  lay-product_identifier="" placeholder="请输入" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-inline" >
+                  <label class="layui-form-label" >单品日预算</label>
+                  <div class="layui-input-inline" >
+                    <input type="text" value="1000" name="ADDcampaign_daily_budget_per_product" id="ADDcampaign_daily_budget_per_product" lay-product_identifier="" placeholder="请输入" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-inline" >
+                  <label class="layui-form-label" >总预算</label>
+                  <div class="layui-input-inline" >
+                    <input type="text" value="100000" name="ADDcampaign_lifetime_budget" id="ADDcampaign_lifetime_budget" lay-product_identifier="" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-inline" >
+                  <label class="layui-form-label" >单品总预算</label>
+                  <div class="layui-input-inline" >
+                    <input type="text" value="10000" name="ADDcampaign_lifetime_budget_per_product" id="ADDcampaign_lifetime_budget_per_product" lay-product_identifier="" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div class="layui-card-body">
+              <div class="layui-form" action="" lay-filter="component-form-group">
+                  <div class="layui-form-item" pane="">
+                    <label class="layui-form-label">原始复选框</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" lay-filter="checkall" name="" lay-skin="primary" title="全选">
+                        {% for store_name_user in store_name_users %}
+                            <input type="checkbox" name="ADDcampaign_store_name" lay-skin="primary" class='checkone' value="{{ store_name_user.store_name }}," title="{{ store_name_user.store_name }}">
+                        {% endfor %}
+                    </div>
+                  </div>
+              </div>
+
+            <div class="layui-inline" >
+              <div class="layui-input-inline"  >
+                <button id =""  class="layui-btn layui-btn-sm" lay-submit lay-filter="chuangjian">开始创建</button>
+                成功:<span id="sp_1" style="color: red"></span>
+                失败:<span id="sp_2" style="color: red"></span>
+                     <span id="sp_3" style="color: red"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-md12">
+        <div class="layui-card">
+           <div class="layui-fluid">
+                <div class="layui-card">
+    {#              <div class="layui-card-body" style="padding: 15px;">#}
+                    <div class="layui-form"  lay-filter="">
+                      <div class="layui-form-item" >
+                        <div class="layui-inline">
+                          <label class="layui-form-label">账号选择</label>
+                          <div class="layui-input-inline">
+                            <select name="store_name" id="store_name" lay-verify="required" lay-search="">
+                                <option value="all" selected >all</option>
+                                {% for store_name_user in store_name_users %}
+                                    <option value="{{ store_name_user.store_name }}">{{ store_name_user.store_name }}</option>
+                                {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                        <div class="layui-inline" >
+                          <label class="layui-form-label" >campaign名</label>
+                          <div class="layui-input-inline" >
+                            <input type="text" name="campaign_name" id="campaign_name" lay-product_identifier="" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+                          </div>
+                        </div>
+                        <div class="layui-inline" >
+                          <label class="layui-form-label">类型</label>
+                          <div class="layui-input-inline" >
+                              <select  name="campaign_type" id="campaign_type" lay-search=""  >
+                                <option value="全部订单" selected >全部订单</option>
+                                <option value="AuctionCampaign">AuctionCampaign</option>
+                                <option value="ReminderCampaign">ReminderCampaign</option>
+                                <option value="BuyNowCampaign">BuyNowCampaign</option>
+                                <option value="NameYourPriceCampaign">NameYourPriceCampaign</option>
+                              </select>
+                          </div>
+                        </div>
+                        <div class="layui-inline" >
+                          <label class="layui-form-label">状态</label>
+                          <div class="layui-input-inline" >
+                              <select  name="campaign_status" id="campaign_status" lay-search=""  >
+                                <option value="全部订单" selected >全部订单</option>
+                                <option value="active">active</option>
+                                <option value="paused">paused</option>
+                                <option value="expired">expired</option>
+                              </select>
+                          </div>
+                        </div>
+                        <div class="layui-inline" >
+                          <label class="layui-form-label">查询数据</label>
+                          <div class="layui-input-inline"  >
+                            <button id =""  class="layui-btn layui-btn-sm" lay-submit lay-filter="chaxunshuju">按条件查询</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+    {#              </div>#}
+                </div>
+          </div>
+          <div class="layui-card-body"  >
+            <table class="layui-hide" id="top-statistiics-table" lay-filter="top-statistiics-table"></table>
+            <script type="text/html" id="test-table-toolbarDemo">
+              <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm" lay-event="刷新后台数据">获取后台campaign数据</button>
+              </div>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{#  返回顶部底部按钮#}
+<div id="floatPanel">
+	<div class="ctrolPanel">
+		<a class="arrow" href="#"><span>顶部</span></a>
+		<a class="arrow" href="#"><span>底部</span></a>
+	</div>
+</div>
+{#  图表统计#}
+<div id="tongjiChart" style="display: none;">
+     <div id="tongjiChartMain" style="width: 600px; height: 500px;"></div>
+</div>
+
+  <script src="../../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'table','form', 'laydate','flow','jquery'], function(){
+    var table = layui.table;
+    var laydate = layui.laydate;
+    var form = layui.form;
+    var $ = layui.$;
+
+    //表格控制，表格主体，采用方法渲染
+    table.render({
+      elem: '#top-statistiics-table'
+      ,url: '/Tophatter/TOP_campaign_list/'
+      {#,height: 'full-100'#}
+      ,cellMinWidth: 110
+      ,cols: [[
+         {type:'numbers',width:50}
+        ,{title: '店铺',width:80,field:'store_name',sort: true, align: 'center'}
+        ,{title: '名称',width:100,field:'name',sort: true,  align: 'center'}
+        ,{title: '类型',width:220,field:'type',sort: true,  align: 'center'}
+        ,{title: '状态',field:'status',sort: true,edit: 'text',  align: 'center'}
+        ,{title: '报价',width:120,field:'bid_amount',  align: 'center',edit: 'text',sort: true}
+        ,{title: '日预算',field:'daily_budget',  align: 'center',edit: 'text',sort: true}
+        ,{title: '单品日预算',field:'daily_budget_per_product',  align: 'center', sort: true,edit: 'text'}
+        ,{title: '总预算',field:'lifetime_budget', align: 'center',sort: true,edit: 'text'}
+        ,{title: '单品总预算',field:'lifetime_budget_per_product',  align: 'center',edit: 'text',sort: true}
+        ,{title: '时间段安排',field:'hourly_schedule',  align: 'center',sort: true}
+        ,{title: '更新时间',width:190,field:'update_time',  align: 'center',sort: true}
+        {#,{title: '创建时间',width:190,field:'save_time',  align: 'center',sort: true}#}
+      ]]
+      ,initSort: {
+            field: 'store_name' //排序字段，对应 cols 设定的各字段名
+            ,type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+          }
+      ,toolbar: '#test-table-toolbarDemo'
+      ,autoSort: false //禁用前端自动排序。
+      ,page: true
+      ,limit:'60'
+    });
+
+    //监听单元格编辑
+    table.on('edit(top-statistiics-table)', function(obj){
+      var value = obj.value //得到修改后的值
+      ,data = obj.data //得到所在行所有键值
+      ,field = obj.field; //得到字段
+      layer.open({
+			  type: 0,
+			  title: '更改店铺信息',
+			  shadeClose: false,
+			  shade: 0.4,
+              btn: ['确认', '取消'],
+			  content:'<a>店铺（<a style="color:coral" >'+ data.store_name + '</a>）的（<a style="color:coral" >'+ data.name  +'</a>）' +
+                  '（<a style="color:coral" >'+ data.type +'</a>）campaign（<a style="color:coral">' + field + ' </a>）字段更改为：</a>' +
+                  '<a style="color:coral">'+ value+'</a>'+
+                  '<br><br><div class="layui-inline" >\n' +
+                  '    <label class="layui-form-label" style="width: 200px;" >是否更新所有(同名，同类型)：</label>\n' +
+                  '        <div class="layui-input-inline" >\n' +
+                  '          <select lay-search class="layui-inline layui-input-inline" name="all_refuse" id="all_refuse">\n' +
+                  '              <option value="是">是</option>\n' +
+                  '              <option value="否">否</option>\n' +
+                  '      </select>\n' +
+                  '        </div>\n' +
+                  '     </div>',
+			  yes:function(index){
+                  $.ajax({
+                    url:'/Tophatter/TOP_campaign_list/',
+                    type:'get',
+                    data:{
+                        caozuo_status:'edit',
+                        store_name_edit:data.store_name,
+                        name_edit:data.name,
+                        name_type:data.type,
+                        field_edit:field,
+                        value_edit:value,
+                        all_refuse:$('#all_refuse').val(),
+                         },
+                    success:
+                        function (response)
+                        {
+                          var ret = JSON.parse(response);
+                          if (ret.msg_e == '替换成功'){layer.msg(ret.msg_e + ':['+ data.store_name +'] ' + field + ' 字段更改为：'+ value );}
+                          else{layer.msg(ret.msg_e );}
+                        }
+                    })
+				  }
+			});
+    });
+
+    //头工具栏事件(新增，删除)
+    table.on('toolbar(top-statistiics-table)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+      if(obj.event === '刷新后台数据')
+      {
+         layer.open({
+			  type: 1,
+			  title: '刷新后台数据',
+			  shadeClose: true,
+			  shade: 0.4,
+              btn: ['确认', '取消'],
+              area:['250px', '200px'],
+			  content:'<br><div class="layui-inline" >\n' +
+                  '    <label class="layui-form-label" style="width: 100px;" >选择刷新店铺：</label>\n' +
+                  '        <div class="layui-input-inline" >\n' +
+                  '          <select lay-search class="layui-inline layui-input-inline" name="store_name_refuse" id="store_name_refuse">\n' +
+                  '          <option value="all" selected >all</option>\n' +
+                  '          {% for store_name_user in store_name_users %}\n' +
+                  '              <option value="{{ store_name_user.store_name }}">{{ store_name_user.store_name }}</option>\n' +
+                  '          {% endfor %}\n' +
+                  '      </select>\n' +
+                  '        </div>\n' +
+                  '     </div>'+
+                      '<div class="layui-inline" >\n' +
+                  '    <label class="layui-form-label" style="width: 170px;color:coral" >注：默认刷新所有店铺，<br>但全部刷新需要几十秒时间</label>\n' +
+                  '        <div class="layui-input-inline" >\n' +
+                  '        </div>\n' +
+                  '     </div>'+
+                  '     <br><br><h6 style="" ></h6>',
+			  yes:function(index){
+			      var store_name_refuse  = $("#store_name_refuse").val();
+			      layer.msg('加载中...', {
+                              icon: 16
+                              ,shade: 0.1
+                              ,time:20000
+                            });
+                  $.ajax({
+                    url:'/Tophatter/TOP_campaign_list/',
+                    type:'get',
+                    data:{
+                        caozuo_status:'refuse',
+                        store_name_refuse:store_name_refuse,
+                         },
+                    success:
+                        function (response)
+                        {
+                            {#var index2 = layer.msg();#}
+                            {#layer.close(index2);#}
+                            layer.close(index);
+
+                           var ret = JSON.parse(response);
+                          if (ret.msg_e == '刷新成功'){
+                            //执行重载
+                            layer.msg(ret.msg_e );
+                            location.reload()
+                          }
+                          else{layer.msg(ret.msg_e );}
+                        }
+                    })
+				  }
+			});
+      }
+    });
+
+    //触发排序事件
+    table.on('sort(top-statistiics-table)', function(obj){
+      table.reload('top-statistiics-table', {
+        initSort: obj
+        ,where: {
+           Sort_field: obj.field //排序字段
+          ,Sort_order: obj.type //排序方式
+        }
+      });
+    });
+
+    //提交
+    form.on('submit(chaxunshuju)', function(data){
+    	{#layer.load(2);#}
+    	var store_name= $('#store_name');
+    	var campaign_name= $('#campaign_name');
+    	var campaign_type= $('#campaign_type');
+    	var campaign_status= $('#campaign_status');
+        //执行重载
+        table.reload('top-statistiics-table', {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+                     'store_name':             store_name.val(),
+                     'campaign_name':          campaign_name.val(),
+                     'campaign_type':          campaign_type.val(),
+                     'campaign_status':        campaign_status.val(),
+          }
+        });
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+    //创建campaign
+    form.on('submit(chuangjian)', function(data){
+        var chk_value = [];
+        $('input[name="ADDcampaign_store_name"]:checked').each(function () {chk_value.push($(this).val());});
+        var store_name_add_valss = chk_value.join('');//把复选框的值以数组形式存放
+
+        layer.msg('开始上传，请稍后…', {icon: 16 ,shade: 0.2,time: 1200000});
+        $.ajax({
+            url:'/Tophatter/TOP_campaign_list/',
+            type:'get',
+            data:{
+                ADDcampaign_name : $('#ADDcampaign_name').val(),
+                ADDcampaign_type : $('#ADDcampaign_type').val(),
+                ADDcampaign_bid_amount : $('#ADDcampaign_bid_amount').val(),
+                ADDcampaign_daily_budget : $('#ADDcampaign_daily_budget').val(),
+                ADDcampaign_daily_budget_per_product : $('#ADDcampaign_daily_budget_per_product').val(),
+                ADDcampaign_lifetime_budget : $('#ADDcampaign_lifetime_budget').val(),
+                ADDcampaign_lifetime_budget_per_product : $('#ADDcampaign_lifetime_budget_per_product').val(),
+                store_name_add_valss: store_name_add_valss,
+                caozuo_status:'add',
+            },
+            success: function (response)
+                {  var res = JSON.parse(response);
+                    var index_load =  layer.msg();
+                    layer.close(index_load);
+                    document.getElementById("sp_1").innerHTML='';
+                    document.getElementById("sp_2").innerHTML='';
+                    document.getElementById("sp_3").innerHTML='';
+
+                    if (res.msg_1) {//上传成功
+                        document.getElementById("sp_1").innerHTML=res.msg_1;
+                    }
+                    if (res.msg_2) {//上传失败
+                        document.getElementById("sp_2").innerHTML=res.msg_2;
+                    }
+                    if (res.msg_e) {//上传文件错误
+                        document.getElementById("sp_3").innerHTML='错误：'+res.msg_e;
+                    }
+                }
+            })
+
+        //执行
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+{#页面到底到顶#}
+    $(function(){
+	// 页面浮动面板
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(0).click(function(){
+		$("html,body").animate({scrollTop :0}, 800);
+		return false;
+	});
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(1).click(function(){
+		$("html,body").animate({scrollTop : $(document).height()}, 800);
+		return false;
+	});
+});
+
+{#复选框全选#}
+    form.on('checkbox(checkall)', function(data){
+        if(data.elem.checked){
+            $('.checkone').prop('checked',true);
+        }else{
+            $('.checkone').prop('checked',false);
+        }
+        form.render('checkbox');
+    });
+//the file id end//
+  });
+
+</script>
+</body>
+</html>

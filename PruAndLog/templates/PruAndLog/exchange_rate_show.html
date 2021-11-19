@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>汇率统计</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../static/style/admin.css" media="all">
+  {#  回到顶部底部#}
+  <link rel="stylesheet" href="../../../static/myself_static_files/top_down/style.css" media="all">
+  <!---ECharts图表库-->
+  <script src="https://unpkg.com/echarts@4.8.0/dist/echarts.js" charset="utf-8"></script>
+
+</head>
+<body>
+
+  <div class="layui-fluid" >
+    <div class="layui-row layui-col-space10">
+      <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+        <!-- 填充内容 -->
+        <div class="layui-card">
+            <div class="layui-card-header">汇率展示：<a style="color: red">（计算汇率 = (实时汇率*0.995)-0.15）</a></div>
+          <div class="layui-card-body">
+              <div id="aabh1" style="width: 100%;height:550px;"></div>
+              <script type="text/javascript">
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('aabh1'));
+                    // 指定图表的配置项和数据
+                    var option = {
+                                    title: {
+                                        {#text: '订单统计',#}
+                                        {#text: '总共订单状态',#}
+                                        {#subtext: '纯属虚构'#}
+                                    },
+                                    tooltip: {
+                                        trigger: 'axis',
+                                        axisPointer: {
+                                                      type: 'cross'
+                                                      }
+                                    },
+                                    legend: {
+                                        data:['实时汇率','计算汇率'],
+                                    },
+                                    grid: {
+                                        left: '3%',
+                                        right: '4%',
+                                        bottom: '3%',
+                                        containLabel: true
+                                    },
+                                    toolbox: {
+                                        show: true,
+                                        feature: {
+                                            dataView: {show: true, readOnly: false},
+                                            restore: {show: true},
+                                            saveAsImage: {show: true}
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'time',
+                                        boundaryGap: false,
+                                         },
+                                    yAxis: [
+                                            {
+                                                name: '汇率',
+                                                type: 'value',
+                                                scale:true,
+                                                position:'left',
+                                                axisLabel: {formatter: '{value}'}
+                                            }
+                                            ],
+                                    series: [
+                                    {
+                                        name: '实时汇率',
+                                        type: 'line',
+                                        {#smooth: true,#}
+                                        data: {{ Exchange_Rate_0 }},
+                                    },
+                                    {
+                                        name: '计算汇率',
+                                        type: 'line',
+                                        {#smooth: true,#}
+                                        data: {{ Exchange_Rate }},
+                                    }
+                                    ]
+                                };
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                    window.addEventListener("resize", function() {myChart.resize();});
+              </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index']);
+  </script>
+</body>
+</html>

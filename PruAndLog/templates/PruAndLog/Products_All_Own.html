@@ -1,0 +1,814 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>商品KU</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../static/style/admin.css" media="all">
+{#  回到顶部底部#}
+  <link rel="stylesheet" href="../../../static/myself_static_files/top_down/style.css" media="all">
+  <!---ECharts图表库-->
+  <script src="https://unpkg.com/echarts@4.8.0/dist/echarts.js" charset="utf-8"></script>
+  <style>
+        .layui-input,.layui-inline{
+            height:30px;
+        }
+        .layui-form-item .layui-input-inline{
+            width: 150px;
+        }
+        .layui-table-cell {
+            font-size:14px;
+            padding:0 5px;
+            height:auto;
+            overflow:visible;
+            text-overflow:inherit;
+            white-space:normal;
+            word-break: break-all;
+            line-height:19px
+        }
+  </style>
+</head>
+<body >
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+{#          搜索栏  #}
+          <div class="layui-fluid">
+            <div class="layui-card">
+{#              <div class="layui-card-body" style="padding: 15px;">#}
+                <div class="layui-form"  lay-filter="">
+                  <div class="layui-form-item" >
+                     <div class="layui-inline" >
+                      <label class="layui-form-label" >本站ID</label>
+                      <div class="layui-input-inline" >
+                        <input  type="text" name="本站ID" id="本站ID" lay-product_identifier="" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label" >标准ID</label>
+                      <div class="layui-input-inline" >
+                        <input  type="text" name="标准ID" id="标准ID" lay-product_identifier="" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">特征搜索</label>
+                      <div class="layui-input-inline" >
+                          <select  name="特征搜索" id="特征搜索" lay-search=""  >
+                              <option value="所有商品">所有商品</option>
+                              <option value="TOP">TOP</option>
+                              <option value="5M">5M</option>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label" >商品名</label>
+                      <div class="layui-input-inline" >
+                        <input  type="text" name="SKU" id="SKU" lay-product_identifier="" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <br>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">查询数据</label>
+                      <div class="layui-input-inline"  >
+                        <button id =""  class="layui-btn layui-btn-sm" lay-submit lay-filter="chaxunshuju">按条件查询</button>
+                      </div>
+                    </div>
+                    <div class="layui-inline" >
+                      <label class="layui-form-label">导出数据</label>
+                      <div class="layui-input-inline" style="width: 100px">
+                          <select name="导出类型" id="导出类型" lay-filter="" >
+                            <option value=""  selected="请选择"></option>
+                            <option value="导出选择商品" >导出选择商品</option>
+                          </select>
+                      </div>
+                      <div class="layui-input-inline"style="width: 40px" >
+                        <button  class="layui-btn  layui-btn-sm" lay-submit="" lay-filter="daochushangping">导出</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+{#              </div>#}
+            </div>
+          </div>
+{#          数据表  #}
+          <div class="layui-card-body"  >
+{#详细数据表格  #}
+            <table class="layui-hide" id="top-statistiics-table" lay-filter="top-statistiics-table"></table>
+            {#头部工作栏  #}
+            <script type="text/html" id="test-table-toolbarDemo">
+                <div class="layui-inline" style="width: 100px" >
+                    <select name="store_name" id="store_name" lay-verify="required" lay-search="">
+                        <option value="请选择" selected >请选择</option>
+                        {% for store_name_user in store_name_users %}
+                            <option value="{{ store_name_user.store_name }}">{{ store_name_user.store_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button class="layui-btn layui-btn-sm" lay-event="批量传TOP">批量传TOP</button>
+
+                <div class="layui-inline" style="width: 100px" >
+                    <select name="store_name_5M" id="store_name_5M" lay-verify="required" lay-search="">
+                        <option value="请选择" selected >请选择</option>
+                        {% for store_name_user_5M in store_name_users_5M %}
+                            <option value="{{ store_name_user_5M.store_name }}">{{ store_name_user_5M.store_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button class="layui-btn layui-btn-sm" lay-event="批量传5M">批量传5M</button>
+
+                <button class="layui-btn layui-btn-sm" lay-event="批量删除">批量删除</button>
+            </script>
+
+
+             {#时间  #}
+            <script type="text/html" id="top-statistiics-table-时间">
+                {% verbatim %}
+                    <a style="color: #f1a02f">（{{d.id}}）</a>
+                <br><a style="color: #f1a02f">{{d.standard_product_id}}</a>
+                <br><a>{{ d.updated_at }}</a>
+                {% endverbatim %}
+                {#                <br><a>{{ d.created_at }}</a>#}
+            </script>
+            {#商品名称  #}
+            <script type="text/html" id="top-statistiics-table-商品名称">
+                {% verbatim %}
+                    <a>{{d.product_name}}</a>
+                   <br><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="jinru1688">1688</a>
+                {% endverbatim %}
+            </script>
+            {#商品图#}
+            <script type="text/html" id="top-statistiics-table-商品图">
+              <div id="top-statistiics-table-tupian-flow" lay-event="tupianfangda"><img style="float: left" lay-src="{% verbatim %}{{ d.primary_image }}{% endverbatim %}"  alt="" ></div>
+            </script>
+            {#基本信息#}
+            <script type="text/html" id="top-statistiics-table-基本信息">
+                  {% verbatim %}
+                       尺寸：{{ d.size}}
+                   <br>颜色：{{ d.color}}
+                  {% endverbatim %}
+                  <br><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="其他信息">其他信息</a>
+            </script>
+            {#建议一口价#}
+            <script type="text/html" id="top-statistiics-table-建议一口价">
+                  {% verbatim %}
+                           TOP:{{ d.suggest_buynows_price }}
+                        <br>5M:{{ d.suggest_buynows_price_5M }}
+                  {% endverbatim %}
+            </script>
+            {#商品信息#}
+            <script type="text/html" id="top-statistiics-table-商品信息">
+                  {% verbatim %}
+                      {{#  if(d.SKU_price  > '0.00' || d.SKU_freight  > '0.00'){ }}
+                          <p>货价:{{ d.SKU_price }}</p>
+                          <p>运费:{{ d.SKU_freight }}</p>
+                      {{#  } else { }}
+                        <a style="text-align: center;color:orangered">未输入</a>
+                      {{#  }  }}
+                  {% endverbatim %}
+            </script>
+            {#价格信息#}
+            <script type="text/html" id="top-statistiics-table-价格信息">
+                  {% verbatim %}
+                        SFB：{{ d.scheduling_fee_bid}}<br>
+                        一口价：{{ d.buy_now_price}}<br>
+                        目标价：{{ d.cost_basis}}<br>
+                        底价：{{ d.reserve_price}}<br>
+                        零售价：{{ d.retail_price}}<br>
+                        起拍价：{{ d.minimum_bid_amount}}
+                  {% endverbatim %}
+            </script>
+            {#运输相关  #}
+            <script type="text/html" id="top-statistiics-table-运输相关">
+                {% verbatim %}
+                    <a>运费：{{d.shipping_price}}</a>
+                   <br><a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="运输相关">运输相关</a>
+                {% endverbatim %}
+            </script>
+            {#操作列#}
+            <script type="text/html" id="top-statistiics-table-操作">
+                    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="bianji"><p>编辑</p></a>
+                <br><a lay-href="/PruAndLog/owm_products_update/?来源=商品库&商品名={% verbatim %}{{ d.product_name }}{% endverbatim %}"  class="layui-table-link">信息更改</a>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{#  返回顶部底部按钮#}
+<div id="floatPanel">
+	<div class="ctrolPanel">
+		<a class="arrow" href="#"><span>顶部</span></a>
+		<a class="arrow" href="#"><span>底部</span></a>
+	</div>
+</div>
+{#  物流查询#}
+<div id="tracking_number_play1" style="display: none;">
+     <div id="tracking_number_play2" style="width: 700px; height: 450px;"></div>
+</div>
+
+  <!--17物流查询-->
+  <!--脚本代码可放于页面底部，等到页面最后执行。-->
+  <script type="text/javascript" src="https://www.17track.net/externalcall.js"></script>
+
+  <script src="../../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'table','form', 'laydate','flow','jquery'], function(){
+    var table = layui.table;
+    var laydate = layui.laydate;
+    var form = layui.form;
+    var $ = layui.$;
+    var flow = layui.flow;
+
+
+//详细数据表格  （表格控制，表格主体，采用方法渲染）
+    table.render({
+      elem: '#top-statistiics-table'
+      ,url: '/PruAndLog/Products_All_Own/'
+      ,cellMinWidth: 85
+      ,cols: [[
+         {type:'checkbox'}
+        ,{title: '本站ID<br>标准ID<br>更新时间',width:90,  align:'center',  field:'updated_at',sort: true, templet: '#top-statistiics-table-时间'}
+        ,{title: '商品名称', width:100, align:'center',templet: '#top-statistiics-table-商品名称' }
+        ,{title: '商品图',width:110, align: 'center',templet: '#top-statistiics-table-商品图'}
+        ,{title: '基本信息',  align: 'center',templet: '#top-statistiics-table-基本信息'}
+        ,{title: '建议一口价<br>TOP/5M',  align: 'center',templet: '#top-statistiics-table-建议一口价'}
+        ,{title: '商品信息',  align: 'center',templet: '#top-statistiics-table-商品信息'}
+        ,{title: '价格信息',  align: 'center',templet: '#top-statistiics-table-价格信息'}
+        ,{title: '运输相关',  align: 'center',templet: '#top-statistiics-table-运输相关'}
+        ,{title: 'campaign',  field:'campaign_name',  align: 'center'}
+        ,{title: '商品特征',  field:'user_collect',   align: 'center',edit: 'text'}
+        ,{title: '操作',  align: 'center', templet: '#top-statistiics-table-操作'}
+      ]]
+      ,initSort: {
+            field: 'updated_at' //排序字段，对应 cols 设定的各字段名
+            ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+          }
+      ,autoSort: false //禁用前端自动排序。
+      ,page: true
+      ,limit:'20'
+      ,loading:true
+      ,where: { }
+      ,toolbar: '#test-table-toolbarDemo'
+      //初次进去的图片懒加载
+      ,done:  function (res, curr, count) {flow.lazyimg({elem: '#top-statistiics-table-tupian-flow img'});
+      }
+    });
+    //图片懒加载
+    flow.lazyimg({
+       elem: '#top-statistiics-table-tupian-flow img'
+    });
+    //监听配件工具条
+    table.on('tool(top-statistiics-table)', function(obj){
+      var data = obj.data;
+
+      //1688图片匹配搜索（逻辑）
+      if(obj.event === 'jinru1688')
+      {
+        layer.msg('加载中', {
+          icon: 16
+          ,shade: 0.01
+        });
+        $.ajax({
+            url:'/common_functions/TOP_statistics/',
+            type:'get',
+            data:{top_img_url:data.primary_image},
+            success:
+                function (response)
+                {
+                    var index = layer.msg();
+                    layer.close(index);
+                    var ret = JSON.parse(response);
+                    if (ret.img_url) { //上传成功
+                        window.open('https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://sksj.shop//static/user_files_directory/TOP_img_to_own/'+ret.img_url,'target')
+                    }
+                }
+            })
+      }
+      else if(obj.event === 'tupianfangda')
+      {
+        layer.open({
+          title:'详图--'+ data.SKU,
+          type: 1,
+          skin: 'layui-layer-admin',
+          area: '400px',
+          closeBtn: 2,
+          shadeClose: true,
+          content: '<img src="'+ data.primary_image +'"  alt="" width=350px height=350px>'
+        });
+      }
+      else if(obj.event === '其他信息')
+      {
+        layer.open({
+          title:'详情--'+ data.id,
+          type: 1,
+          skin: 'layui-layer-admin',
+          closeBtn: 2,
+          area: '800px',
+          anim: 5,
+          shadeClose: true,
+          content:  '<h4 style="text-align:left;color: #f1a02f">商品名称：</h4><a>'+ data.title +'</a>'
+                   +'<h4 style="text-align:left;color: #f1a02f">商品分类：</h4><a>'+ data.category +'</a>'
+                   +'<h4 style="text-align:left;color: #f1a02f">商品情况：</h4><a>'+ data.condition +'</a>'
+                   +'<h4 style="text-align:left;color: #f1a02f">商品描述：</h4><a>'+ data.description +'</a>'
+
+        });
+      }
+       else if(obj.event === '运输相关')
+      {
+        layer.open({
+          title:'详情--'+ data.id,
+          type: 1,
+          skin: 'layui-layer-admin',
+          closeBtn: 2,
+          area: '400px',
+          anim: 5,
+          shadeClose: true,
+          content:  '<h4 style="text-align:left;color: #f1a02f">发货重量：</h4><a>'+ data.weight +'</a>'
+                   +'<h4 style="text-align:left;color: #f1a02f">处理时间：</h4><a>'+ data.days_to_deliver +'</a>'
+
+        });
+      }
+      else if(obj.event === 'bianji')
+      {
+		layer.open({
+			  type: 0,
+			  title: '备注详情：'+'标准ID（' +data.standard_product_id+'）' ,
+			  shadeClose: true,
+			  shade: 0.3,
+              btn: ['确认', '取消'],
+			  area:['350px', '590px'],
+			  content:' <div class="layui-form-item" >\
+			                <div class="layui-inline" >\
+                              <div class="layui-input-inline"  >\
+                                <input value = "'+ data.product_name +'" style="width:310px;color: #f1a02f" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" >商品进价(¥)</label>\
+                              <div class="layui-input-inline"  >\
+                                <input value = "'+ data.SKU_price +'" type="text" name="SKU_price" id="SKU_price"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" >商品重量(g)</label>\
+                              <div class="layui-input-inline"  >\
+                                <input value = "'+ data.SKU_weight +'" type="text" name="SKU_weight" id="SKU_weight"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" >配件进价(¥)</label>\
+                              <div class="layui-input-inline"  >\
+                                <input value = "'+ data.SKU_parts_price +'" type="text" name="SKU_parts_price" id="SKU_parts_price"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" >配件重量(g)</label>\
+                              <div class="layui-input-inline"  >\
+                                <input value = "'+ data.SKU_parts_weight +'" type="text" name="SKU_parts_weight" id="SKU_parts_weight"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                               <label class="layui-form-label">货物种类：</label>\
+                                  <div class="layui-input-inline" >\
+                                      <select lay-search class="layui-inline layui-input-inline" name="SKU_variety" id="SKU_variety" >\
+                                        <option value="'+data.SKU_variety +'">'+data.SKU_variety+'</option>\
+                                        <option value="输入运费">输入运费</option>\
+                                        <option value="普货">普货</option>\
+                                        <option value="带电">带电</option>\
+                                        <option value="特货">特货</option>\
+                                        <option value="平邮">平邮</option>\
+                                      </select>\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" >输入运费(¥)</label>\
+                              <div class="layui-input-inline"  >\
+                                <input value = "'+ data.HAI_SKU_freight +'" type="text" name="HAI_SKU_freight" id="HAI_SKU_freight"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" style="width:100px">平邮小于7(¥)</label>\
+                              <div class="layui-input-inline"  >\
+                                <input style="width:130px" value = "'+ data.Pingyou_min7_SKU_freight +'" type="text" name="Pingyou_min7_SKU_freight" id="Pingyou_min7_SKU_freight"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" style="width:100px" >平邮大于7(¥)</label>\
+                              <div class="layui-input-inline"  >\
+                                <input style="width:130px" value = "'+ data.Pingyou_max7_SKU_freight +'" type="text" name="Pingyou_max7_SKU_freight" id="Pingyou_max7_SKU_freight"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                            \<div class="layui-inline" >\
+                              <label class="layui-form-label" >收藏商品</label>\
+                              <div class="layui-input-inline" >\
+                                <select lay-search class="layui-inline layui-input-inline" name="top_colect" id="top_colect" >\
+                                    <option value="是">是</option>\
+                                    <option value="否">否</option>\
+                                    <option selected value="'+data.top_colect +'">'+data.top_colect+'</option>\
+                                </select>\
+                              </div>\
+                            </div>\
+                            <br><br>\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" style="width:120px" >更改所有标准商品</label>\
+                              <div class="layui-input-inline" style="width:40px" >\
+                                <select style="width:110px"  lay-search class="layui-inline layui-input-inline" name="change_standard_product" id="change_standard_product" >\
+                                    <option value="是">是</option>\
+                                    <option value="否">否</option>\
+                                </select>\
+                              </div>\
+                            </div>\
+                            <div class="layui-inline" >\
+                              <label class="layui-form-label" style="width:110px" >手动输入标准ID</label>\
+                              <div class="layui-input-inline"  >\
+                                <input style="width:120px" value = "" type="text" name="standard_product_id_edit" id="standard_product_id_edit"  placeholder="请输入" class="layui-input" >\
+                              </div>\
+                            </div>\
+                         </div>',
+
+			  yes:function(index){
+			      var SKU_price               =$("#SKU_price").val();
+			      var SKU_weight              =$("#SKU_weight").val();
+			      var SKU_parts_price         =$("#SKU_parts_price").val();
+			      var SKU_parts_weight        =$("#SKU_parts_weight").val();
+			      var SKU_variety             =$("#SKU_variety").val();
+			      var Pingyou_min7_SKU_freight         =$("#Pingyou_min7_SKU_freight").val();
+			      var Pingyou_max7_SKU_freight         =$("#Pingyou_max7_SKU_freight").val();
+			      var HAI_SKU_freight         =$("#HAI_SKU_freight").val();
+			      var top_colect              =$("#top_colect").val();
+			      var change_standard_product =$("#change_standard_product").val();
+			      var standard_product_id = '';
+			      if (data.standard_product_id)
+                  {standard_product_id = data.standard_product_id}
+			      else{standard_product_id=$("#standard_product_id_edit").val();}
+                  $.ajax({
+                    url:'/Tophatter/All_orders_profitStatistics/',
+                    type:'get',
+                    data:{
+                            SKU_name:data.product_name,
+                            SKU_price:SKU_price,
+                            SKU_weight:SKU_weight,
+                            SKU_parts_price:SKU_parts_price,
+                            SKU_parts_weight:SKU_parts_weight,
+                            SKU_variety:SKU_variety,
+                            HAI_SKU_freight:HAI_SKU_freight,
+                            Pingyou_min7_SKU_freight:Pingyou_min7_SKU_freight,
+                            Pingyou_max7_SKU_freight:Pingyou_max7_SKU_freight,
+                            top_colect:top_colect,
+                            change_standard_product:change_standard_product,
+                            standard_product_id_edit:standard_product_id,
+                         },
+                    success:
+                        function (response)
+                        {
+                          var ret = JSON.parse(response);
+                          layer.msg(ret.msg_e);
+                        }
+                    })
+				  {#layer.close(index);#}
+				  }
+			});
+      }
+    });
+    //监听单元格编辑
+    table.on('edit(top-statistiics-table)', function(obj){
+      var value = obj.value //得到修改后的值
+      ,data = obj.data //得到所在行所有键值
+      ,field = obj.field; //得到字段
+      layer.open({
+			  type: 0,
+			  title: '更改商品特征',
+			  shadeClose: false,
+			  shade: 0.4,
+              btn: ['确认', '取消'],
+			  content:'<a>id（<a style="color:coral" >'+ data.id + '</a>）的（<a style="color:coral">' + field + ' </a>）字段更改为：</a><br><a style="color:coral">'+ value+'</a>',
+			  yes:function(index){
+                  $.ajax({
+                    url:'/PruAndLog/Products_All_Own/',
+                    type:'get',
+                    data:{
+                        caozuo_status:'edit',
+                        id_edit:data.id,
+                        field_edit:field,
+                        value_edit:value,
+                         },
+                    success:
+                        function (response)
+                        {
+                          var ret = JSON.parse(response);
+                          if (ret.msg_e == '替换成功'){layer.msg(ret.msg_e + ':['+ data.store_name +'] ' + field + ' 字段更改为：'+ value );}
+                          else{layer.msg(ret.msg_e );}
+                        }
+                    })
+				  }
+			});
+    });
+    //触发排序事件
+    table.on('sort(top-statistiics-table)', function(obj){
+      table.reload('top-statistiics-table', {
+        initSort: obj
+        ,where: {
+           Sort_field: obj.field //排序字段
+          ,Sort_order: obj.type //排序方式
+        }
+      });
+    });
+//头工具栏事件(新增，删除)
+    table.on('toolbar(top-statistiics-table)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+      var checkStatu_id = new Array();
+      for (var i=0;i<checkStatus.data.length;i++)
+      {checkStatu_id[i] = checkStatus.data[i].id}
+      var store_name = $('#store_name').val();
+      var store_name_5M = $('#store_name_5M').val();
+      if(obj.event === '批量传TOP')
+      {
+         layer.open({
+			  type: 1,
+			  title: '批量传TOP',
+			  shadeClose: true,
+			  shade: 0.4,
+              btn: ['确认', '关闭'],
+              area:['280px', '280px'],
+			  content:
+                  '&nbsp;&nbsp;&nbsp;你将要把选中的产品上传到选定的Tophatter店铺<a style="color:coral" >（'+ store_name +'）</a>\n' +
+                  '<br><br>&nbsp;&nbsp;&nbsp;一定要确认上传的产品的信息完整度啊！如果真的没错，请点击“确认”</a>'+
+                  '<br><br><br>&nbsp;&nbsp;&nbsp;成功:<span id="sp_1" style="color: #bd362f"></span>'+
+                  '<br>&nbsp;&nbsp;&nbsp;失败:<span id="sp_2" style="color: #bd362f"></span>'+
+                  '<br>&nbsp;&nbsp;&nbsp;<span id="sp_3" style="color: #bd362f"></span>',
+			  yes:function(index){
+			      layer.msg('正在上传到TOP...');
+                  $.ajax({
+                    url:'/PruAndLog/Products_All_Own/',
+                    type:'get',
+                    data:{
+                        store_name:store_name,
+                        FIG:'FIG1',
+                        checkStatus: JSON.stringify(checkStatu_id)
+                         },
+                    success:function (response)
+                        {
+                            var res = JSON.parse(response);
+                            var index_load =  layer.msg();
+                            layer.close(index_load);
+
+                            if (res.msg_1) {//上传成功
+                                document.getElementById("sp_1").innerHTML=res.msg_1;
+                            }
+                            if (res.msg_2) {//上传失败
+                                document.getElementById("sp_2").innerHTML=res.msg_2;
+                            }
+                            if (res.msg_e) {//上传文件错误
+                                document.getElementById("sp_3").innerHTML='文件错误：'+res.msg_e;
+                            }
+                        }
+                    })
+                  return false //开启该代码可禁止点击该按钮关闭
+				  }
+				  ,btn2: function(index, layero){
+                        layer.close(index);
+                        //return false 开启该代码可禁止点击该按钮关闭
+                      }
+			});
+      }
+
+      if(obj.event === '批量传5M')
+      {
+         layer.open({
+			  type: 1,
+			  title: '批量传5Miles',
+			  shadeClose: true,
+			  shade: 0.4,
+              btn: ['确认', '关闭'],
+              area:['280px', '280px'],
+			  content:
+                  '&nbsp;&nbsp;&nbsp;你将要把选中的产品上传到选定的5Miles店铺<a style="color:coral" >（'+ store_name_5M +'）</a>\n' +
+                  '<br><br>&nbsp;&nbsp;&nbsp;一定要确认上传的产品的信息完整度啊！如果真的没错，请点击“确认”</a>'+
+                  '<br><br><br>&nbsp;&nbsp;&nbsp;成功:<span id="sp_1" style="color: #bd362f"></span>'+
+                  '<br>&nbsp;&nbsp;&nbsp;失败:<span id="sp_2" style="color: #bd362f"></span>'+
+                  '<br>&nbsp;&nbsp;&nbsp;<span id="sp_3" style="color: #bd362f"></span>',
+			  yes:function(index){
+			      layer.msg('正在上传到5Miles...');
+                  $.ajax({
+                    url:'/PruAndLog/Products_All_Own/',
+                    type:'get',
+                    data:{
+                        store_name_5M:store_name_5M,
+                        FIG:'FIG2',
+                        checkStatus: JSON.stringify(checkStatu_id)
+                         },
+                    success:function (response)
+                        {
+                            var res = JSON.parse(response);
+                            var index_load =  layer.msg();
+                            layer.close(index_load);
+
+                            if (res.msg_1) {//上传成功
+                                document.getElementById("sp_1").innerHTML=res.msg_1;
+                            }
+                            if (res.msg_2) {//上传失败
+                                document.getElementById("sp_2").innerHTML=res.msg_2;
+                            }
+                            if (res.msg_e) {//上传文件错误
+                                document.getElementById("sp_3").innerHTML='文件错误：'+res.msg_e;
+                            }
+                        }
+                    })
+                  return false //开启该代码可禁止点击该按钮关闭
+				  }
+				  ,btn2: function(index, layero){
+                        layer.close(index);
+                        //return false 开启该代码可禁止点击该按钮关闭
+                      }
+			});
+      }
+
+      if(obj.event === '批量删除')
+      {
+         layer.open({
+			  type: 1,
+			  title: '删除选中商品',
+			  shadeClose: true,
+              closeBtn: 0,
+			  shade: 0.4,
+              btn: ['确认', '关闭'],
+              area:['280px', '250px'],
+			  content:
+                  '<br>&nbsp;&nbsp;&nbsp;确认不是手贱点错了吧？'+
+                  '<br><br>&nbsp;&nbsp;&nbsp;如果没问题请点击<a style="color:coral" >“确认”</a>'+
+                  '<br><br><br>&nbsp;&nbsp;&nbsp;状态:<span id="sp_1" style="color: #bd362f"></span>',
+			  yes:function(index){
+			      layer.msg('正在删除...');
+                  $.ajax({
+                    url:'/PruAndLog/Products_All_Own/',
+                    type:'get',
+                    data:{
+                        FIG:'FIG3',
+                        checkStatus: JSON.stringify(checkStatu_id)
+                         },
+                    success:function (response)
+                        {
+                            var res = JSON.parse(response);
+                            var index_load =  layer.msg();
+                            layer.close(index_load);
+
+                            if (res.msg_e) {//上传成功
+                                document.getElementById("sp_1").innerHTML=res.msg_e;
+                            }
+                        }
+                    })
+                  return false //开启该代码可禁止点击该按钮关闭
+				  }
+				  ,btn2: function(index, layero){
+                        layer.close(index);
+                        var 本站ID= $('#本站ID');
+                        var 标准ID= $('#标准ID');
+                        var SKU= $('#SKU');
+                        var 特征搜索= $('#特征搜索');
+                        table.reload('top-statistiics-table', {
+                                      page: {
+                                        curr: 1 //重新从第 1 页开始
+                                      }
+                                      ,where: {
+                                                 '本站ID':          本站ID.val(),
+                                                 '标准ID':          标准ID.val(),
+                                                 'SKU':             SKU.val(),
+                                                 '特征搜索':        特征搜索.val(),
+                                      }
+                                    });
+
+                        //return false 开启该代码可禁止点击该按钮关闭
+                      }
+			});
+      }
+    });
+
+//提交
+    form.on('submit(chaxunshuju)', function(data){
+    	{#layer.load(2);#}
+    	var 本站ID= $('#本站ID');
+    	var 标准ID= $('#标准ID');
+    	var SKU= $('#SKU');
+    	var 特征搜索= $('#特征搜索');
+        //执行重载
+        table.reload('top-statistiics-table', {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+                     '本站ID':          本站ID.val(),
+                     '标准ID':          标准ID.val(),
+                     'SKU':             SKU.val(),
+                     '特征搜索':        特征搜索.val(),
+          }
+        });
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+//导出
+    form.on('submit(daochushangping)', function(data){
+        var checkStatus = table.checkStatus('top-statistiics-table');
+        var checkStatu_id = new Array();
+        for (var i=0;i<checkStatus.data.length;i++)
+        {checkStatu_id[i] = checkStatus.data[i].id}
+        var 导出类型= $('#导出类型').val();
+        layer.msg('正在导出，请稍后…', {icon: 16 ,shade: 0.01,time: 120000});
+        $.ajax({
+            url:'/PruAndLog/Products_All_Own/',
+            type:'get',
+            data:{
+                导出类型 : 导出类型,
+                checkStatus: JSON.stringify(checkStatu_id),
+            },
+            success: function (response)
+                {
+                    var ret = JSON.parse(response);
+                    var index = layer.msg();
+                    layer.close(index);
+                    if (ret.Detailed_orders == '1') { //上传成功
+                       location.href='http://sksj.shop/static/user_files_directory/导出平台数据/商品详情_商品库.csv'; //导出的文件地址。
+                    }
+                    else if (ret.Detailed_orders == '0'){
+                       layer.msg('导出失败！', {icon: 16 ,shade: 0.01});
+                    }
+                }
+            })
+        //执行
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+//时间控制
+    //日期时间选择器
+    laydate.render({
+      elem: '#start_time'
+      ,type: 'date'
+      ,theme: '#393D49'
+      ,format:'yyyy-MM-dd'
+      ,max:0
+      {#,value:getRecentDay(-7)#}
+    });
+    laydate.render({
+      elem: '#end_time'
+      ,type: 'date'
+      ,theme: '#393D49'
+      ,format:'yyyy-MM-dd'
+      ,max:0
+      {#,value:getRecentDay(0)#}
+    });
+    //通过时区获取时间
+    function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+    //获取近N天
+    function getRecentDay(day){
+        var today = getLocalTime(-7)  //new Date();
+        var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+        today.setTime(targetday_milliseconds);
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = doHandleMonth(tMonth + 1);
+        tDate = doHandleMonth(tDate);
+        {#return tYear+"-"+tMonth+"-"+tDate+' 00:00';#}
+        return tYear+"-"+tMonth+"-"+tDate;
+    }
+    function doHandleMonth(month){
+        var m = month;
+        if(month.toString().length == 1){
+            m = "0" + month;
+        }
+        return m;
+    }
+{#页面到底到顶#}
+    $(function(){
+	// 页面浮动面板
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(0).click(function(){
+		$("html,body").animate({scrollTop :0}, 800);
+		return false;
+	});
+	$("#floatPanel > .ctrolPanel > a.arrow").eq(1).click(function(){
+		$("html,body").animate({scrollTop : $(document).height()}, 800);
+		return false;
+	});
+});
+//the file id end//
+  });
+</script>
+</body>
+</html>

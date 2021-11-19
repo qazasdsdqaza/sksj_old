@@ -1,0 +1,683 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>深空数据</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../static/style/admin.css" media="all">
+    {#  回到顶部底部#}
+  <link rel="stylesheet" href="../../static/myself_static_files/jisuanqi/style.css" media="all">
+  <style>
+        .layui-input,.layui-inline{
+            height:30px;
+        }
+        .layui-form-item .layui-input-inline{
+            width: 50px;
+        }
+        .own-layer-skin{
+            box-shadow: darkgrey 10px 10px 30px 5px ;opacity:1;
+        }
+  </style>
+
+  <script>
+  /^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
+  </script>
+</head>
+
+
+<body class="layui-layout-body">
+  
+  <div id="LAY_app">
+    <div class="layui-layout layui-layout-admin">
+      <div class="layui-header">
+        <!-- 头部区域 -->
+        <ul class="layui-nav layui-layout-left">
+          <li class="layui-nav-item layadmin-flexible" lay-unselect>
+            <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+              <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+            </a>
+          </li>
+          <li class="layui-nav-item layui-hide-xs" lay-unselect>
+            <a href="" target="_blank" title="新窗口">
+              <i class="layui-icon layui-icon-website"></i>
+            </a>
+          </li>
+          <li class="layui-nav-item" lay-unselect>
+            <a href="javascript:;" layadmin-event="refresh" title="刷新">
+              <i class="layui-icon layui-icon-refresh-3"></i>
+            </a>
+          </li>
+          <li class="layui-nav-item layui-hide-xs" >
+              <a href="" layadmin-event="" title="太平洋时间">
+                 <div class=""  style="" id="showdate"></div> <!--#太平洋时间 -->
+              </a>
+          </li>
+{#          <li class="layui-nav-item layui-hide-xs" lay-unselect>#}
+{#            <input type="text" placeholder="搜索..." autocomplete="off" class="layui-input layui-input-search" layadmin-event="serach" lay-action="template/search.html?keywords="> #}
+{#          </li>#}
+        </ul>
+        <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+          
+{#          <li class="layui-nav-item" lay-unselect>#}
+{#            <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心">#}
+{#              <i class="layui-icon layui-icon-notice"></i>#}
+{##}
+{#              <!-- 如果有新消息，则显示小圆点 -->#}
+{#              <span class="layui-badge-dot"></span>#}
+{#            </a>#}
+{#          </li>#}
+
+          <li class="layui-nav-item layui-hide-xs" lay-unselect>
+            <a href="javascript:;" layadmin-event="theme">
+              <i class="layui-icon layui-icon-theme"></i>
+            </a>
+          </li>
+{#          <li class="layui-nav-item layui-hide-xs" lay-unselect>#}
+{#            <a href="javascript:;" layadmin-event="note">#}
+{#              <i class="layui-icon layui-icon-note"></i>#}
+{#            </a>#}
+{#          </li>#}
+          <li class="layui-nav-item layui-hide-xs" lay-unselect>
+            <a href="javascript:;" layadmin-event="fullscreen">
+              <i class="layui-icon layui-icon-screen-full"></i>
+            </a>
+          </li>
+          <li class="layui-nav-item" lay-unselect>
+            <a href="javascript:;">
+              <cite>个人中心</cite>
+            </a>
+            <dl class="layui-nav-child">
+              {% if USER_ID == 1 %}
+                   <dd><a href="https://www.kdocs.cn/ent/615404630/1095839877" target="_blank">文件管理</a></dd>
+              {% endif %}
+              <dd><a lay-href="set/user/info/">基本资料</a></dd>
+              <dd><a lay-href="set/user/password/">修改密码</a></dd>
+              <hr>
+              <dd><a href="user/logout/">退出</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item" lay-unselect>
+            <a href="javascript:;">
+              <cite>联系</cite>
+            </a>
+            <dl class="layui-nav-child">
+              <dd><a>邮箱:421706627@qq.com</a></dd>
+              <dd><a>QQ群：</a></dd>
+              <dd><a>微信群：</a></dd>
+{#                <img src="http://sksj.shop/static/user_files_directory/头部栏图片/微信群.png" width="150px" height="150px">#}
+            </dl>
+          </li>
+          <li class="layui-nav-item layui-hide-xs" lay-unselect>
+            <a href="javascript:;" layadmin-event=""><i class="layui-icon layui-icon-more-vertical"></i></a>
+          </li>
+          <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
+            <a href="javascript:;" layadmin-event="more"><i class="layui-icon layui-icon-more-vertical"></i></a>
+          </li>
+        </ul>
+      </div>
+      <!-- 侧边菜单 -->
+      <div class="layui-side layui-side-menu">
+        <div class="layui-side-scroll">
+          <div class="layui-logo" >
+            <img src="{{ head_portraits }}" width="38px" height="38px" style="border-radius: 19px">
+            <span>{{username }}</span>
+          </div>
+          <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+            {% if PRIVILEGE < 6 %}
+                <li data-name="home" class="layui-nav-item layui-nav-itemed">
+              <a href="javascript:;" lay-tips="主页" lay-direction="2">
+                <i class="layui-icon layui-icon-home"></i>
+                <cite>TOP平台数据</cite>
+              </a>
+              <dl class="layui-nav-child">
+                <dd data-name="console" >
+                  <a lay-href="/common_functions/information_aggregation/">数据汇总展示</a>
+                </dd>
+                <dd data-name="console" class="layui-this">
+                  <a lay-href="/common_functions/TOP_statistics/">平台统计</a>
+                </dd>
+                <dd data-name="console">
+                  <a lay-href="/common_functions/TOP_goodslist/">商品分析</a>
+                </dd>
+                <dd data-name="console">
+                  <a lay-href="/common_functions/TOP_seller/">卖家分析</a>
+                </dd>
+              </dl>
+            </li>
+            {% endif %}
+            {% if PRIVILEGE < 5 %}
+               <li data-name="component" class="layui-nav-item">
+              <a href="javascript:;" lay-tips="TOP数据管理" lay-direction="2">
+                <i class="layui-icon layui-icon-component"></i>
+                <cite>TOP数据管理</cite>
+              </a>
+              <dl class="layui-nav-child">
+{#                <dd data-name="">#}
+{#                    <dd data-name=""><a lay-href="">TOP销售汇总</a></dd>#}
+{#                </dd>#}
+                <dd data-name="">
+                  <a href="javascript:;">TOP订单统计</a>
+                  <dl class="layui-nav-child">
+                    <dd data-name=""><a lay-href="/Tophatter/All_orders_profitStatistics/">所有订单统计</a></dd>
+                    <dd data-name=""><a lay-href="/Tophatter/Auction_orders_profitStatistics/">拍卖订单统计</a></dd>
+                    <dd data-name=""><a lay-href="/Tophatter/Auction_orders_profitStatistics_now/">实时拍卖数据</a></dd>
+                    <dd data-name=""><a lay-href="/Tophatter/Buynow_orders_profitStatistics/">一口价订单统计</a></dd>
+                    <dd data-name=""><a lay-href="/Tophatter/Buynow_page_orders/">一口价页面数据</a></dd>
+                    <dd data-name=""><a lay-href="/Tophatter/Refund_orders/">批量退货</a></dd>
+                    <dd data-name=""><a lay-href="/Tophatter/orders_detail/">订单详情</a></dd>
+                  </dl>
+                </dd>
+                <dd data-name="">
+                  <a href="javascript:;">TOP商品管理</a>
+                  <dl class="layui-nav-child">
+                    <dd data-name=""><a lay-href="/Tophatter/Top_all_products/">店铺商品</a></dd>
+                    <dd data-name=""><a lay-href="/Tophatter/TOP_campaign_list/">campaign管理</a></dd>
+                    <dd data-name=""><a lay-href="/Tophatter/Top_products_update/">店铺商品更新</a></dd>
+                    <dd data-name=""><a lay-href="/Tophatter/uploading_csv/">CSV批量上传</a></dd>
+                  </dl>
+                </dd>
+{#                <dd data-name="">#}
+{#                  <a href="javascript:;">TOP物流表现</a>#}
+{#                  <dl class="layui-nav-child">#}
+{#                    <dd data-name=""><a lay-href="">物流跟踪</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">渠道优化</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">异常退款</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">订单测试</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">冲货跟踪</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">异常订单</a></dd>#}
+{#                  </dl>#}
+{#                </dd>#}
+                <dd data-name="">
+                  <a href="javascript:;">TOP账户</a>
+                  <dl class="layui-nav-child">
+                    <dd data-name=""><a lay-href="/Tophatter/Top_founds/">TOP资金汇总</a></dd>
+                    <dd data-name=""><a lay-href="/Tophatter/TOP_store_msg/">TOP账号编辑</a></dd>
+{#                    <dd data-name=""><a lay-href="/Tophatter/Top_download/">TOP相关下载</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">TOP资金表现</a></dd>#}
+                  </dl>
+                </dd>
+              </dl>
+            </li>
+            {% endif %}
+
+            {% if PRIVILEGE < 4 %}
+            <li data-name="component" class="layui-nav-item">
+              <a href="javascript:;" lay-tips="5M数据管理" lay-direction="2">
+                <i class="layui-icon layui-icon-component"></i>
+                <cite>5M数据管理</cite>
+              </a>
+              <dl class="layui-nav-child">
+{#                <dd data-name="">#}
+{#                    <dd data-name=""><a lay-href="">5M销售汇总</a></dd>#}
+{#                </dd>#}
+                <dd data-name="">
+                  <a href="javascript:;">5M订单统计</a>
+                  <dl class="layui-nav-child">
+                    <dd data-name=""><a lay-href="/five_miles/FiveMiles_All_orders_profitStatistics/">5M所有订单</a></dd>
+{#                    <dd data-name=""><a lay-href="">5M订单表现</a></dd>#}
+                  </dl>
+                </dd>
+                <dd data-name="">
+                  <a href="javascript:;">5M商品管理</a>
+                  <dl class="layui-nav-child">
+                    <dd data-name=""><a lay-href="/five_miles/FiveMiles_all_products/">5M商品汇总</a></dd>
+{#                    <dd data-name=""><a lay-href="/five_miles/FiveMiles_products_update/">5M上传产品</a></dd>#}
+                  </dl>
+                </dd>
+                <dd data-name="">
+                  <a href="javascript:;">5M账户</a>
+                  <dl class="layui-nav-child">
+                    <dd data-name=""><a lay-href="/five_miles/FiveMiles_founds/">5M账户资金</a></dd>
+                    <dd data-name=""><a lay-href="/five_miles/FiveMiles_store_msg/">5M账号汇总</a></dd>
+{#                    <dd data-name=""><a lay-href="">5M相关下载</a></dd>#}
+                  </dl>
+                </dd>
+              </dl>
+            </li>
+            {% endif %}
+
+            {% if PRIVILEGE < 5 or PRIVILEGE == 55%}
+            <li data-name="component" class="layui-nav-item">
+              <a href="javascript:;" lay-tips="商品和物流" lay-direction="2">
+                <i class="layui-icon layui-icon-component"></i>
+                <cite>商品和物流</cite>
+              </a>
+              <dl class="layui-nav-child">
+                {% if PRIVILEGE < 5 %}
+                    <dd data-name="grid">
+                      <a href="javascript:;">商品管理</a>
+                      <dl class="layui-nav-child">
+                        <dd data-name=""><a lay-href="/PruAndLog/Products_All_Own/">商品库</a></dd>
+    {#                    <dd data-name=""><a lay-href="/PruAndLog/owm_products_update/">商品库更新</a></dd>#}
+    {#                    <dd data-name=""><a lay-href="">配件库</a></dd>#}
+                      </dl>
+                    </dd>
+    {#                <dd data-name="grid">#}
+    {#                  <a href="javascript:;">小秘助手</a>#}
+    {#                  <dl class="layui-nav-child">#}
+    {#                    <dd data-name=""><a lay-href="">手工订单</a></dd>#}
+    {#                    <dd data-name=""><a lay-href="">订单审核</a></dd>#}
+    {#                    <dd data-name=""><a lay-href="">配对校准</a></dd>#}
+    {#                    <dd data-name=""><a lay-href="">商品优化</a></dd>#}
+    {#                    <dd data-name=""><a lay-href="">采购优化</a></dd>#}
+    {#                    <dd data-name=""><a lay-href="">物流分配</a></dd>#}
+    {#                    <dd data-name=""><a lay-href="">库存优化</a></dd>#}
+    {#                    <dd data-name=""><a lay-href="">店小秘授权</a></dd>#}
+    {#                  </dl>#}
+    {#                </dd>#}
+                    {% endif %}
+                <dd data-name="">
+                  <a href="javascript:;">发货物流</a>
+                  <dl class="layui-nav-child">
+                    {% if PRIVILEGE < 5 %}
+                        <dd data-name=""><a lay-href="/PruAndLog/logistics_statistic/">物流规则</a></dd>
+                    {% endif %}
+
+                    {% if PRIVILEGE < 5 or PRIVILEGE == 55 %}
+                        <dd data-name=""><a lay-href="/PruAndLog/warehouse_show/">仓库情况</a></dd>
+                    {% endif %}
+
+                  </dl>
+                </dd>
+                {% if PRIVILEGE < 5 %}
+                     <dd data-name="">
+                  <a href="javascript:;">其他</a>
+                  <dl class="layui-nav-child">
+                    <dd data-name=""><a lay-href="/PruAndLog/key_parameter/">基本参数设置</a></dd>
+                    <dd data-name=""><a lay-href="/PruAndLog/exchange_rate_show/">汇率展示</a></dd>
+                  </dl>
+                </dd>
+                {% endif %}
+              </dl>
+            </li>
+            {% endif %}
+{#            <li data-name="component" class="layui-nav-item">#}
+{#              <a href="javascript:;" lay-tips="其他电商平台" lay-direction="2">#}
+{#                <i class="layui-icon layui-icon-component"></i>#}
+{#                <cite>其他电商平台</cite>#}
+{#              </a>#}
+{#              <dl class="layui-nav-child">#}
+{#                <dd data-name="">#}
+{#                  <a href="javascript:;">速卖通</a>#}
+{#                  <dl class="layui-nav-child">#}
+{#                    <dd data-name=""><a lay-href="">价格计算</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">平台资料</a></dd>#}
+{#                  </dl>#}
+{#                </dd>#}
+{#                <dd data-name="grid">#}
+{#                  <a href="javascript:;">亚马逊</a>#}
+{#                  <dl class="layui-nav-child">#}
+{#                    <dd data-name=""><a lay-href="">平台资料</a></dd>#}
+{#                  </dl>#}
+{#                </dd>#}
+{#              </dl>#}
+{#            </li>#}
+{#            <li data-name="component" class="layui-nav-item">#}
+{#              <a href="javascript:;" lay-tips="运营助手" lay-direction="2">#}
+{#                <i class="layui-icon layui-icon-component"></i>#}
+{#                <cite>运营助手</cite>#}
+{#              </a>#}
+{#              <dl class="layui-nav-child">#}
+{#                    <dd data-name=""><a lay-href="">TOP一键开店</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">运营攻略分享</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">备忘录</a></dd>#}
+{#              </dl>#}
+{#            </li>#}
+          {% if PRIVILEGE < 6 %}
+            <li data-name="component" class="layui-nav-item">
+              <a href="javascript:;" lay-tips="服务" lay-direction="2">
+                <i class="layui-icon layui-icon-component"></i>
+                <cite>服务</cite>
+              </a>
+              <dl class="layui-nav-child">
+                    <dd data-name=""><a lay-href="//www.baidu.com/">百度一下</a></dd>
+                    <dd data-name=""><a lay-href="/service/time_line_updata/">更新记录</a></dd>
+{#                    <dd data-name=""><a lay-href="">相关网站链接</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">通用资料下载</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">服务条款</a></dd>#}
+              </dl>
+            </li>
+          {% endif %}
+{#            <li data-name="component" class="layui-nav-item">#}
+{#              <a href="javascript:;" lay-tips="超级管理员" lay-direction="2">#}
+{#                <i class="layui-icon layui-icon-component"></i>#}
+{#                <cite>超级管理员</cite>#}
+{#              </a>#}
+{#              <dl class="layui-nav-child">#}
+{#                    <dd data-name=""><a lay-href="">本站流量统计</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">本站账号管理</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">本站基础设置</a></dd>#}
+{#                    <dd data-name=""><a lay-href="">登录admin</a></dd>#}
+{#              </dl>#}
+{#            </li>#}
+          </ul>
+        </div>
+      </div>
+      <!-- 页面标签 -->
+      <div class="layadmin-pagetabs" id="LAY_app_tabs">
+        <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
+        <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
+        <div class="layui-icon layadmin-tabs-control layui-icon-down">
+          <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
+            <li class="layui-nav-item" lay-unselect>
+              <a href="javascript:;"></a>
+              <dl class="layui-nav-child layui-anim-fadein">
+                <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+                <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
+                <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
+              </dl>
+            </li>
+          </ul>
+        </div>
+        <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
+          <ul class="layui-tab-title" id="LAY_app_tabsheader">
+            <li  lay-id="brand.html" lay-attr="/brand/" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
+          </ul>
+        </div>
+      </div>
+      <!-- 主体内容 -->
+      <div class="layui-body" id="LAY_app_body">
+        <div class="layadmin-tabsbody-item layui-show">
+          <iframe src="/common_functions/TOP_statistics/" frameborder="0" class="layadmin-iframe"></iframe>
+        </div>
+      </div>
+      <!-- 辅助元素，一般用于移动设备下遮罩 -->
+      <div class="layadmin-body-shade" layadmin-event="shade"></div>
+
+    </div>
+  </div>
+
+  {#  计算器按钮#}
+    <div id="floatPanel">
+        <div class="ctrolPanel">
+            <a  class="arrow" href="#"><span>计算</span></a>
+        </div>
+    </div>
+
+  <script src="../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index','jquery','layer','form'], function(){
+        var $ = layui.$;
+        var layer = layui.layer;
+        var form = layui.form
+
+        <!-- html太平洋时间 -->
+        // 时间设置
+        var  timezone = -7; // 时区 ： 东区时区1~12  西区时区-1~-12
+        var  date;
+         date = getLocalTime(timezone)
+          .toString()
+          .split("GMT+")[0]
+          .toString();
+        {#$("#showdate").html(date);#}
+        function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+        // 时间设置end
+        $(document).ready(function() {
+        // 调用时间
+        var setdate = setInterval(() => {
+        date = getLocalTime(timezone)
+         var year = date.getFullYear();
+         var month = date.getMonth()+1;
+         var Date = date.getDate();
+         var hour = date.getHours();  //获得小时、分钟、秒
+         var minute = date.getMinutes();
+         var second = date.getSeconds();
+         var weekday = 0;
+         switch(date.getDay()){
+            case 0:weekday = "星期日";break;
+            case 1:weekday = "星期一";break;
+            case 2:weekday = "星期二"; break;
+            case 3:weekday = "星期三";break;
+            case 4:weekday = "星期四";break;
+            case 5:weekday = "星期五";break;
+            case 6:weekday = "星期六";break;
+         }
+        document.getElementById("showdate").innerHTML="UTC："+year+"年"+month+"月"+Date+"日&nbsp&nbsp;"+hour+":"+minute+":"+second+"&nbsp&nbsp;"+weekday;
+        }, 100);
+        // 调用时间end
+        });
+
+        {#计算器#}
+        $(function(){
+            // 页面浮动面板
+            $("#floatPanel > .ctrolPanel > a.arrow").eq(0).click(function(){
+                var that = this;
+                layer.open({
+                      type: 0,
+                      title: '计算器（TOP）' ,
+                      shadeClose: false,
+                      offset: 'r',
+                      shade: 0,
+                      anim: 2,
+                      skin:'layui-layer-molv',
+                      btn: ['开始计算', '关闭','计算公式'],
+                      area:['500px', '520px'],
+                      content:'              <div class="layui-form-item">\n' +
+                          '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" ><a style="color: red">*</a>商品进价(￥)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px;"   type="text" id="计_产品进价" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n' +
+                          '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" ><a style="color: red">*</a>商品重量(g)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px;" type="text" id="计_产品重量" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n' +
+                          '                     <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" ><a style="color: red">*</a>物流商选择</label>\n' +
+                          '                       <div class="layui-input-inline" >\n' +
+                          '                          <select style="width: 80px;" class="layui-inline layui-input-inline" name="product_collection" id="计_物流商选择" lay-filter="" >\n' +
+                          '                              <option value="" selected>--请选择--</option>\n' +
+                          '                              <option value="海运">输入运费</option>\n' +
+                          '                              <option value="普货">普货</option>\n' +
+                          '                              <option value="带电">带电</option>\n' +
+                          '                              <option value="特货">特货</option>\n' +
+                          '                          </select>\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n' +
+                          '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" >输入运费(￥)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px;" type="text" id="计_输入运费" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n' +
+                              '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" ><a style="color: red">*</a>均SFB($)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px;" type="text" id="计_均SFB" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n' +
+                              '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" ><a style="color: red">*</a>成交率(%)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px;" type="text" id="计_成交率" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n' +
+                              '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" ><a style="color: red">*</a>预估退货率(%)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px;" type="text" id="计_预估退货率" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n' +
+                              '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" ><a style="color: red">*</a>当前汇率</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px;" type="text" id="计_当前汇率" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" value = "{{ exchange_rate }}">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n' +
+                              '                <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" >一口价利润(%)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px;" type="text" id="计_一口价利润" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n' +
+                              '                <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" >拍卖利润率(%)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px;" type="text" id="计_拍卖利润率" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n'+
+
+                          '                    <br><br><br>\n'+
+
+                          '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" >拍卖利润(￥)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px; color: red" type="text" id="sp_6" disabled  autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n'+
+                          '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" >一口价利润(￥)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px; color: red" type="text" id="sp_7" disabled  autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n'+
+                          '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" >拍卖成本(￥)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px; color: red" type="text" id="sp_2" disabled  autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n'+
+                          '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" >一口价成本(￥)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px; color: red" type="text" id="sp_4" disabled  autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n'+
+                          '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" >拍卖预计价($)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px; color: red" type="text" id="sp_3" disabled  autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n'+
+                          '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" >建议一口价($)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px; color: red" type="text" id="sp_5" disabled  autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n'+
+                          '                    <div class="layui-inline" >\n' +
+                          '                      <label class="layui-form-label" style="width: 100px;" >运费(￥)</label>\n' +
+                          '                      <div class="layui-input-inline" >\n' +
+                          '                        <input style="width: 80px; color: red " type="text" id="sp_1" disabled autocomplete="off" class="layui-input">\n' +
+                          '                      </div>\n' +
+                          '                    </div>\n'+
+                          '                  </div>',
+
+                      yes:function(index){
+                          $.ajax({
+                            url:'',
+                            type:'get',
+                            data:{
+                                    计_产品进价:$('#计_产品进价').val(),
+                                    计_产品重量:$('#计_产品重量').val(),
+                                    计_均SFB:$('#计_均SFB').val(),
+                                    计_成交率:$('#计_成交率').val(),
+                                    计_预估退货率:$('#计_预估退货率').val(),
+                                    计_当前汇率:$('#计_当前汇率').val(),
+                                    计_物流商选择:$('#计_物流商选择').val(),
+                                    计_输入运费:$('#计_输入运费').val(),
+                                    计_一口价利润:$('#计_一口价利润').val(),
+                                    计_拍卖利润率:$('#计_拍卖利润率').val(),
+                                 },
+                            success:function (response)
+                                {
+                                var ret = JSON.parse(response);
+                                $('.sp_0').html('qwerty').css("color", "red");
+                                document.getElementById('sp_1').value=ret.msg_e_1;
+                                document.getElementById('sp_2').value=ret.msg_e_2;
+                                document.getElementById('sp_3').value=ret.msg_e_3;
+                                document.getElementById('sp_4').value=ret.msg_e_4;
+                                document.getElementById('sp_5').value=ret.msg_e_5;
+                                document.getElementById('sp_6').value=ret.msg_e_6;
+                                document.getElementById('sp_7').value=ret.msg_e_7;
+                                }
+                            })
+                          {#layer.close(index);#}
+                          return false //开启该代码可禁止点击该按钮关闭
+                          }
+
+                      ,btn2: function(index, layero){
+                                layer.close(index);
+                                //return false 开启该代码可禁止点击该按钮关闭
+                              }
+                      ,btn3: function(index, layero){
+                                layer.open({
+                                    type: 1,
+                                    title: '计算公式',
+                                    shadeClose: true,
+                                    shade: 0.4,
+                                    skin: 'layui-layer-molv',
+                                    btn: ['关闭'],
+                                    area: ['300px', '250px'],
+                                    content: '<div>拍卖预计价：<br>\n' +
+                                        '((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率) + SFB/成交率 <br><br>\n' +
+                                        '一口建议价：<br>\n' +
+                                        '((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率)</div>'
+                                });
+                                return false //开启该代码可禁止点击该按钮关闭
+                              }
+                        });
+            });
+        });
+
+        {#菜单栏和导航栏联动#}
+        $("body").delegate(".layui-tab-title li","click",function() {
+			//或者$(this).childNodes[0].data
+            console.log($(this).context.childNodes[0].data);
+            var Len = $("#nav li a cite").length;
+            var Index;
+            for(var i = 0; i < Len; i++) {
+                if($(this).context.childNodes[0].data == $("#nav li a cite").eq(i).text()) {
+                    Index = i;
+                }
+                // console.log($("#nav li a cite").eq(i).text());
+            }
+            console.log(Index);
+            console.log($("#nav li a cite").eq(Index).parentsUntil("#nav"));
+            // 左侧菜单初始化
+            $('.left-nav').find('a').removeClass('active');
+            $("#nav li a cite").eq(Index).parentsUntil("#nav").eq(3).siblings().children('.sub-menu').stop(true,true).slideUp();
+            $("#nav li a cite").eq(Index).parentsUntil("#nav").eq(3).siblings().find('.nav_right').html('&#xe697;');
+            $("#nav li a cite").eq(Index).parentsUntil("#nav").eq(3).removeClass("open");
+
+            $("#nav li a cite").eq(Index).parentsUntil("#nav").eq(0).addClass("active");
+            $("#nav li a cite").eq(Index).parentsUntil("#nav").eq(3).addClass("open");
+            $("#nav li a cite").eq(Index).parentsUntil("#nav").eq(3).find('.nav_right').html('&#xe6a6;');
+            $("#nav li a cite").eq(Index).parentsUntil("#nav").eq(2).stop(true,true).slideDown();
+        });
+  });
+  </script>
+{#  <!-- 百度统计 -->#}
+{#  <script>#}
+{#  var _hmt = _hmt || [];#}
+{#  (function() {#}
+{#    var hm = document.createElement("script");#}
+{#    hm.src = "https://hm.baidu.com/hm.js?d214947968792b839fd669a4decaaffc";#}
+{#    var s = document.getElementsByTagName("script")[0]; #}
+{#    s.parentNode.insertBefore(hm, s);#}
+{#  })();#}
+{#  </script>#}
+</body>
+</html>
+
+

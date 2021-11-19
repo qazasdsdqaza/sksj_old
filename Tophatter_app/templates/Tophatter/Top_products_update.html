@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>商品信息更新</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../static/style/admin.css" media="all">
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md2">
+                <div class="layui-card">
+          <div class="layui-card-header">主图</div>
+          <div class="layui-card-body ">
+            <div class="layui-form" action="">
+              <div class="layui-form-item">
+                <div class="layui-inline" style="text-align: center">
+                    <img style=""  src="{{ primary_image}}" width="80" height="80">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-md3">
+        <div class="layui-card">
+          <div class="layui-card-header">基本信息</div>
+          <div class="layui-card-body ">
+            <div class="layui-form" action="">
+               <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">ParentSKU：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" disabled id ="identifier" name="identifier" lay-verify="required" autocomplete="off" class="layui-input" value="{{ identifier }}">
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">店铺名：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" disabled id ="store_name" name="store_name" lay-verify="required" autocomplete="off" class="layui-input" value="{{ store_name }}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-col-md7">
+        <div class="layui-card">
+          <div class="layui-card-header">更新CAMPAIGN设置<a style="color: #a0a0a0">（注：输入CAMPAIGN名必须在店铺已经设好，否则设置无效）</a></div>
+          <div class="layui-card-body">
+            <div class="layui-form" action="">
+               <div class="layui-form-item">
+                <div class="layui-inline" style="width: 100%">
+                  <label class="layui-form-label">CAMPAIGN_1：</label>
+                  <div class="layui-input-inline">
+                    <select  name="" id="CAMPAIGN_1" lay-search="">
+                         <option value="" >--请选择--</option>
+                         <option selected="selected" value="{{ campaign_name }}">{{ campaign_name}}</option>
+                         {% for campaign_list in campaign_listes %}
+                            <option value="{{ campaign_list.name }}">{{ campaign_list.name }}</option>
+                         {% endfor %}
+
+                    </select>
+                  </div>
+                  <a style="color: #a0a0a0">注：CAMPAIGN为：CAMPAIGN_1 或 CAMPAIGN_2</a>
+                </div>
+                <div class="layui-inline" style="width: 100%">
+                  <label class="layui-form-label">CAMPAIGN_2：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" id ="CAMPAIGN_2" name="CAMPAIGN_2" lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入CAMPAIGN" >
+                  </div>
+                  <a style="color: #a0a0a0">注：CAMPAIGN_1无可选名字，可在CAMPAIGN_2输入，输入时须CAMPAIGN_1为空</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">更新价格信息<a style="color: #a0a0a0">（注：除SFB外，其他项目只能输入整数）（<a style="color: red">*</a> 项目输入不能为空或者0）</a></div>
+          <div class="layui-card-body ">
+            <div class="layui-form" action="">
+               <div class="layui-form-item">
+                <div class="layui-inline" >
+                  <label class="layui-form-label" style="width: 120px">一口价（USD）：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" id ="buy_now_price" name="buy_now_price" value="{{ buy_now_price }}" lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                </div>
+
+                <div class="layui-inline" >
+                  <label class="layui-form-label" style="width: 120px">目标价（USD）：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" id ="cost_basis" name="cost_basis" value="{{ cost_basis }}" lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                </div>
+
+                <div class="layui-inline" >
+                  <label class="layui-form-label" style="width: 120px">零售价（USD）：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" id ="retail_price" name="retail_price" value="{{ retail_price }}"  lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                </div>
+
+                <div class="layui-inline" >
+                  <label class="layui-form-label" style="width: 120px">SFB（USD）：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" id ="scheduling_fee_bid" name="scheduling_fee_bid" value="{{ scheduling_fee_bid }}"  lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                </div>
+
+                <div class="layui-inline" >
+                  <label class="layui-form-label" style="width: 120px">运输费用：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" id ="shipping_price" name="shipping_price" value="{{ shipping_price }}"  lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                </div>
+
+                <div class="layui-inline" >
+                  <label class="layui-form-label" style="width: 120px">配件价（USD）：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" id ="配件价格" name="配件价格" value="{{ 配件价格 }}"  lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                </div>
+
+                <div class="layui-inline" style="width: 100%">
+                  <label class="layui-form-label" style="width: 120px">配件描述1：</label>
+                  <div class="layui-input-inline">
+                    <select  name="" id="配件描述1">
+                        <option value=""></option>
+                        <option value="Buy one get one">Buy one get one</option>
+                        <option value="32g Memory Card">32g Memory Card</option>
+                        <option value="USB cable">USB cable</option>
+                        <option  style="" selected="selected" value="{{ accessory_description}}">{{ accessory_description}}</option>
+                    </select>
+                  </div>
+                  <a style="color: #a0a0a0">注：配件描述为：配件描述1 或 配件描述2</a>
+                </div>
+
+                <div class="layui-inline " style="width: 100%" >
+                  <label class="layui-form-label" style="width: 120px">配件描述2：</label>
+                  <div class="layui-input-inline">
+                    <input type="tel" id ="配件描述2" name="配件描述2" value="{{ 配件描述2 }}"  lay-verify="" autocomplete="off" class="layui-input" placeholder="请输入" >
+                  </div>
+                  <a style="color: #a0a0a0">注：最长40字节；配件1无选择的时候，可以从配件2输入。</a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">更新信息</div>
+          <div class="layui-card-body ">
+            <div class="layui-form" action="">
+               <div class="layui-form-item">
+                <div class="layui-inline" style="width: 100%">
+                  <div class="layui-input-inline">
+                    <button  class="layui-btn  layui-btn-sm" lay-submit="" lay-filter="gengxinshangping">更新并保存商品数据</button>
+                  </div>
+                </div>
+                <div class="layui-inline" style="width: 100%">
+                  <div class="layui-input-inline" style="width: 100%">
+                        <a style="width: 100%">更新成功:<span id="sp_1" style="color: #bd362f"></span></a>
+                  </div>
+                  <div class="layui-input-inline" style="width: 100%">
+                        <a style="width: 100%">更新失败:<span id="sp_2" style="color: #bd362f"></span></a>
+                  </div>
+                  <div class="layui-input-inline" style="width: 100%">
+                        <a style="width: 100%"><span id="sp_3" style="color: #bd362f"></span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <script src="../../../static/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../../static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form',], function(){
+    var $ = layui.$
+    ,layer = layui.layer
+    ,form = layui.form;
+
+    //更新
+    form.on('submit(gengxinshangping)', function(data){
+        layer.msg('正在更新，请稍后…', {icon: 16 ,shade: 0.01,time: 120000});
+        $.ajax({
+            url:'/Tophatter/Top_products_update/',
+            type:'get',
+            data:{
+                FIG:'FIG',
+                //基本信息
+                identifier:$('#identifier').val(),
+                store_name:$('#store_name').val(),
+                //价格信息
+                buy_now_price:$('#buy_now_price').val(),
+                cost_basis:$('#cost_basis').val(),
+                retail_price:$('#retail_price').val(),
+                reserve_price:$('#reserve_price').val(),
+                scheduling_fee_bid:$('#scheduling_fee_bid').val(),
+                //运输信息
+                shipping_price:$('#shipping_price').val(),
+                配件价格:$('#配件价格').val(),
+                配件描述1:$('#配件描述1').val(),
+                配件描述2:$('#配件描述2').val(),
+                //CAMPAIGN信息
+                CAMPAIGN_1:$('#CAMPAIGN_1').val(),
+                CAMPAIGN_2:$('#CAMPAIGN_2').val(),
+            },
+            success: function (response)
+                {  var res = JSON.parse(response);
+                    var index_load =  layer.msg();
+                    layer.close(index_load);
+
+                    if (res.msg_1) {//上传成功
+                        document.getElementById("sp_1").innerHTML=res.msg_1;
+                    }
+                    if (res.msg_2) {//上传失败
+                        document.getElementById("sp_2").innerHTML=res.msg_2;
+                    }
+                    if (res.msg_e) {//上传文件错误
+                        document.getElementById("sp_3").innerHTML='文件错误：'+res.msg_e;
+                    }
+                }
+            })
+        //执行
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+  });
+  </script>
+</body>
+</html>

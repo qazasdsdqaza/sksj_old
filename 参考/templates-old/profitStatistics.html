@@ -1,0 +1,1189 @@
+﻿{% load staticfiles %}
+<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<meta name="msapplication-TileColor" content="#0670f0">
+		<meta name="theme-color" content="#2ddcd3">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+
+
+		<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon"/>
+		<link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+
+		<!-- Title -->
+		<title>摇钱数（订单统计）</title>
+		<link rel="stylesheet" href="{% static 'assets/fonts/fonts/font-awesome.min.css' %}" />
+
+		<!-- Bootstrap Css -->
+		<link href="{% static 'assets/plugins/bootstrap-4.1.3/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+		<!-- Sidemenu Css -->
+		<link href="{% static 'assets/plugins/fullside-menu/css/style.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/fullside-menu/waves.min.css' %}" rel="stylesheet" />
+
+		<!-- Dashboard Css -->
+		<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+
+		<!-- c3.js Charts Plugin -->
+		<link href="{% static 'assets/plugins/charts-c3/c3-chart.css' %}" rel="stylesheet" />
+
+		<!-- Data table css -->
+		<link href="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+
+		<!-- Slect2 css -->
+		<link href="{% static 'assets/plugins/select2/select2.min.css' %}" rel="stylesheet" />
+
+		<!-- Custom scroll bar css-->
+		<link href="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" />
+
+		<!---Font icons-->
+		<link href="{% static 'assets/plugins/iconfonts/plugin.css' %}" rel="stylesheet" />
+
+        <!---计算器-->
+        <link href="{% static 'jisuanqi/css/sidebar.css' %}" rel="stylesheet" type="text/css" />
+
+        <!---ECharts图表库-->
+        <script src="{% static 'js/echarts.min.js' %}"></script>
+        <!-- 引入 vintage 主题 -->
+        <script src="{% static 'js/Echart/dark.js' %}"></script>
+        <script src="{% static 'js/Echart/infographic.js' %}"></script>
+        <script src="{% static 'js/Echart/macarons.js' %}"></script>
+        <script src="{% static 'js/Echart/roma.js' %}"></script>
+        <script src="{% static 'js/Echart/shine.js' %}"></script>
+        <script src="{% static 'js/Echart/vintage.js' %}"></script>
+
+	</head>
+	<body>
+		<div id="loading"></div>
+		<div class="page">
+			<div class="page-main">
+                <!-- 页眉目录栏 -->
+				<div class="app-header1 header py-1 d-flex">
+					<div class="container-fluid">
+						<div class="d-flex">
+							<a class="header-brand" href="">
+								<img src="{% static 'images/logo1.png' %}" class="header-brand-img" alt="Uplor  logo">
+							</a>
+							<div class="menu-toggle-button">
+								<a class="nav-link wave-effect" href="#" id="sidebarCollapse">
+									<span class="fa fa-bars"></span>
+								</a>
+							</div>
+							<div>
+								<div class="searching">
+									<a href="javascript:void(0)" class="search-open searching1">
+										<i class="fa fa-search"></i>
+									</a>
+									<div class="search-inline">
+										<form>
+											<input type="text" class="form-control" placeholder="Searching...">
+											<button type="submit">
+												<i class="fa fa-search"></i>
+											</button>
+											<a href="javascript:void(0)" class="search-close">
+												<i class="fa fa-times"></i>
+											</a>
+										</form>
+									</div>
+								</div>
+							</div>
+                            <div class="d-flex order-lg-1 ml-auto"  style="color: white" id="showdate"></div> <!--#太平洋时间 -->
+							<div class="d-flex order-lg-2 ml-auto">
+								<div class="dropdown d-none d-md-flex" >
+									<a  class="nav-link icon full-screen-link">
+										<i class="fe fe-maximize floating"  id="fullscreen-button"></i>
+									</a>
+							</div>
+                            <div class="profile_info">
+								<h2><a  href="/logout/">退出登录</a></h2>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wrapper">
+					<!-- 侧边目录栏 -->
+					<nav id="sidebar" class="nav-sidebar">
+						<div class="profile clearfix">
+							<div class="profile_pic">
+								<img src="{% static 'images/aaa.png' %}" alt="..." class="img-circle profile_img">
+{#								<a href="editprofile.html" class="profile-img">#}
+{#									<span class="fa fa-pencil" aria-hidden="true"></span>#}
+{#								</a>#}
+							</div>
+							<div class="profile_info">
+								<h3>天道酬勤 地道酬善</h3>
+								<h3>人道酬诚 商道酬信</h3>
+							</div>
+						</div>
+						<ul class="list-unstyled components" id="accordion">
+							<li class="border-0"><h3>Tophatter</h3><li>
+                            <li>
+								<a href="/information_aggregation/" class=" wave-effect accordion-toggle " target="_blank"><i class="fa fa-diamond mr-2 sidebarpink"></i> 信息汇总展示</a>
+							</li>
+							<li>
+								<a href="#Submenu1" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-rocket mr-2 sidebarprimary"></i> 平台分析
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu1" data-parent="#accordion">
+									<li>
+										<a href="/index/" target="_blank">平台商品统计</a>
+									</li>
+									<li>
+										<a href="/goodslist/" target="_blank">商品分析</a>
+									</li>
+									<li>
+										<a href="/seller/" target="_blank">卖家分析</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#Submenu2" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 利润统计
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu2" data-parent="#accordion">
+									<li>
+										<a href="/profitStatistics/" >订单统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_2/" target="_blank">拍卖统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_3/" target="_blank">拍卖统计(原始)</a>
+									</li>
+									<li>
+										<a href="/buy_nows/" target="_blank">一口价统计</a>
+									</li>
+                                    <li>
+										<a href="/buy_nows_page/" target="_blank">一口价（页面数据）</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu3" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu3" data-parent="#accordion">
+                                    <li>
+										<a href="/products_operate/ " target="_blank">批量上传</a>
+									</li>
+                                    <li>
+										<a href="/products_operate_single/" target="_blank">上传商品</a>
+									</li>
+									<li>
+										<a href="/products/" target="_blank">店铺所有商品</a>
+									</li>
+                                    <li>
+										<a href="/products_collect/" target="_blank">商品库</a>
+									</li>
+                                    <li>
+										<a href="/products_parets/" target="_blank">配件库</a>
+									</li>
+									<li>
+										<a href="/SKU_list_2/" target="_blank">商品信息录入</a>
+									</li>
+								</ul>
+							</li>
+                            <li >
+								<a href="#Submenu7" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-table mr-2 sidebarpurple"></i> 发货物流
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu7" data-parent="#accordion">
+									<li>
+										<a href="/logistics_statistic/" target="_blank">物流规则 </a>
+									</li>
+									<li>
+										<a href="/return_performance/" target="_blank">退货表现</a>
+									</li>
+                                    <li>
+										<a href="/refund_orders/" target="_blank">订单退货</a>
+									</li>
+								</ul>
+							</li>
+							<li >
+								<a href="#Submenu8" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-sun-o mr-2 sidebarpink"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu8" data-parent="#accordion">
+									<li>
+										<a href="/founds/" target="_blank">资金统计 </a>
+									</li>
+									<li>
+										<a href="/fund_analysis/" target="_blank">资金表现</a>
+									</li>
+								</ul>
+							</li>
+                            <li><h3>5miles</h3><li>
+							<li>
+								<a href="#Submenu4" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu4" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_products_5miles/" target="_blank">所有商品</a>
+									</li>
+                                    <li>
+										<a href="/five_miles/up_products_5miles/" target="_blank">上传商品</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu5" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 订单管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu5" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_oders_5miles/" target="_blank">所有订单</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu6" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu6" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/funds_5miles/" target="_blank">余额状态</a>
+									</li>
+								</ul>
+							</li>
+                            <li><h3>其他电商平台</h3><li>
+                            <li >
+								<a href="#Submenu10" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-shopping-cart mr-2 sidebarsuccess"></i> 速卖通
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu10" data-parent="#accordion">
+									<li>
+										<a href="/Function_1/" target="_blank">价格计算</a>
+									</li>
+								</ul>
+							</li>
+							<li><h3>服务</h3><li>
+							<li>
+								<a href="#Submenu9" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 拓展功能
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu9" data-parent="#accordion">
+									<li>
+										<a href="/brand/" target="_blank" >平台商标统计</a>
+									</li>
+                                    <li>
+										<a href="/e_commerce_platform/" target="_blank">各类电商平台介绍</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+                    <!-- 内容区域 -->
+					<div class=" content-area overflow-hidden">
+						<div class="row">
+							<div class="col-md-12 col-lg-12">
+								<div class="card">
+									<div class="card-header">
+                                        <form id="searchForm"  method="post" action="" target="_top">
+                                                {% csrf_token %}
+                                                <div style="height: 100px;">
+                                                    <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">账户选择：</span>
+                                                        <select style="width: 130px; height: 36px; border-radius: 4px;" name="store_name" id="store_name">
+                                                        <option value="all">all</option>
+                                                        <option value="A">A</option>
+                                                        <option value="B">B</option>
+                                                        <option value="C">C</option>
+                                                        <option value="E">E</option>
+                                                        <option value="G">G</option>
+                                                        <option value="I">I</option>
+                                                        <option value="J">J</option>
+                                                        <option value="M">M</option>
+                                                        <option value="P">P</option>
+                                                        <option value="Q">Q</option>
+
+                                                        <option value="B6">B6</option>
+                                                        <option value="B10">B10</option>
+                                                        <option value="PY">PY</option>
+                                                        <option value="YL">YL</option>
+                                                        <option value="YM">YM</option>
+                                                        <option value="YH">YH</option>
+                                                        <option value="YMW">YMW</option>
+                                                        <option selected="selected" style="color:whitesmoke" value={{ store_name }}>{{ store_name }}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">时间段：</span>
+                                                        <select style="width: 130px; height: 36px; border-radius: 4px;" name="time_local" id="time_local">
+                                                            <option value="">时间段</option>
+                                                            <option value="today">today</option>
+                                                            <option value="yesterday">yesterday</option>
+                                                            <option value="yesterday1">前天</option>
+                                                            <option value="yesterday2">大前天</option>
+                                                            <option value="last_7_days">last_7_days</option>
+                                                            <option value="last_30_days">last_30_days</option>
+                                                            <option value="last_60_days">last_60_days</option>
+                                                            <option value="last_90_days">last_90_days</option>
+                                                            <option value="all_time">all_time</option>
+                                                        </select>
+                                                    </div>
+                                                    <div style="width:300px; height: 40px; float: left">
+                                                        <span style="">起始时间</a>:</span>
+                                                        <input id="start_time" style="width: 130px; height: 36px; border-radius: 4px;" type="date" name="start_time"value={{ start_time }}>
+                                                    </div>
+                                                    <div style="width:300px; height: 40px; float: left">
+                                                        <span style="">结束时间：</span>
+                                                        <input id="end_time" style="width: 130px; height: 36px; border-radius: 4px;" type="date" name="end_time"value={{ end_time }}>
+                                                    </div>
+                                                    <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">SKU：</span>
+                                                        <input id="product_identifier" style="width: 160px; height: 36px; border-radius: 4px;" type="text" name="product_identifier" placeholder="请输入SKU关键字"value={{ product_identifier }}>
+                                                    </div>
+                                                    <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">订单类型：</span>
+                                                        <select style="width: 120px; height: 30px; border-radius: 4px;" name="product_type" id="product_type" value="{{ product_type }}">
+                                                            <option value="全部订单">全部订单</option>
+                                                            <option value="一口价">一口价</option>
+                                                            <option value="竞拍价">竞拍价</option>
+                                                            <option selected="selected" value="{{ product_type }}">{{ product_type }}</option>
+                                                        </select>
+                                                    </div>
+                                                    <br>
+                                                    <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">关系订单：</span>
+                                                        <select style="width: 120px; height: 30px; border-radius: 4px;" name="related_order_ids" id="related_order_ids" value="{{ related_order_ids }}">
+                                                            <option value="全部订单">全部订单</option>
+                                                            <option value="关系订单">关系订单</option>
+                                                            <option value="非关系订单">非关系订单</option>
+                                                            <option selected="selected" value="{{ related_order_ids }}">{{ related_order_ids }}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">服务类型：</span>
+                                                        <select style="width: 130px; height: 30px; border-radius: 4px;" name="service_type" id="service_type" value="{{ service_type }}">
+                                                            <option value="">所有订单</option>
+                                                            <option value="全程追踪">全程追踪</option>
+                                                            <option value="部分追踪">部分追踪</option>
+                                                            <option value="没有最后一英里追踪">没有最后一英里追踪</option>
+                                                            <option selected="selected" value="{{ service_type }}">{{ service_type }}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">已回款订单：</span>
+                                                        <select style="width: 130px; height: 30px; border-radius: 4px;" name="input_order_type" id="input_order_type" value="{{ input_order_type }}">
+                                                            <option value="">所有订单</option>
+                                                            <option value="有状态订单">有状态订单</option>
+                                                            <option value="Delivered">Delivered</option>
+                                                            <option value="Exception">Exception</option>
+                                                            <option value="InfoReceived">InfoReceived</option>
+                                                            <option value="InTransit">InTransit</option>
+                                                            <option value="OutForDelivery">OutForDelivery</option>
+                                                            <option selected="selected" value="{{ input_order_type }}">{{ input_order_type }}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div style="width: 300px; height: 40px; float: left">
+                                                        <span style="">承运商：</span>
+                                                        <select style="width: 130px; height: 30px; border-radius: 4px;" name="承运商" id="承运商" value="{{ 承运商 }}">
+                                                            <option value="">所有订单</option>
+                                                            <option value="有承运商订单">有承运商订单</option>
+                                                            <option value="无承运商订单">无承运商订单</option>
+                                                            <option value="ec-firstclass">ec-firstclass</option>
+                                                            <option value="wanbexpress">wanbexpress</option>
+                                                            <option value="sfb2c">sfb2c</option>
+                                                            <option value="hh-exp">hh-exp</option>
+                                                            <option value="china-ems">china-ems</option>
+                                                            <option value="yunexpress">yunexpress</option>
+                                                            <option value="usps">usps</option>
+                                                            <option value="4px">4px</option>
+                                                            <option value="sf-express">sf-express</option>
+                                                            <option value="flytexpress">flytexpress</option>
+                                                            <option value="flytexpress">flytexpress</option>
+                                                            <option value="dhl-global-mail">dhl-global-mail</option>
+                                                            <option value="topyou">topyou</option>
+                                                            <option value="china-post">china-post</option>
+                                                            <option value="fedex">fedex</option>
+                                                            <option value="canada-post">canada-post</option>
+                                                            <option value="ups">ups</option>
+                                                            <option selected="selected" value="{{ 承运商 }}">{{ 承运商 }}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div style="width: 300px; height: 60px; float: left;vertical-align: middle">
+                                                        <div style="width: 150px; height: 30px; float: left">
+                                                            <span style="">结果数量：</span>
+                                                            <input id="results_number" style="width: 70px; height: 30px; border-radius: 4px;" type="number" name="results_number" placeholder="请输入数值"value={{ results_number }}>
+                                                        </div>
+                                                        <div style="width:  100px; height: 60px; float: left;vertical-align: middle">
+                                                                <input style="width: 80px;height: 30px;background: #4ebc30"type="submit" value="查询数据">
+                                                        </div>
+                                                    </div>
+                                                    <div style="width: 300px; height: 60px; float: left;vertical-align: middle">
+                                                        <select style="width: 80px; height: 30px; border-radius: 4px;" name="load_orders" id="load_orders" value="">
+                                                            <option value="">--请选择--</option>
+                                                            <option value="一星期">一星期</option>
+                                                            <option value="一个月">一个月</option>
+                                                            <option value="三个月">三个月</option>
+                                                            <option value="6个月">6个月</option>
+                                                            <option value="所有">所有</option>
+                                                        </select>
+                                                        <button type="button" onClick='get_orders()' style="background: #00bcd4 ;width: 80px;height: 30px; border-radius: 4px;" class="" id="" >导出订单</button><span class="sp_3"></span>
+                                                         <script language=javascript>
+                                                                function get_orders(){
+                                                                var str_1 = '正在导出……';
+                                                                var str_2 = '导出完成，等待下载';
+                                                                $('.sp_3').html(str_1).css("color", "red");
+
+                                                             $.ajax({
+                                                                        url:'/profitStatistics/',
+                                                                        type:'get',
+                                                                        data:
+                                                                            {
+                                                                            time_local_load_orders:$('#load_orders').val(),
+                                                                            csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                                                             },
+                                                                        success: function (response) {
+                                                                                                        var ret = JSON.parse(response);
+                                                                                                        {#alert(ret.img_url)#}
+                                                                                                        if (ret.Detailed_orders) { //上传成功
+                                                                                                           location.href='http://ndmc.shop/static/Detailed_orders_files/订单详情.csv';
+                                                                                                            {#window.open('https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://ndmc.shop/static/TOPIMG/'+ret.img_url,'target')#}
+                                                                                                            $('.sp_3').html(str_2).css("color", "red");
+                                                                                                        }
+                                                                                                    }
+
+                                                                        })
+                                                             }
+                                                         </script>
+                                                    </div>
+                                                </div>
+                                        </form>
+{#										<h4 class="page-title">订单统计</h4>#}
+										<div class="card-options">
+											<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+											<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+										</div>
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+											<table  class="table table-striped table-bordered" >
+												<thead style="background: #5bc0de">
+                                                    <tr id="my_tr" >
+                                                        <th style="text-align: center;width: 150px">统计</th>
+                                                        <th style="text-align: center">拍卖成交率</th>
+                                                        <th style="text-align: center">均SFB($)</th>
+                                                        <th style="text-align: center">总流拍费($)</th>
+                                                        <th style="text-align: center">总订单数</th>
+                                                        <th style="text-align: center">退货数(自己/买家/总)</th>
+                                                        <th style="text-align: center">退货率(自己/买家/总)</th>
+                                                        <th style="text-align: center">退货费(¥)(自己/买家/总)</th>
+                                                        <th style="text-align: center">汇率</th>
+                                                        <th style="text-align: center">平均到手价($/¥)</th>
+                                                        <th style="text-align: center">总成本(¥)</th>
+                                                        <th style="text-align: center">总毛利润(¥)</th>
+                                                        <th style="text-align: center">总利润率</th>
+                                                    </tr>
+												</thead>
+												<tbody>
+                                                    <tr id="my_tr2" style="font-size: 15px;">
+                                                        <td style="text-align: center"><!--账户名-->
+                                                                <a href="/orders_to_show/?store_name={{store_name}}&start_time={{ start_time }}&end_time={{ end_time }}&product_identifier={{ product_identifier }}&product_type={{ product_type }}" target="_blank"  style="color: lightseagreen;background: white">统计图形</a><br>
+                                                         </td><!--统计-->
+                                                        <td style="text-align: center">{{ 拍卖成交率 }}%</td><!--预估成交率-->
+                                                        <td style="text-align: center">{{ 均SFB }}</td><!--均SFB-->
+                                                        <td style="text-align: center">{{ 总流拍费 }}</td><!--均SFB-->
+                                                        <td style="text-align: center">{{ PAID_SUM}}</td><!--订单数-->
+                                                        <td style="text-align: center">{{REFUN_SUM_OWN}} / {{REFUN_SUM_BUYER}} / {{ REFUN_SUM}}</td><!--退货数-->
+                                                        <td style="text-align: center">{{PROFIT_REFUN_OWN}}% / {{PROFIT_REFUN_BUYER}}% / {{ PROFIT_REFUN}}%</td><!--退货率-->
+                                                        <td style="text-align: center">{{REFUND_AMOUNT_OWN}} / {{REFUND_AMOUNT_BUYER}} / {{ REFUND_AMOUNT}}</td><!--总退货费-->
+                                                        <td style="text-align: center">{{EXCHANGE_RATE}}</td>
+                                                        <td style="text-align: center">{{ DIS_AMOUT1_AVG}} / {{DIS_AMOUT2_AVG}}</td>
+                                                        <td style="text-align: center">{{ COSTF_OF}}</td>
+
+                                                        {% if NET_PROFIT > 0  %}
+                                                            <td style="text-align: center">{{ NET_PROFIT}}</td><!--总毛利润-->
+                                                        {% else %}
+                                                            <td style="text-align: center;color:orangered">{{ NET_PROFIT}}</td><!--总毛利润-->
+                                                        {% endif %}
+
+                                                        {% if PROFIT_MARGIN > 0  %}
+                                                            <td style="text-align: center">{{ PROFIT_MARGIN}}%</td><!--总利润率-->
+                                                        {% else %}
+                                                            <td style="text-align: center;color:orangered">{{ PROFIT_MARGIN}}%</td><!--总利润率-->
+                                                        {% endif %}
+                                                    </tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<!-- table-wrapper -->
+								</div>
+								<!-- section-wrapper -->
+							</div>
+							<div class="col-md-12 col-lg-12">
+								<div class="card">
+									<div class="card-body">
+										<div class="table-responsive">
+											<table id="example2" class="hover table-bordered" >
+												<thead style="background: #0ec0e1">
+                                                    <tr >
+                                                        <td style="text-align: center;width: 120px">账户</td>
+                                                        <td style="text-align: center;width: 80px">商品图</td>
+                                                        <td style="text-align: center;width: 50px">利润率</td>
+                                                        <td style="text-align: center;width: 50px">均毛利(¥)</td>
+                                                        <td style="text-align: center;width: 40px">总订单</td>
+                                                        <td style="text-align: center;width: 40px">展示<br>成交<br>SFB<br>流拍</td>
+                                                        <td style="text-align: center;width: 100px">物流状态</td>
+                                                        <td style="text-align: center;width: 100px">订单状态<br>退货率</td>
+                                                        <td style="text-align: center;width: 100px">客户退货</td>
+{#                                                        <td style="text-align: center;width: 50px">退货率</td>#}
+                                                        <td style="text-align: center;width: 50px">退货费(¥)</td>
+                                                        <td style="text-align: center;width: 50px">均到手价($/¥)</td>
+                                                        <td style="text-align: center;width: 50px">商品(¥)</td>
+                                                        <td style="text-align: center;width: 80px">买送一</td>
+                                                        <td style="text-align: center;width: 120px">配件</td>
+                                                        <td style="text-align: center;width: 40px">成本(¥)</td>
+                                                        <td style="text-align: center;width: 40px">毛利润(¥)</td>
+                                                        <td style="text-align: center;width: 140px">商品操作</td>
+                                                    </tr>
+												</thead>
+												<tbody>
+                                                    {% for StoreData in StoreDatas %}
+                                                        <tr   >
+                                                            <td style="text-align: center;"><!--账户名-->
+                                                                <a>{{ StoreData.store_name}}<br>
+                                                                    {% if StoreData.store_name == 'E'  %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26120028','target')" />
+                                                                    {% elif StoreData.store_name == 'I' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26145870','target')" />
+                                                                    {% elif StoreData.store_name == 'A' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=25720956','target')" />
+                                                                    {% elif StoreData.store_name == 'B' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26095177','target')" />
+                                                                    {% elif StoreData.store_name == 'C' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26096309','target')" />
+                                                                    {% elif StoreData.store_name == 'G' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26132649','target')" />
+                                                                    {% elif StoreData.store_name == 'YL' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=34239907','target')" />
+                                                                    {% elif StoreData.store_name == 'J' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26160889','target')" />
+                                                                    {% elif StoreData.store_name == 'M' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=25903508','target')" />
+                                                                    {% elif StoreData.store_name == 'Q' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=28837326','target')" />
+                                                                    {% elif StoreData.store_name == 'P' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=26211690','target')" />
+                                                                    {% elif StoreData.store_name == 'PY' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=33320687','target')" />
+                                                                    {% elif StoreData.store_name == 'B6' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=33048880','target')" />
+                                                                    {% elif StoreData.store_name == 'B10' %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="店铺分析"  onclick="window.open('/index/?seller_id=33304778','target')" />
+                                                                    {% endif %}
+                                                                </a><br>
+                                                                 {% if StoreData.standard_product_id %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button" id="" title="" value="同型商品"  onclick="window.open('/index/?standard_product_id={{ StoreData.standard_product_id }}','target')" />
+                                                                 {% else %}
+                                                                        <input name="" style="width: 100px;border-color: #b3dcf9;color: #bababa;background: white" type="button" id="" title="" value="同型商品"  onclick="" />
+                                                                 {% endif %}<br>
+                                                                <a style="color: lightseagreen;background: white" href="/orders_to_show/?store_name={{ StoreData.store_name}}&start_time={{ start_time }}&end_time={{ end_time }}&product_identifier={{ StoreData.SKU }}&product_type={{ product_type }}" target="_blank"  >统计图形</a><br>
+                                                                <a style="color: lightseagreen;background: white" href="/orders_detail/?store_name={{ StoreData.store_name}}&start_time={{ start_time }}&end_time={{ end_time }}&SKU={{ StoreData.SKU }}&订单类型={{ product_type }}&related_order_ids={{ related_order_ids }}&service_type={{ service_type }}&input_order_type={{ input_order_type }}&承运商={{ 承运商 }}" target="_blank"  >订单详情</a>
+                                                                <div >
+                                                                        <button type="button" onClick='img_lode("{{ StoreData.primary_image }}")' style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" class="" id="" >1688同款</button>
+                                                                        <script language=javascript>
+                                                                            function img_lode(img){
+                                                                         $.ajax({
+                                                                                    url:'/products/',
+                                                                                    type:'get',
+                                                                                    data:
+                                                                                        {
+                                                                                        img_url:img,
+                                                                                        csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                                                                         },
+                                                                                    success: function (response) {
+                                                                                                                    var ret = JSON.parse(response);
+                                                                                                                    {#alert(ret.img_url)#}
+                                                                                                                    if (ret.img_url) { //上传成功
+                                                                                                                        {#location.href='https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://ndmc.shop/static/TOPIMG/'+ret.img_url;#}
+                                                                                                                        window.open('https://kj.1688.com/pdt_tongkuan.html?imgUrl=http://ndmc.shop/static/TOPIMG/'+ret.img_url,'target')
+                                                                                                                    }
+                                                                                                                }
+
+                                                                                    })
+                                                                         }
+                                                                        </script>
+                                                                </div>
+
+                                                            </td><!--店铺名/统计-->
+                                                            <td style="text-align: center;width: 20px" ><!--主图-->
+                                                                <div >
+                                                                    <a data-toggle="modal" data-target="#yu{{ StoreData.SKU}}b">
+                                                                    <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}" width="80" height="80"></a>
+                                                                </div>
+                                                                <a style="width: 20px">{{ StoreData.SKU}}</a>
+                                                                <!-- 弹出框信息 -->
+                                                                <div class="modal fade" id="yu{{ StoreData.SKU}}b" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document" >
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="example-Modal3">{{ StoreData.SKU}}</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                 <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}">
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td><!--主图/SKU-->
+
+                                                            {% if StoreData.profit_margin > 0  %}
+                                                                <td style="text-align: center">{{ StoreData.profit_margin}}%</td><!--利润率-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">{{ StoreData.profit_margin}}%</td><!--利润率-->
+                                                            {% endif %}
+
+                                                            {% if StoreData.Net_profit_avg > 0  %}
+                                                                <td style="text-align: center">{{ StoreData.Net_profit_avg}}</td><!--平均毛利润-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">{{ StoreData.Net_profit_avg}}</td><!--平均毛利润-->
+                                                            {% endif %}
+
+                                                           <td style="text-align: center;background:#DCEBF7">{{ StoreData.paid_at}}</td><!--订单数-->
+                                                           <td style="text-align: center">{{ StoreData.schedules_performence}}<br>
+                                                                           {{ StoreData.orders_performence}}<br>
+                                                                           {{ StoreData.scheduling_fees_performence}}($)<br>
+                                                                           {{ StoreData.NET_PROFIT_sfb}}($)<br></td><!--订单数-->
+                                                           <td style="text-align: center"> <a style="color: green">已签收:{{ StoreData.已签收}}</a><br>
+                                                                            <a style="color: green">运输中:{{ StoreData.运输中}}</a><br>
+                                                                            <a style="color: deepskyblue">运输过久:{{ StoreData.运输过久}}</a><br>
+                                                                            <a style="color: deepskyblue">有异常:{{ StoreData.有异常}}</a><br>
+                                                                            <a style="color: #f1a02f">未查到:{{ StoreData.未查到}}</a><br>
+                                                                            <a style="color: #f1a02f">未输入:{{ StoreData.未输入}}</a>
+                                                                            </td>
+{#                                                           <td style="text-align: center"> #}
+{#                                                                            <p style="color: dodgerblue">客户退:{{ StoreData.refunded_at_buyer}}</p>#}
+{#                                                                            <a style="color: deepskyblue">自己退:{{ StoreData.refunded_at_own}}</a><br>#}
+{#                                                                            <a style="color: green">已发货:{{ StoreData.status_shipped}}</a><br>#}
+{#                                                                            <a style="color: #f1a02f">未发货:{{ StoreData.status_paid}}</a><br>#}
+{#                                                                            </td>#}
+
+                                                           {% if StoreData.closing_buyer < 5  %}
+                                                                <td style="text-align: center"><a style="color: deepskyblue">自己退:{{ StoreData.refunded_at_own}}</a><br>
+                                                                                <a style="color: green">已发货:{{ StoreData.status_shipped}}</a><br>
+                                                                                <a style="color: #f1a02f">未发货:{{ StoreData.status_paid}}</a><br>
+
+                                                                                <a style="">自己:{{ StoreData.closing_owe}}%</a><br><!--退货率-->
+                                                                                <a style="">客户:{{ StoreData.closing_buyer}}%</a><br>
+                                                                                <a style="color: #f1a02f">签收退货:{{ StoreData.签收退货}}%</a></td>
+                                                            {% else %}
+                                                                <td style="text-align: center"><a style="color: deepskyblue">自己退:{{ StoreData.refunded_at_own}}</a><br>
+                                                                                <a style="color: green">已发货:{{ StoreData.status_shipped}}</a><br>
+                                                                                <a style="color: #f1a02f">未发货:{{ StoreData.status_paid}}</a><br>
+
+                                                                                <a style="">自己:{{ StoreData.closing_owe}}%</a><br><!--退货率-->
+                                                                                <a style="color: red">客户:{{ StoreData.closing_buyer}}%</a><br>
+                                                                                <a style="color: #f1a02f">签收退货:{{ StoreData.签收退货}}%</a></td>
+                                                            {% endif %}
+
+                                                            <td style="text-align: center;background:#DCEBF7">{{ StoreData.refunded_at_buyer}}</td><!--客户退货数-->
+
+                                                            <td style="text-align: center"><a style="">自己:{{ StoreData.refund_amount_own}}</a><br><!--退货费-->
+                                                                            <a style="">客户:{{ StoreData.refund_amount_buyer}}</a></td>
+
+                                                            <td style="text-align: center;background:#DCEBF7"><a style="">{{ StoreData.disbursement_amount1}}</a><br><!--平均到手价-->
+                                                                            <a style="">{{ StoreData.disbursement_amount2}}</a></td>
+
+                                                             {% if StoreData.SKU_price  > '0.00' or StoreData.SKU_freight  > '0.00' %}
+                                                                <td style="text-align: center"><a>货价:{{ StoreData.SKU_price}}</a><br><!--主商品采购-->
+                                                                                <a>重量:{{ StoreData.SKU_weight}}</a></td><!--主商品运费-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">未输入</td>
+                                                            {% endif %}
+
+                                                            {% if StoreData.SKU_price  > '0.00' or StoreData.SKU_buy_one_freight  > '0.00' %}
+                                                            <td style="text-align: center"><a>数量:{{ StoreData.upsells_type_description1}}</a><br><!--买一送一数量-->
+                                                                            <a>进价:{{ StoreData.SKU_price}}</a><br><!--买一送一进价-->
+                                                                            <a>重量:{{ StoreData.SKU_weight}}</a><br><!--买一送一运费-->
+                                                                            <a style="color: lightseagreen">加售率:{{ StoreData.buy_one_closing}}%</a></td><!--买一送一运费-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">未输入</td>
+                                                            {% endif %}
+
+                                                            {% if StoreData.SKU_parts_price  > '0.00' or StoreData.SKU_parts_freight  > '0.00' %}
+                                                            <td style="text-align: center"><a>数量:{{ StoreData.upsells_type_description2}}</a><br><!--配件数量-->
+                                                                            <a>配件:{{ StoreData.SKU_parts_price}}</a><br><!--配件采购-->
+                                                                            <a>重量:{{ StoreData.SKU_parts_weight}}</a><br><!--配件运费-->
+                                                                            <a style="color: lightseagreen">配件率:{{ StoreData.parts_closing}}%</a><br><!--配件运费-->
+                                                                            <a style="color: royalblue">利润率:{{ StoreData.parts_prf}}%</a></td><!--配件运费-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">未输入</td>
+                                                            {% endif %}
+
+
+                                                            <td style="text-align: center">{{ StoreData.cost_of}}</td><!--总成本-->
+
+                                                            {% if StoreData.Net_profit > 0  %}
+                                                                <td style="text-align: center">{{ StoreData.Net_profit}}</td><!--毛利润href="/SKU_list/" target="_blank"-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color:orangered">{{ StoreData.Net_profit}}</td><!--毛利润-->
+                                                            {% endif %}
+
+                                                            <td style="text-align: center" >
+                                                            <div >
+                                                                    <button style="width: 100px;border-color: #b3dcf9;color: lightseagreen;background: white" type="button"  data-toggle="modal" data-target="#yy{{ StoreData.SKU}}c">编辑</button>
+                                                            </div>
+{#                                                            <div >#}
+{#                                                               <a href="/products_operate_single/?Top主SKU={{ StoreData.SKU}}" target="_blank"  style="color: lightseagreen;background: white">上传到TOP</a>#}
+{#                                                            </div>#}
+{#                                                            <div >#}
+{#                                                               <a href="/five_miles/up_products_5miles/?Top主SKU={{ StoreData.SKU}}" target="_blank"  style="color: lightseagreen;background: white">上传到5M</a>#}
+{#                                                            </div>#}
+                                                            <div >
+                                                               <a href="/products_update/?Top主SKU={{ StoreData.SKU}}&店铺名={{ StoreData.store_name }}" target="_blank"  style="color: lightseagreen;background: white">商品信息更新</a>
+                                                            </div>
+                                                            <div >
+                                                               <a href="/products_collect_update/?Top主SKU={{ StoreData.SKU}}&来源=TOP后台" target="_blank"  style="color: lightseagreen;background: white">加入商品库</a>
+                                                            </div>
+                                                            <!-- 弹出框信息 -->
+                                                            <div class="modal fade" id="yy{{ StoreData.SKU}}c" tabindex="-1" role="dialog"  aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" >
+                                                                                商品信息编辑  <a style="color: #f1a02f">{{ StoreData.SKU}}</a>
+                                                                                <a ><img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ StoreData.primary_image}}" width="80" height="80"></a>
+                                                                            </h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+
+                                                                        <form >
+                                                                            <div class="modal-body">
+                                                                                <div class="form-group">
+                                                                                    <span style="">商品名称</span>
+                                                                                    <input style="" type="text" class="form-control" id="SKU_name"  name="SKU_name" placeholder="商品名称"value={{ StoreData.SKU }}>
+                                                                                </div>
+                                                                                <div class="form-group" >
+                                                                                    <span style="text-align:left">货物进价(¥)</span>
+                                                                                    <input  type="text" class="form-control" id="SKU_price"  name="SKU_price" placeholder="请输入货物进价"value={{ StoreData.SKU_price }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">货物重量(g)</span>
+                                                                                    <input type="text" class="form-control" id="SKU_weight"  name="SKU_weight" placeholder="请输入货物重量"value={{ StoreData.SKU_weight }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">配件价格(¥)</span>
+                                                                                    <input type="text" class="form-control" id="SKU_parts_price"  name="SKU_parts_price" placeholder="请输入配件价格"value={{ StoreData.SKU_parts_price }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">配件重量(g)</span>
+                                                                                    <input type="text" class="form-control" id="SKU_parts_weight"  name="SKU_parts_weight"  placeholder="请输入配件重量"value={{ StoreData.SKU_parts_weight }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="">货物种类：</span>
+
+                                                                                    <select style="width: 80px; height: 36px; border-radius: 4px;" name="SKU_variety" id="SKU_variety" >
+                                                                                        <option value="普货">普货</option>
+                                                                                        <option value="带电">带电</option>
+                                                                                        <option value="特货">特货</option>
+                                                                                        <option value="海运">海运</option>
+                                                                                        <option value="平邮">平邮</option>
+                                                                                        <option style="color: #d1d1d3" selected="selected" value={{ StoreData.SKU_variety }}>{{ StoreData.SKU_variety }}</option>
+                                                                                    </select>
+                                                                                    <span style="">({{ StoreData.SKU_variety }})</span>
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <span style="color: blue">海运运费(￥)：</span>
+                                                                                    <input style="color: blue" type="text" class="form-control" id="HAI_SKU_freight"  name="HAI_SKU_freight"  placeholder="请输入海运运费"value={{ StoreData.HAI_SKU_freight }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="color:lightseagreen">平邮成交价小于7运费(￥)：</span>
+                                                                                    <input style="color: lightseagreen" type="text" class="form-control" id="Pingyou_min7_SKU_freight"  name="Pingyou_min7_SKU_freight"  placeholder="请输入平邮成交价小于7运费"value={{ StoreData.Pingyou_min7_SKU_freight }}>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <span style="color:lightseagreen">平邮成交价大于7运费(￥)：</span>
+                                                                                    <input style="color:lightseagreen" type="text" class="form-control" id="Pingyou_max7_SKU_freight"  name="Pingyou_max7_SKU_freight"  placeholder="请输入平邮成交价大于7运费"value={{ StoreData.Pingyou_max7_SKU_freight }}>
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <span style="">是否加入收藏夹：</span>
+                                                                                    <select style="width: 80px; height: 36px; border-radius: 4px;" name="top_colect" id="top_colect" >
+                                                                                        <option selected = 'selected' value=""></option>
+                                                                                        <option value="1">加入收藏</option>
+                                                                                        <option value="0">取消收藏</option>
+                                                                                    </select>
+                                                                                </div>
+
+
+                                                                                <div class="modal-footer"  >
+                                                                                    <button type="button" onclick="displayResult(this)" class="btn btn-primary" id="111" >提交</button>
+                                                                                </div>
+                                                                                 <script>
+                                                                                  function displayResult(obj){
+                                                                                      var SKU_name=$(obj).                     parent().parent().eq(0).children().eq(0).children().eq(1).val();
+                                                                                      var SKU_price=$(obj).                    parent().parent().eq(0).children().eq(1).children().eq(1).val();
+                                                                                      var SKU_weight=$(obj).                   parent().parent().eq(0).children().eq(2).children().eq(1).val();
+                                                                                      var SKU_parts_price=$(obj).              parent().parent().eq(0).children().eq(3).children().eq(1).val();
+                                                                                      var SKU_parts_weight=$(obj).             parent().parent().eq(0).children().eq(4).children().eq(1).val();
+                                                                                      var SKU_variety=$(obj).                  parent().parent().eq(0).children().eq(5).children().eq(1).val();
+                                                                                      var HAI_SKU_freight=$(obj).              parent().parent().eq(0).children().eq(6).children().eq(1).val();
+                                                                                      var Pingyou_min7_SKU_freight=$(obj).     parent().parent().eq(0).children().eq(7).children().eq(1).val();
+                                                                                      var Pingyou_max7_SKU_freight=$(obj).     parent().parent().eq(0).children().eq(8).children().eq(1).val();
+                                                                                      var top_colect=$(obj).                   parent().parent().eq(0).children().eq(9).children().eq(1).val();
+
+
+
+                                                                                 $.ajax({
+                                                                                            url:'/profitStatistics_2/',
+                                                                                            type:'post',
+                                                                                            data:
+                                                                                                {
+                                                                                                SKU_name:SKU_name,
+                                                                                                SKU_price:SKU_price,
+                                                                                                SKU_weight:SKU_weight,
+                                                                                                SKU_parts_price:SKU_parts_price,
+                                                                                                SKU_parts_weight:SKU_parts_weight,
+                                                                                                SKU_variety:SKU_variety,
+                                                                                                HAI_SKU_freight:HAI_SKU_freight,
+                                                                                                Pingyou_min7_SKU_freight:Pingyou_min7_SKU_freight,
+                                                                                                Pingyou_max7_SKU_freight:Pingyou_max7_SKU_freight,
+                                                                                                top_colect:top_colect,
+                                                                                                csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                                                                                 }
+                                                                                            })
+                                                                                 }
+                                                                                </script>
+
+                                                                            </div>
+                                                                        </form>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td><!--编辑-->
+                                                        </tr>
+                                                    {% endfor %}
+												</tbody>
+
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--footer-->
+			<footer class="footer">
+				<div class="container">
+					<div class="row align-items-center flex-row-reverse">
+						<div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+							Copyright © 2019 <a href="#">Uplor </a>. Designed by <a href="http://www.tophatter.com/">Ethan</a> All rights reserved.
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- End Footer-->
+		</div>
+
+		<!-- Back to top -->
+		<a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+        <!--计算器-->
+        <div class="scrollsidebar" id="hhService" style="box-shadow: darkgrey 10px 10px 30px 5px ;opacity:1;">
+            <div class="side_content">
+                <div class="side_list">
+                    <div class="side_title"><a title="隐藏" class="close_btn"><span>关闭</span></a></div>
+                    <div class="side_center" style="background:#f2f4f8">
+                        <form >
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品进价(￥)</span>
+                                      <input type="number" id="计_产品进价" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品重量(g)</span>
+                                      <input type="number" id="计_产品重量" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>物流商选择</span>
+                                      <select style="width: 100px; height: 40px; border-radius: 4px;" name="" id="计_物流商选择" >
+                                            <option value="普货">普货</option>
+                                            <option value="带电">带电</option>
+                                            <option value="特货">特货</option>
+                                            <option value="海运">输入</option>
+                                            <option style="color: #d1d1d3" selected="selected" value="">--请选择--</option>
+                                      </select>
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入运费(￥)</span>
+                                      <input type="number" id="计_输入运费" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>均SFB($)</span>
+                                      <input type="number" id="计_均SFB" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>成交率(%)</span>
+                                      <input type="number" id="计_成交率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="80" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style=""><a style="color: red">*</a>预估退货率(%)</span>
+                                      <input type="number" id="计_预估退货率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="5" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>当前汇率</span>
+                                      <input type="number" id="计_当前汇率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="{{ EXCHANGE_RATE }}" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;一口价利润(%)</span>
+                                      <input type="number" id="计_一口价利润" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="30" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;拍卖利润率(%)</span>
+                                      <input type="number" id="计_拍卖利润率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="0" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 45px; float: left">
+                            </div>
+
+
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运费(￥)</span>
+                                      <input type="number" id="sp_1" style="color:red;width: 100px;height: 40px;border-radius: 4px;"  value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拍卖利润(￥)</span>
+                                      <input type="number" id="sp_6" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;一口价利润(￥):</span>
+                                      <input type="number" id="sp_7" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;拍卖总成本(￥)</span>
+                                      <input type="number" id="sp_2" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">一口价总成本(￥)</span>
+                                      <input type="number" id="sp_4" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;建议一口价($):</span>
+                                      <input type="number" id="sp_5" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;拍卖预计价($):</span>
+                                      <input type="number" id="sp_3" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div class=""  >
+                                <button class="btn btn-primary" type="button"  data-container="body"
+                                        data-toggle="popover" data-popover-color="popdanger"
+                                        data-placement="bottom" title="计算公式："
+                                        data-content="拍卖预计价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率) + SFB/成交率 <br><br>
+                                                      一口建议价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率)">计算公式
+                                </button>
+                                <button  type="button" onclick="displayResult_count(this)" class="btn btn-primary"  id="111" >开始计算</button>
+                            </div>
+                            <script>
+                              function displayResult_count(obj){
+                             $.ajax({
+                                        url:'/profitStatistics_2/',
+                                        type:'get',
+                                        data:
+                                            {
+                                            计_产品进价:$('#计_产品进价').val(),
+                                            计_产品重量:$('#计_产品重量').val(),
+                                            计_均SFB:$('#计_均SFB').val(),
+                                            计_成交率:$('#计_成交率').val(),
+                                            计_预估退货率:$('#计_预估退货率').val(),
+                                            计_当前汇率:$('#计_当前汇率').val(),
+                                            计_物流商选择:$('#计_物流商选择').val(),
+                                            计_输入运费:$('#计_输入运费').val(),
+                                            计_一口价利润:$('#计_一口价利润').val(),
+                                            计_拍卖利润率:$('#计_拍卖利润率').val(),
+                                            csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                             },
+                                            success: function (response) {
+                                                    var ret = JSON.parse(response);
+
+                                                    $('.sp_0').html('qwerty').css("color", "red");
+
+                                                    document.getElementById('sp_1').value=ret.msg_e_1;
+                                                    document.getElementById('sp_2').value=ret.msg_e_2;
+                                                    document.getElementById('sp_3').value=ret.msg_e_3;
+                                                    document.getElementById('sp_4').value=ret.msg_e_4;
+                                                    document.getElementById('sp_5').value=ret.msg_e_5;
+                                                    document.getElementById('sp_6').value=ret.msg_e_6;
+                                                    document.getElementById('sp_7').value=ret.msg_e_7;
+                                                }
+                                        })
+                             }
+                            </script>
+                        </form>
+                    </div>
+                    <div class="side_bottom"></div>
+                </div>
+            </div>
+            <div class="show_btn"><span>在线客服</span></div>
+        </div><!--scrollsidebar end-->
+
+		<!-- Dashboard js -->
+		 <script src="{% static 'assets/js/vendors/jquery-3.2.1.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/popper.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/js/bootstrap.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/selectize.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/circle-progress.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/rating/jquery.rating-stars.js' %}"></script>
+
+		<!-- Fullside-menu Js-->
+		 <script src="{% static 'assets/plugins/fullside-menu/jquery.slimscroll.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/fullside-menu/waves.min.js' %}"></script>
+
+		<!-- Data tables -->
+		 <script src="{% static 'assets/plugins/datatable/jquery.dataTables.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.js' %}"></script>
+
+		<!-- Select2 js -->
+		 <script src="{% static 'assets/plugins/select2/select2.full.min.js' %}"></script>
+
+		<!-- Custom scroll bar Js-->
+		 <script src="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+
+		<!-- Custom Js-->
+		 <script src="{% static 'assets/js/custom.js' %}"></script>
+
+        <!-- Data table js -->
+        <script>
+        $(function(e) {
+        $('#example').DataTable();
+        } );
+        $(document).ready(function() {
+        $('#example2').DataTable();
+        } );
+        </script>
+
+        <!-- 图片懒加载 -->
+        <script src="{% static 'js/echo/echo.min.js' %}"></script>
+        <script>
+        Echo.init({
+            offset: 5,
+            throttle: 200
+        });
+        </script>
+
+        <!-- html太平洋时间 -->
+        <script>
+        // 时间设置
+        var  timezone = -7; // 时区 ： 东区时区1~12  西区时区-1~-12
+        var  date;
+
+         date = getLocalTime(timezone)
+          .toString()
+           .split("GMT+")[0]
+           .toString();
+        $("#showdate").html(date);
+
+       function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+       // 时间设置end
+       window.onload = function() {
+       // 调用时间
+       var setdate = setInterval(() => {
+       date = getLocalTime(timezone)
+         var year = date.getFullYear();
+         var month = date.getMonth()+1;
+         var Date = date.getDate();
+         var hour = date.getHours();  //获得小时、分钟、秒
+         var minute = date.getMinutes();
+         var second = date.getSeconds();
+         var weekday = 0;
+         switch(date.getDay()){
+            case 0:
+            weekday = "星期日";
+            break;
+            case 1:
+            weekday = "星期一";
+            break;
+            case 2:
+            weekday = "星期二";
+            break;
+            case 3:
+            weekday = "星期三";
+            break;
+            case 4:
+            weekday = "星期四";
+            break;
+            case 5:
+            weekday = "星期五";
+            break;
+            case 6:
+            weekday = "星期六";
+            break;
+         }
+        document.getElementById("showdate").innerHTML="<br>当前太平洋时间："+year+"年"+month+"月"+Date+"日&nbsp&nbsp;"+hour+":"+minute+":"+second+"&nbsp&nbsp;"+weekday;
+       }, 1000);
+       // 调用时间end
+        };
+      </script>
+
+        <!--计算器-->
+        <script type="text/javascript" src="{% static 'jisuanqi/js/jquery.hhService.js' %}"></script>
+        <script type="text/javascript">
+            $(function(){
+            //悬浮计算器
+            $("#hhService").fix({
+                float : 'right',	      //默认设置 “left” or “right”
+                minStatue : true,     //默认设置 “false” or “true”
+                skin : 'blue',	    //默认设置 “blue”  “orange”  “green”  “red”  “pink”
+                durationTime : 400
+            });
+        });
+        </script>
+
+
+
+	</body>
+</html>

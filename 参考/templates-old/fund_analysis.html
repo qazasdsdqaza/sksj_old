@@ -1,0 +1,1056 @@
+﻿{% load staticfiles %}
+<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<meta name="msapplication-TileColor" content="#0670f0">
+		<meta name="theme-color" content="#2ddcd3">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+
+
+		<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon"/>
+		<link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+
+		<!-- Title -->
+		<title>摇钱数（资金表现）</title>
+		<link rel="stylesheet" href="{% static 'assets/fonts/fonts/font-awesome.min.css' %}" />
+
+		<!-- Bootstrap Css -->
+		<link href="{% static 'assets/plugins/bootstrap-4.1.3/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+		<!-- Sidemenu Css -->
+		<link href="{% static 'assets/plugins/fullside-menu/css/style.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/fullside-menu/waves.min.css' %}" rel="stylesheet" />
+
+		<!-- Dashboard Css -->
+		<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+
+		<!-- c3.js Charts Plugin -->
+		<link href="{% static 'assets/plugins/charts-c3/c3-chart.css' %}" rel="stylesheet" />
+
+		<!-- Data table css -->
+		<link href="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+
+		<!-- Slect2 css -->
+		<link href="{% static 'assets/plugins/select2/select2.min.css' %}" rel="stylesheet" />
+
+		<!-- Custom scroll bar css-->
+		<link href="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" />
+
+		<!---Font icons-->
+		<link href="{% static 'assets/plugins/iconfonts/plugin.css' %}" rel="stylesheet" />
+
+        <!---Highcharts图表库-->
+        <script src="https://code.highcharts.com.cn/jquery/jquery-1.8.3.min.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/highcharts.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/data.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/series-label.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/oldie.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/themes/grid-light.js"></script>
+	</head>
+	<body>
+		<div id="loading"></div>
+		<div class="page">
+			<div class="page-main">
+                <!-- 页眉目录栏 -->
+				<div class="app-header1 header py-1 d-flex">
+					<div class="container-fluid">
+						<div class="d-flex">
+							<a class="header-brand" href="">
+								<img src="{% static 'images/logo1.png' %}" class="header-brand-img" alt="Uplor  logo">
+							</a>
+							<div class="menu-toggle-button">
+								<a class="nav-link wave-effect" href="#" id="sidebarCollapse">
+									<span class="fa fa-bars"></span>
+								</a>
+							</div>
+							<div>
+								<div class="searching">
+									<a href="javascript:void(0)" class="search-open searching1">
+										<i class="fa fa-search"></i>
+									</a>
+									<div class="search-inline">
+										<form>
+											<input type="text" class="form-control" placeholder="Searching...">
+											<button type="submit">
+												<i class="fa fa-search"></i>
+											</button>
+											<a href="javascript:void(0)" class="search-close">
+												<i class="fa fa-times"></i>
+											</a>
+										</form>
+									</div>
+								</div>
+							</div>
+                            <div class="d-flex order-lg-1 ml-auto"  style="color: white" id="showdate"></div> <!--#太平洋时间 -->
+							<div class="d-flex order-lg-2 ml-auto">
+								<div class="dropdown d-none d-md-flex" >
+									<a  class="nav-link icon full-screen-link">
+										<i class="fe fe-maximize floating"  id="fullscreen-button"></i>
+									</a>
+							</div>
+                            <div class="profile_info">
+								<h2><a  href="/logout/">退出登录</a></h2>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wrapper">
+					<!-- 侧边目录栏 -->
+					<nav id="sidebar" class="nav-sidebar">
+						<div class="profile clearfix">
+							<div class="profile_pic">
+								<img src="{% static 'images/aaa.png' %}" alt="..." class="img-circle profile_img">
+{#								<a href="editprofile.html" class="profile-img">#}
+{#									<span class="fa fa-pencil" aria-hidden="true"></span>#}
+{#								</a>#}
+							</div>
+							<div class="profile_info">
+								<h3>天道酬勤 地道酬善</h3>
+								<h3>人道酬诚 商道酬信</h3>
+							</div>
+						</div>
+						<ul class="list-unstyled components" id="accordion">
+							<li class="border-0"><h3>Tophatter</h3><li>
+                            <li>
+								<a href="/information_aggregation/" class=" wave-effect accordion-toggle " target="_blank"><i class="fa fa-diamond mr-2 sidebarpink"></i> 信息汇总展示</a>
+							</li>
+							<li>
+								<a href="#Submenu1" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-rocket mr-2 sidebarprimary"></i> 平台分析
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu1" data-parent="#accordion">
+									<li>
+										<a href="/index/" target="_blank">平台商品统计</a>
+									</li>
+									<li>
+										<a href="/goodslist/" target="_blank">商品分析</a>
+									</li>
+									<li>
+										<a href="/seller/" target="_blank">卖家分析</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#Submenu2" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 利润统计
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu2" data-parent="#accordion">
+									<li>
+										<a href="/profitStatistics/" target="_blank">订单统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_2/" target="_blank">拍卖统计</a>
+									</li>
+									<li>
+										<a href="/profitStatistics_3/" target="_blank">拍卖统计(原始)</a>
+									</li>
+									<li>
+										<a href="/buy_nows/" target="_blank">一口价统计</a>
+									</li>
+                                    <li>
+										<a href="/buy_nows_page/" target="_blank">一口价（页面数据）</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu3" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-cubes mr-2 sidebaryellow"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu3" data-parent="#accordion">
+                                    <li>
+										<a href="/products_operate/ " target="_blank">批量上传</a>
+									</li>
+                                    <li>
+										<a href="/products_operate_single/" target="_blank">上传商品</a>
+									</li>
+									<li>
+										<a href="/products/" target="_blank">店铺所有商品</a>
+									</li>
+                                    <li>
+										<a href="/products_collect/" target="_blank">商品库</a>
+									</li>
+                                    <li>
+										<a href="/products_parets/" target="_blank">配件库</a>
+									</li>
+									<li>
+										<a href="/SKU_list_2/" target="_blank">商品信息录入</a>
+									</li>
+								</ul>
+							</li>
+                            <li >
+								<a href="#Submenu7" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-table mr-2 sidebarpurple"></i> 发货物流
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu7" data-parent="#accordion">
+									<li>
+										<a href="/logistics_statistic/" target="_blank">物流规则 </a>
+									</li>
+									<li>
+										<a href="/return_performance/" target="_blank">退货表现</a>
+									</li>
+                                    <li>
+										<a href="/refund_orders/" target="_blank">订单退货</a>
+									</li>
+								</ul>
+							</li>
+							<li >
+								<a href="#Submenu8" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-sun-o mr-2 sidebarpink"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu8" data-parent="#accordion">
+									<li>
+										<a href="/founds/" target="_blank">资金统计 </a>
+									</li>
+									<li>
+										<a href="/fund_analysis/" >资金表现</a>
+									</li>
+								</ul>
+							</li>
+                            <li><h3>5miles</h3><li>
+							<li>
+								<a href="#Submenu4" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 商品管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu4" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_products_5miles/" target="_blank">所有商品</a>
+									</li>
+                                    <li>
+										<a href="/five_miles/up_products_5miles/" target="_blank">上传商品</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu5" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 订单管理
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu5" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/all_oders_5miles/" target="_blank">所有订单</a>
+									</li>
+								</ul>
+							</li>
+                            <li>
+								<a href="#Submenu6" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 账户资金
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu6" data-parent="#accordion">
+									<li>
+										<a href="/five_miles/funds_5miles/" target="_blank">余额状态</a>
+									</li>
+								</ul>
+							</li>
+                            <li><h3>其他电商平台</h3><li>
+                            <li >
+								<a href="#Submenu10" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-shopping-cart mr-2 sidebarsuccess"></i> 速卖通
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu10" data-parent="#accordion">
+									<li>
+										<a href="/Function_1/" target="_blank">价格计算</a>
+									</li>
+								</ul>
+							</li>
+							<li><h3>服务</h3><li>
+							<li>
+								<a href="#Submenu9" class="accordion-toggle wave-effect" data-toggle="collapse" aria-expanded="false">
+									<i class="fa fa-futbol-o mr-2 sidebarred"></i> 拓展功能
+								</a>
+								<ul class="collapse list-unstyled" id="Submenu9" data-parent="#accordion">
+									<li>
+										<a href="/brand/" target="_blank" >平台商标统计</a>
+									</li>
+                                    <li>
+										<a href="/e_commerce_platform/" target="_blank">各类电商平台介绍</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+                    <!-- 内容区域 -->
+					<div class=" content-area overflow-hidden">
+						<div class="row">
+							<div class="col-md-12 col-lg-12">
+								<div class="card">
+									<div class="card-header">
+                                        <form id="searchForm"  method="post" action="" target="_top">
+                                            {% csrf_token %}
+                                            <div style="width: 1400px;height: 40px;margin-top: 15px;">
+                                                <div style="width: 400px; height: 40px; float: left">
+                                                    <input id="bt1" style="width: 150px;height: 30px;background: #4ebc30" type="submit" value="查询数据">
+                                                </div>
+{#                                                <div style="width: 600px; height: 40px; float: left">#}
+{#                                                  <a style="color: red">最后保存时间:</a>#}
+{#                                                </div>#}
+                                            </div>
+                                        </form>
+{#										<h4 class="page-title">资金统计</h4>#}
+										<div class="card-options">
+											<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+											<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+										</div>
+									</div>
+									<div class="card-body">
+										<div class="table-responsive">
+                                            <form name="myform" id="myform" method="post">
+                                                {% csrf_token %}
+
+                                                <table  class="table table-striped table-bordered" >
+                                                    <thead style="background: #5bc0de">
+                                                        <tr id="" >
+                                                            <th style="text-align: center">店铺名称/更新时间</th>
+                                                            <th style="text-align: center">净销售额($)</th>
+                                                            <th style="text-align: center">退款费用($)</th>
+                                                            <th style="text-align: center">总费用($)</th>
+                                                            <th style="text-align: center">责任费用百分比</th>
+                                                            <th style="text-align: center">回款评估</th>
+                                                            <th style="text-align: center">进阶下一个回款周期</th>
+                                                            <th style="text-align: center">分母</th>
+                                                            <th style="text-align: center">差值</th>
+                                                            <th style="text-align: center">平均每单10美元</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="A" >
+                                                            <td style="text-align: center"><a style="color: red" >{{ FOUNDS_A.store_name}}</a><a>—{{ FOUNDS_A.save_time}}</a></td> <!--SKU-->
+                                                            <td style="text-align: center">
+                                                               <input id="A_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="A_sale" placeholder="请输入"value={{ FOUNDS_A.A_sale}}></td> <!--即将到来-->
+                                                            <td style="text-align: center">
+                                                               <input id="A_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="A_refund" placeholder="请输入"value={{ FOUNDS_A.A_refund}}></td> <!--有待-->
+                                                            <td style="text-align: center">
+                                                               <input id="A_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="A_AllCost" placeholder="请输入"value={{ FOUNDS_A.A_AllCost}}></td> <!--有待-->
+
+                                                            <td style="text-align: center">{{ FOUNDS_A.A_percentage}}%</td><!--责任费用百分比-->
+
+                                                            {% if FOUNDS_A.A_percentage > 0.7 %}
+                                                                <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                            {% elif FOUNDS_A.A_percentage > 0.45 and  FOUNDS_A.A_percentage < 0.7 %}
+                                                                <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                            {% elif FOUNDS_A.A_percentage < 0.45 and  FOUNDS_A.A_percentage > 0  %}
+                                                                <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                            {% endif %}
+
+                                                            <td style="text-align: center">{{ FOUNDS_A.A_next_back}}</td><!--进阶下一个回款周期-->
+                                                            <td style="text-align: center">{{ FOUNDS_A.A_denominator}}</td><!--分母-->
+                                                            <td style="text-align: center">{{ FOUNDS_A.A_difference_value}}</td><!--差值-->
+                                                            <td style="text-align: center">{{ FOUNDS_A.A_resul}}</td><!--平均每单10美元-->
+                                                            <a style="text-align: center;height: 90px"  onclick="displayResult(this)">
+                                                                <input  id="bt1" style="width: 120px;height: 30px ;background: #4ebc30" type="button" value="保存"><!---->
+                                                            </a>
+                                                        </tr>
+                                                        <tr id="B" >
+                                                            <td style="text-align: center"><a style="color: red" >{{ FOUNDS_B.store_name}}</a><a>—{{ FOUNDS_B.save_time}}</a></td> <!--SKU-->
+                                                            <td style="text-align: center">
+                                                               <input id="B_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="B_sale" placeholder="请输入"value={{ FOUNDS_B.B_sale}}></td> <!--即将到来-->
+                                                            <td style="text-align: center">
+                                                               <input id="B_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="B_refund" placeholder="请输入"value={{ FOUNDS_B.B_refund}}></td> <!--有待-->
+                                                            <td style="text-align: center">
+                                                               <input id="B_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="B_AllCost" placeholder="请输入"value={{ FOUNDS_B.B_AllCost}}></td> <!--有待-->
+
+                                                            <td style="text-align: center">{{ FOUNDS_B.B_percentage}}%</td><!--责任费用百分比-->
+
+                                                            {% if FOUNDS_B.B_percentage > 0.7  %}
+                                                                <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                            {% elif FOUNDS_B.B_percentage > 0.45 and  FOUNDS_B.B_percentage < 0.7 %}
+                                                                <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                            {% elif FOUNDS_B.B_percentage < 0.45 and  FOUNDS_B.B_percentage > 0  %}
+                                                                <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                            {% endif %}
+
+                                                            <td style="text-align: center">{{ FOUNDS_B.B_next_back}}</td><!--进阶下一个回款周期-->
+                                                            <td style="text-align: center">{{ FOUNDS_B.B_denominator}}</td><!--分母-->
+                                                            <td style="text-align: center">{{ FOUNDS_B.B_difference_value}}</td><!--差值-->
+                                                            <td style="text-align: center">{{ FOUNDS_B.B_resul}}</td><!--平均每单10美元-->
+                                                        </tr>
+                                                        <tr id="C" >
+                                                            <td style="text-align: center"><a style="color: red" >{{ FOUNDS_C.store_name}}</a><a>—{{ FOUNDS_C.save_time}}</a></td> <!--SKU-->
+                                                            <td style="text-align: center">
+                                                               <input id="C_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="C_sale" placeholder="请输入"value={{ FOUNDS_C.C_sale}}></td> <!--即将到来-->
+                                                            <td style="text-align: center">
+                                                               <input id="C_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="C_refund" placeholder="请输入"value={{ FOUNDS_C.C_refund}}></td> <!--有待-->
+                                                            <td style="text-align: center">
+                                                               <input id="C_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="C_AllCost" placeholder="请输入"value={{ FOUNDS_C.C_AllCost}}></td> <!--有待-->
+
+                                                            <td style="text-align: center">{{ FOUNDS_C.C_percentage}}%</td><!--责任费用百分比-->
+
+                                                            {% if FOUNDS_C.C_percentage > 0.7  %}
+                                                                <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                            {% elif FOUNDS_C.C_percentage > 0.45 and  FOUNDS_C.C_percentage < 0.7 %}
+                                                                <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                            {% elif FOUNDS_C.C_percentage < 0.45 and  FOUNDS_C.C_percentage > 0  %}
+                                                                <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                            {% else %}
+                                                                <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                            {% endif %}
+
+                                                            <td style="text-align: center">{{ FOUNDS_C.C_next_back}}</td><!--进阶下一个回款周期-->
+                                                            <td style="text-align: center">{{ FOUNDS_C.C_denominator}}</td><!--分母-->
+                                                            <td style="text-align: center">{{ FOUNDS_C.C_difference_value}}</td><!--差值-->
+                                                            <td style="text-align: center">{{ FOUNDS_C.C_resul}}</td><!--平均每单10美元-->
+                                                        </tr>
+                                                        <tr id="E" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_E.store_name}}</a><a>—{{ FOUNDS_E.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="E_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="E_sale" placeholder="请输入"value={{ FOUNDS_E.E_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="E_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="E_refund" placeholder="请输入"value={{ FOUNDS_E.E_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="E_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="E_AllCost" placeholder="请输入"value={{ FOUNDS_E.E_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_E.E_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_E.E_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_E.E_percentage > 0.45 and  FOUNDS_E.E_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_E.E_percentage < 0.45 and  FOUNDS_E.E_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_E.E_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_E.E_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_E.E_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_E.E_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                        <tr id="G" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_G.store_name}}</a><a>—{{ FOUNDS_G.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="G_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="G_sale" placeholder="请输入"value={{ FOUNDS_G.G_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="G_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="G_refund" placeholder="请输入"value={{ FOUNDS_G.G_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="G_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="G_AllCost" placeholder="请输入"value={{ FOUNDS_G.G_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_G.G_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_G.G_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_G.G_percentage > 0.45 and  FOUNDS_G.G_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_G.G_percentage < 0.45 and  FOUNDS_G.G_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_G.G_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_G.G_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_G.G_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_G.G_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                        <tr id="H" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_H.store_name}}</a><a>—{{ FOUNDS_H.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="H_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="H_sale" placeholder="请输入"value={{ FOUNDS_H.H_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="H_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="H_refund" placeholder="请输入"value={{ FOUNDS_H.H_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="H_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="H_AllCost" placeholder="请输入"value={{ FOUNDS_H.H_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_H.H_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_H.H_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_H.H_percentage > 0.45 and  FOUNDS_H.H_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_H.H_percentage < 0.45 and  FOUNDS_H.H_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_H.H_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_H.H_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_H.H_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_H.H_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                        <tr id="I" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_I.store_name}}</a><a>—{{ FOUNDS_I.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="I_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="I_sale" placeholder="请输入"value={{ FOUNDS_I.I_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="I_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="I_refund" placeholder="请输入"value={{ FOUNDS_I.I_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="I_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="I_AllCost" placeholder="请输入"value={{ FOUNDS_I.I_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_I.I_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_I.I_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_I.I_percentage > 0.45 and  FOUNDS_I.I_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_I.I_percentage < 0.45 and  FOUNDS_I.I_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_I.I_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_I.I_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_I.I_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_I.I_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                        <tr id="J" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_J.store_name}}</a><a>—{{ FOUNDS_J.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="J_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="J_sale" placeholder="请输入"value={{ FOUNDS_J.J_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="J_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="J_refund" placeholder="请输入"value={{ FOUNDS_J.J_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="J_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="J_AllCost" placeholder="请输入"value={{ FOUNDS_J.J_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_J.J_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_J.J_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_J.J_percentage > 0.45 and  FOUNDS_J.J_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_J.J_percentage < 0.45 and  FOUNDS_J.J_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_J.J_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_J.J_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_J.J_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_J.J_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                        <tr id="M" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_M.store_name}}</a><a>—{{ FOUNDS_M.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="M_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="M_sale" placeholder="请输入"value={{ FOUNDS_M.M_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="M_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="M_refund" placeholder="请输入"value={{ FOUNDS_M.M_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="M_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="M_AllCost" placeholder="请输入"value={{ FOUNDS_M.M_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_M.M_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_M.M_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_M.M_percentage > 0.45 and  FOUNDS_M.M_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_M.M_percentage < 0.45 and  FOUNDS_M.M_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_M.M_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_M.M_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_M.M_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_M.M_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                        <tr id="P" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_P.store_name}}</a><a>—{{ FOUNDS_P.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="P_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="P_sale" placeholder="请输入"value={{ FOUNDS_P.P_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="P_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="P_refund" placeholder="请输入"value={{ FOUNDS_P.P_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="P_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="P_AllCost" placeholder="请输入"value={{ FOUNDS_P.P_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_P.P_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_P.P_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_P.P_percentage > 0.45 and  FOUNDS_P.P_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_P.P_percentage < 0.45 and  FOUNDS_P.P_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_P.P_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_P.P_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_P.P_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_P.P_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                        <tr id="Q" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_Q.store_name}}</a><a>—{{ FOUNDS_Q.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="Q_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="Q_sale" placeholder="请输入"value={{ FOUNDS_Q.Q_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="Q_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="Q_refund" placeholder="请输入"value={{ FOUNDS_Q.Q_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="Q_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="Q_AllCost" placeholder="请输入"value={{ FOUNDS_Q.Q_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_Q.Q_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_Q.Q_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_Q.Q_percentage > 0.45 and  FOUNDS_Q.Q_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_Q.Q_percentage < 0.45 and  FOUNDS_Q.Q_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_Q.Q_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_Q.Q_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_Q.Q_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_Q.Q_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                    <tr id="R" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_R.store_name}}</a><a>—{{ FOUNDS_R.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="R_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="R_sale" placeholder="请输入"value={{ FOUNDS_R.R_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="R_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="R_refund" placeholder="请输入"value={{ FOUNDS_R.R_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="R_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="R_AllCost" placeholder="请输入"value={{ FOUNDS_R.R_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_R.R_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_R.R_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_R.R_percentage > 0.45 and  FOUNDS_R.R_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_R.R_percentage < 0.45 and  FOUNDS_R.R_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_R.R_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_R.R_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_R.R_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_R.R_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                    <tr id="S" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_S.store_name}}</a><a>—{{ FOUNDS_S.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="S_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="S_sale" placeholder="请输入"value={{ FOUNDS_S.S_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="S_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="S_refund" placeholder="请输入"value={{ FOUNDS_S.S_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="S_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="S_AllCost" placeholder="请输入"value={{ FOUNDS_S.S_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_S.S_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_S.S_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_S.S_percentage > 0.45 and  FOUNDS_S.S_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_S.S_percentage < 0.45 and  FOUNDS_S.S_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_S.S_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_S.S_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_S.S_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_S.S_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                    <tr id="T" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_T.store_name}}</a><a>—{{ FOUNDS_T.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="T_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="T_sale" placeholder="请输入"value={{ FOUNDS_T.T_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="T_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="T_refund" placeholder="请输入"value={{ FOUNDS_T.T_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="T_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="T_AllCost" placeholder="请输入"value={{ FOUNDS_T.T_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_T.T_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_T.T_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_T.T_percentage > 0.45 and  FOUNDS_T.T_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_T.T_percentage < 0.45 and  FOUNDS_T.T_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_T.T_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_T.T_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_T.T_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_T.T_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                    <tr id="U" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_U.store_name}}</a><a>—{{ FOUNDS_U.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="U_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="U_sale" placeholder="请输入"value={{ FOUNDS_U.U_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="U_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="U_refund" placeholder="请输入"value={{ FOUNDS_U.U_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="U_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="U_AllCost" placeholder="请输入"value={{ FOUNDS_U.U_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_U.U_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_U.U_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_U.U_percentage > 0.45 and  FOUNDS_U.U_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_U.U_percentage < 0.45 and  FOUNDS_U.U_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_U.U_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_U.U_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_U.U_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_U.U_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                    <tr id="V" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_V.store_name}}</a><a>—{{ FOUNDS_V.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="V_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="V_sale" placeholder="请输入"value={{ FOUNDS_V.V_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="V_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="V_refund" placeholder="请输入"value={{ FOUNDS_V.V_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="V_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="V_AllCost" placeholder="请输入"value={{ FOUNDS_V.V_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_V.V_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_V.V_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_V.V_percentage > 0.45 and  FOUNDS_V.V_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_V.V_percentage < 0.45 and  FOUNDS_V.V_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_V.V_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_V.V_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_V.V_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_V.V_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                    <tr id="W" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_W.store_name}}</a><a>—{{ FOUNDS_W.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="W_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="W_sale" placeholder="请输入"value={{ FOUNDS_W.W_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="W_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="W_refund" placeholder="请输入"value={{ FOUNDS_W.W_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="W_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="W_AllCost" placeholder="请输入"value={{ FOUNDS_W.W_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_W.W_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_W.W_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_W.W_percentage > 0.45 and  FOUNDS_W.W_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_W.W_percentage < 0.45 and  FOUNDS_W.W_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_W.W_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_W.W_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_W.W_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_W.W_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                    <tr id="X" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_X.store_name}}</a><a>—{{ FOUNDS_X.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="X_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="X_sale" placeholder="请输入"value={{ FOUNDS_X.X_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="X_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="X_refund" placeholder="请输入"value={{ FOUNDS_X.X_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="X_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="X_AllCost" placeholder="请输入"value={{ FOUNDS_X.X_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_X.X_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_X.X_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_X.X_percentage > 0.45 and  FOUNDS_X.X_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_X.X_percentage < 0.45 and  FOUNDS_X.X_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_X.X_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_X.X_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_X.X_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_X.X_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                    <tr id="Y" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_Y.store_name}}</a><a>—{{ FOUNDS_Y.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="Y_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="Y_sale" placeholder="请输入"value={{ FOUNDS_Y.Y_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="Y_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="Y_refund" placeholder="请输入"value={{ FOUNDS_Y.Y_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="Y_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="Y_AllCost" placeholder="请输入"value={{ FOUNDS_Y.Y_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_Q.Q_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_Y.Y_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_Y.Y_percentage > 0.45 and  FOUNDS_Y.Y_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_Y.Y_percentage < 0.45 and  FOUNDS_Y.Y_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_Y.Y_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_Y.Y_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_Y.Y_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_Y.Y_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                    <tr id="Z" >
+                                                                <td style="text-align: center"><a style="color: red" >{{ FOUNDS_Z.store_name}}</a><a>—{{ FOUNDS_Z.save_time}}</a></td> <!--SKU-->
+                                                                <td style="text-align: center">
+                                                                   <input id="Z_sale" style=" width: 100px;height: 25px; border-radius: 4px;color: #2f96b4" type="text" name="Z_sale" placeholder="请输入"value={{ FOUNDS_Z.Z_sale}}></td> <!--即将到来-->
+                                                                <td style="text-align: center">
+                                                                   <input id="Z_refund" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="Z_refund" placeholder="请输入"value={{ FOUNDS_Z.Z_refund}}></td> <!--有待-->
+                                                                <td style="text-align: center">
+                                                                   <input id="Z_AllCost" style=" width: 100px;height: 25px; border-radius: 4px;color: forestgreen" type="text" name="Z_AllCost" placeholder="请输入"value={{ FOUNDS_Z.Z_AllCost}}></td> <!--有待-->
+
+                                                                <td style="text-align: center">{{ FOUNDS_Z.Z_percentage}}%</td><!--责任费用百分比-->
+
+                                                                {% if FOUNDS_Z.Z_percentage > 0.7  %}
+                                                                    <td style="text-align: center;background:red">两个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_Z.Z_percentage > 0.45 and  FOUNDS_Z.Z_percentage < 0.7 %}
+                                                                    <td style="text-align: center;background: #f1a02f">一个月</td><!--回款评估-->
+                                                                {% elif FOUNDS_Z.Z_percentage < 0.45 and  FOUNDS_Z.Z_percentage > 0  %}
+                                                                    <td style="text-align: center;background: green">半个月</td><!--回款评估-->
+                                                                {% else %}
+                                                                    <td style="text-align: center;color: grey">无数据</td><!--回款评估-->
+                                                                {% endif %}
+
+                                                                <td style="text-align: center">{{ FOUNDS_Z.Z_next_back}}</td><!--进阶下一个回款周期-->
+                                                                <td style="text-align: center">{{ FOUNDS_Z.Z_denominator}}</td><!--分母-->
+                                                                <td style="text-align: center">{{ FOUNDS_Z.Z_difference_value}}</td><!--差值-->
+                                                                <td style="text-align: center">{{ FOUNDS_Z.Z_resul}}</td><!--平均每单10美元-->
+                                                            </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </form>
+										</div>
+									</div>
+									<!-- table-wrapper -->
+								</div>
+								<!-- section-wrapper -->
+                            </div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--footer-->
+			<footer class="footer">
+				<div class="container">
+					<div class="row align-items-center flex-row-reverse">
+						<div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+							Copyright © 2019 <a href="#">Uplor </a>. Designed by <a href="http://www.tophatter.com/">Ethan</a> All rights reserved.
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- End Footer-->
+		</div>
+
+		<!-- Back to top -->
+		<a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+		<!-- Dashboard js -->
+		 <script src="{% static 'assets/js/vendors/jquery-3.2.1.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/popper.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/js/bootstrap.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/selectize.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/circle-progress.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/rating/jquery.rating-stars.js' %}"></script>
+
+		<!-- Fullside-menu Js-->
+		 <script src="{% static 'assets/plugins/fullside-menu/jquery.slimscroll.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/fullside-menu/waves.min.js' %}"></script>
+
+		<!-- Data tables -->
+		 <script src="{% static 'assets/plugins/datatable/jquery.dataTables.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.js' %}"></script>
+
+		<!-- Select2 js -->
+		 <script src="{% static 'assets/plugins/select2/select2.full.min.js' %}"></script>
+
+		<!-- Custom scroll bar Js-->
+		 <script src="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+
+		<!-- Custom Js-->
+		 <script src="{% static 'assets/js/custom.js' %}"></script>
+
+        <!-- Data table js -->
+        <script>
+        $(function(e) {
+        $('#example').DataTable();
+        } );
+        $(document).ready(function() {
+        $('#example2').DataTable();
+        } );
+        </script>
+
+        {#  以下是做ajax查询数据操作  #}
+        <script>
+        function displayResult(idx){
+            var sku=$(idx).eq(2).text();
+         $.ajax({
+                    url:'/fund_analysis/',
+                    type:'post',
+                    data:
+                        {
+                            A_sale:$('#A_sale').val(),
+                        A_refund:$('#A_refund').val(),
+                        A_AllCost:$('#A_AllCost').val(),
+                            B_sale:$('#B_sale').val(),
+                        B_refund:$('#B_refund').val(),
+                        B_AllCost:$('#B_AllCost').val(),
+                            C_sale:$('#C_sale').val(),
+                        C_refund:$('#C_refund').val(),
+                        C_AllCost:$('#C_AllCost').val(),
+                            E_sale:$('#E_sale').val(),
+                        E_refund:$('#E_refund').val(),
+                        E_AllCost:$('#E_AllCost').val(),
+                            G_sale:$('#G_sale').val(),
+                        G_refund:$('#G_refund').val(),
+                        G_AllCost:$('#G_AllCost').val(),
+                            H_sale:$('#H_sale').val(),
+                        H_refund:$('#H_refund').val(),
+                        H_AllCost:$('#H_AllCost').val(),
+                            I_sale:$('#I_sale').val(),
+                        I_refund:$('#I_refund').val(),
+                        I_AllCost:$('#I_AllCost').val(),
+                            J_sale:$('#J_sale').val(),
+                        J_refund:$('#J_refund').val(),
+                        J_AllCost:$('#J_AllCost').val(),
+                            M_sale:$('#M_sale').val(),
+                        M_refund:$('#M_refund').val(),
+                        M_AllCost:$('#M_AllCost').val(),
+                            P_sale:$('#P_sale').val(),
+                        P_refund:$('#P_refund').val(),
+                        P_AllCost:$('#P_AllCost').val(),
+                            Q_sale:$('#Q_sale').val(),
+                        Q_refund:$('#Q_refund').val(),
+                        Q_AllCost:$('#Q_AllCost').val(),
+                            R_sale:$('#R_sale').val(),
+                        R_refund:$('#R_refund').val(),
+                        R_AllCost:$('#R_AllCost').val(),
+                                                        S_sale:$('#S_sale').val(),
+                        S_refund:$('#S_refund').val(),
+                        S_AllCost:$('#S_AllCost').val(),
+                                                        T_sale:$('#T_sale').val(),
+                        T_refund:$('#T_refund').val(),
+                        T_AllCost:$('#T_AllCost').val(),
+                                                        U_sale:$('#U_sale').val(),
+                        U_refund:$('#U_refund').val(),
+                        U_AllCost:$('#U_AllCost').val(),
+                                                        V_sale:$('#V_sale').val(),
+                        V_refund:$('#V_refund').val(),
+                        V_AllCost:$('#V_AllCost').val(),
+                                                        W_sale:$('#W_sale').val(),
+                        W_refund:$('#W_refund').val(),
+                        W_AllCost:$('#W_AllCost').val(),
+                                                        X_sale:$('#X_sale').val(),
+                        X_refund:$('#X_refund').val(),
+                        X_AllCost:$('#X_AllCost').val(),
+                                                        Y_sale:$('#Y_sale').val(),
+                        Y_refund:$('#Y_refund').val(),
+                        Y_AllCost:$('#Y_AllCost').val(),
+                                                        Z_sale:$('#Z_sale').val(),
+                        Z_refund:$('#Z_refund').val(),
+                        Z_AllCost:$('#Z_AllCost').val(),
+                        csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val(),
+                         }
+                    })
+        }
+        </script>
+
+        <!-- html太平洋时间 -->
+        <script>
+        // 时间设置
+        var  timezone = -7; // 时区 ： 东区时区1~12  西区时区-1~-12
+        var  date;
+
+         date = getLocalTime(timezone)
+          .toString()
+           .split("GMT+")[0]
+           .toString();
+        $("#showdate").html(date);
+
+       function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+       // 时间设置end
+       window.onload = function() {
+       // 调用时间
+       var setdate = setInterval(() => {
+       date = getLocalTime(timezone)
+         var year = date.getFullYear();
+         var month = date.getMonth()+1;
+         var Date = date.getDate();
+         var hour = date.getHours();  //获得小时、分钟、秒
+         var minute = date.getMinutes();
+         var second = date.getSeconds();
+         var weekday = 0;
+         switch(date.getDay()){
+            case 0:
+            weekday = "星期日";
+            break;
+            case 1:
+            weekday = "星期一";
+            break;
+            case 2:
+            weekday = "星期二";
+            break;
+            case 3:
+            weekday = "星期三";
+            break;
+            case 4:
+            weekday = "星期四";
+            break;
+            case 5:
+            weekday = "星期五";
+            break;
+            case 6:
+            weekday = "星期六";
+            break;
+         }
+        document.getElementById("showdate").innerHTML="<br>当前太平洋时间："+year+"年"+month+"月"+Date+"日&nbsp&nbsp;"+hour+":"+minute+":"+second+"&nbsp&nbsp;"+weekday;
+       }, 1000);
+       // 调用时间end
+        };
+      </script>
+
+	</body>
+</html>

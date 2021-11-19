@@ -1,0 +1,826 @@
+﻿{% load staticfiles %}
+<!doctype html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<meta name="msapplication-TileColor" content="#0670f0">
+		<meta name="theme-color" content="#2ddcd3">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+
+
+		<link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon"/>
+		<link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
+
+		<!-- Title -->
+		<title>摇钱数（Top商品更新）</title>
+		<link rel="stylesheet" href="{% static 'assets/fonts/fonts/font-awesome.min.css' %}" />
+
+		<!-- Bootstrap Css -->
+		<link href="{% static 'assets/plugins/bootstrap-4.1.3/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+		<!-- Sidemenu Css -->
+		<link href="{% static 'assets/plugins/fullside-menu/css/style.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/fullside-menu/waves.min.css' %}" rel="stylesheet" />
+
+		<!-- Dashboard Css -->
+		<link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet" />
+
+		<!-- c3.js Charts Plugin -->
+		<link href="{% static 'assets/plugins/charts-c3/c3-chart.css' %}" rel="stylesheet" />
+
+		<!-- Data table css -->
+		<link href="{% static 'assets/plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+		<link href="{% static 'assets/plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+
+
+		<!-- Slect2 css -->
+		<link href="{% static 'assets/plugins/select2/select2.min.css' %}" rel="stylesheet" />
+
+		<!-- Custom scroll bar css-->
+		<link href="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" />
+
+		<!---Font icons-->
+		<link href="{% static 'assets/plugins/iconfonts/plugin.css' %}" rel="stylesheet" />
+
+        <!---计算器-->
+        <link href="{% static 'jisuanqi/css/sidebar.css' %}" rel="stylesheet" type="text/css" />
+
+
+	</head>
+	<body>
+		<div id="loading"></div>
+		<div class="page">
+			<div class="page-main">
+                <!-- 页眉目录栏 -->
+				<div class="app-header1 header py-1 d-flex">
+					<div class="container-fluid">
+						<div class="d-flex">
+							<a class="header-brand" href="">
+								<img src="{% static 'images/logo1.png' %}" class="header-brand-img" alt="Uplor  logo">
+							</a>
+							<div class="menu-toggle-button">
+								<a class="nav-link wave-effect" href="#" id="sidebarCollapse">
+									<span class="fa fa-bars"></span>
+								</a>
+							</div>
+							<div>
+								<div class="searching">
+									<a href="javascript:void(0)" class="search-open searching1">
+										<i class="fa fa-search"></i>
+									</a>
+									<div class="search-inline">
+										<form>
+											<input type="text" class="form-control" placeholder="Searching...">
+											<button type="submit">
+												<i class="fa fa-search"></i>
+											</button>
+											<a href="javascript:void(0)" class="search-close">
+												<i class="fa fa-times"></i>
+											</a>
+										</form>
+									</div>
+								</div>
+							</div>
+                            <div class="d-flex order-lg-1 ml-auto"  style="color: white" id="showdate"></div> <!--#太平洋时间 -->
+							<div class="d-flex order-lg-2 ml-auto">
+								<div class="dropdown d-none d-md-flex" >
+									<a  class="nav-link icon full-screen-link">
+										<i class="fe fe-maximize floating"  id="fullscreen-button"></i>
+									</a>
+							</div>
+                            <div class="profile_info">
+								<h2><a  href="/logout/">退出登录</a></h2>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="wrapper">
+					<!-- 侧边目录栏 -->
+
+                    <!-- 内容区域 -->
+					<div class=" content-area overflow-hidden">
+                        <div style="color: red;width: 100%;height: 10px;text-align: center " ><h2><br>Top商品信息更新</h2></div>
+						<div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="col-md-2 mt-2 mb-2">
+                                    <a>
+                                    &nbsp;
+                                    </a>
+                                </div>
+							</div>
+							<div class="col-md-12 col-lg-12" >
+                                <div class="container my-4">
+                                    <form>
+                                    {% csrf_token %}
+                                        {##基本信息#}
+                                        <div class="card">
+                                            <div class="card-header">
+                                            <h3 class="card-title">基本信息</h3>
+                                            <div class="card-options">
+                                                <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                            </div>
+                                            </div>
+                                            <div class="card-body">
+                                                 <div style="height: 60px;">
+                                                    <div style="width: 100%; height: 100px; float: left">
+                                                        <span style=""><a style="color: red">*</a>ParentSKU：</span>
+                                                        <input disabled="disabled" id="identifier" style="width: 250px; height: 46px; border-radius: 4px;" type="text" name="" placeholder="" value="{{ identifier }}">
+                                                        <a data-toggle="modal" >
+                                                           <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ primary_image}}" width="100" height="100">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div style="height: 60px;">
+                                                    <div style="width: 100%; height: 100px; float: left">
+                                                        <span style="">店铺名：</span>
+                                                        <input disabled="disabled" id="店铺名" style="width: 250px; height: 46px; border-radius: 4px;" type="text" name="" placeholder="" value="{{ 店铺名 }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {##图片信息#}
+{#                                        <div class="card"  data-toggle="card-collapse">#}
+{#                                            <div class="card-header">#}
+{#                                                <h3 class="card-title">图片信息</h3>#}
+{#                                                <div class="card-options">#}
+{#                                                    <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="card-body">#}
+{#                                                <h5 style="color: grey">1、图片最少2张，最多8张，尺寸需大于500x480像素，不能重复上传<br>#}
+{#                                                                2、只能选择一张图片作为主图，不选或者选择无图片的序号都将第一张作为主图<br>#}
+{#                                                                3、图片替换，需要先将图片传到top,再将链接替换，top图片链接的后缀需要为： /original.pig<br></h5>#}
+{#                                                <div class="row mt-4">#}
+{#                                                    <div class="col-xs-6 col-md-3">#}
+{#                                                        <h4><span style="color: red">1</span></h4>#}
+{#                                                        <a href="#" class="thumbnail ">#}
+{#                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片1 }}">#}
+{#                                                        </a>#}
+{#                                                        <div style="width: 100%; height: 60px; float: left">#}
+{#                                                            <span style="">替换图片请在下方替换为新图片链接：</span>#}
+{#                                                            <input id="产品图片1" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片1}}">#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <div class="col-xs-6 col-md-3">#}
+{#                                                        <h4><span style="color: red">2</span></h4>#}
+{#                                                        <a href="#" class="thumbnail ">#}
+{#                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片2 }}">#}
+{#                                                        </a>#}
+{#                                                        <div style="width: 100%; height: 60px; float: left">#}
+{#                                                            <span style="">替换图片请在下方替换为新图片链接：</span>#}
+{#                                                            <input id="产品图片2" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片2}}">#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <div class="col-xs-6 col-md-3">#}
+{#                                                        <h4><span style="color: red">3</span></h4>#}
+{#                                                        <a href="#" class="thumbnail ">#}
+{#                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片3 }}">#}
+{#                                                        </a>#}
+{#                                                        <div style="width: 100%; height: 60px; float: left">#}
+{#                                                            <span style="">替换图片请在下方替换为新图片链接：</span>#}
+{#                                                            <input id="产品图片3" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片3}}">#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <div class="col-xs-6 col-md-3">#}
+{#                                                        <h4><span style="color: red">4</span></h4>#}
+{#                                                        <a href="#" class="thumbnail ">#}
+{#                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片4 }}">#}
+{#                                                        </a>#}
+{#                                                        <div style="width: 100%; height: 60px; float: left">#}
+{#                                                            <span style="">替换图片请在下方替换为新图片链接：</span>#}
+{#                                                            <input id="产品图片4" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片4}}">#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <br>#}
+{#                                                    <hr>#}
+{#                                                    <br>#}
+{#                                                    <div class="col-xs-6 col-md-3">#}
+{#                                                        <br>#}
+{#                                                        <h4><span style="color: red">5</span></h4>#}
+{#                                                        <a href="#" class="thumbnail ">#}
+{#                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片5 }}">#}
+{#                                                        </a>#}
+{#                                                        <div style="width: 100%; height: 60px; float: left">#}
+{#                                                            <span style="">替换图片请在下方替换为新图片链接：</span>#}
+{#                                                            <input id="产品图片5" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片5}}">#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <div class="col-xs-6 col-md-3">#}
+{#                                                        <br>#}
+{#                                                        <h4><span style="color: red">6</span></h4>#}
+{#                                                        <a href="#" class="thumbnail ">#}
+{#                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片6 }}">#}
+{#                                                        </a>#}
+{#                                                        <div style="width: 100%; height: 60px; float: left">#}
+{#                                                            <span style="">替换图片请在下方替换为新图片链接：</span>#}
+{#                                                            <input id="产品图片6" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片6}}">#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <div class="col-xs-6 col-md-3">#}
+{#                                                        <br>#}
+{#                                                        <h4><span style="color: red">7</span></h4>#}
+{#                                                        <a href="#" class="thumbnail ">#}
+{#                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片7 }}">#}
+{#                                                        </a>#}
+{#                                                        <div style="width: 100%; height: 60px; float: left">#}
+{#                                                            <span style="">替换图片请在下方替换为新图片链接：</span>#}
+{#                                                            <input id="产品图片7" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片7}}">#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <div class="col-xs-6 col-md-3">#}
+{#                                                        <br>#}
+{#                                                        <h4><span style="color: red">8</span></h4>#}
+{#                                                        <a href="#" class="thumbnail ">#}
+{#                                                            <img class="lazy" src="{% static 'images/loading.gif' %}" data-echo="{{ 产品图片8 }}">#}
+{#                                                        </a>#}
+{#                                                        <div style="width: 100%; height: 60px; float: left">#}
+{#                                                            <span style="">替换图片请在下方替换为新图片链接：</span>#}
+{#                                                            <input id="产品图片8" style="width: 100%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ 产品图片8}}">#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <br>#}
+{#                                            <div style="height: 60px;">#}
+{#                                                        <div style="width: 300px; height: 60px; float: left">#}
+{#                                                            <span style=""><a style="color: red">*选择主图：</a></span>#}
+{#                                                            <select style="width: 150px; height: 36px; border-radius: 4px;" name="" id="主图序号">#}
+{#                                                                <option selected="selected" value="1">1</option>#}
+{#                                                                <option value="2">2</option>#}
+{#                                                                <option value="3">3</option>#}
+{#                                                                <option value="4">4</option>#}
+{#                                                                <option value="5">5</option>#}
+{#                                                                <option value="6">6</option>#}
+{#                                                                <option value="7">7</option>#}
+{#                                                                <option value="8">8</option>#}
+{#                                                            </select>#}
+{#                                                        </div>#}
+{#                                                 </div>#}
+{#                                        </div>#}
+
+                                        {#价格信息#}
+                                        <div class="card">
+                                            <div class="card-header">
+                                            <h3 class="card-title">更新价格信息</h3>
+                                            <span style="color: #a0a0a0">（注：除SFB外，其他项目只能输入整数）（<a style="color: red">*</a> 项目输入不能为空或者0）</span>
+                                            <div class="card-options">
+                                                <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                            </div>
+                                            </div>
+                                            <div class="card-body">
+                                                 <div style="height: 60px;">
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style=""><a style="color: red">*</a>一口价（USD）：</span>
+                                                        <input id="buy_now_price" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value={{ buy_now_price }}>
+                                                    </div>
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style=""><a style="color: red">*</a>目标价（USD）：</span>
+                                                        <input id="cost_basis" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ cost_basis }}">
+                                                        <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="目标价："
+                                                                data-content="为达到收支平衡时产品的价格">
+                                                                注意
+                                                        </button>
+                                                    </div>
+
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">零售价（USD）：</span>
+                                                        <input id="retail_price" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ retail_price }}">
+                                                        <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="零售价："
+                                                                data-content="在产品的销售价格旁边，显示为带删除线的价格。">
+                                                                注意
+                                                            <div class='gray-c'><div></div></div>
+                                                        </button>
+                                                    </div>
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style=""><a style="color: red">*</a>底价（USD）：</span>
+                                                        <input id="reserve_price" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value={{ reserve_price }}>
+                                                        <button type="button"  data-container="body"
+                                                                data-toggle="popover" data-popover-color="popdanger"
+                                                                data-placement="bottom" title="底价："
+                                                                data-content="如果最高出价低于此金额，则不会进行销售">
+                                                                注意
+                                                        </button>
+                                                    </div>
+
+
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                        <span style="">SFB（USD）：</span>
+                                                        <input id="scheduling_fee_bid" style="width: 30%; height: 46px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ scheduling_fee_bid }}">
+                                                        <span style="color: #a0a0a0">注：可以输入小数</span>
+                                                        <a href="https://seller-hub.en.tophatter.com/category/213-fees-payouts" target="_blank"  style="color: #0c85d0">出售费用详情</a>
+                                                    </div>
+                                                    <div style="width: 50%; height: 60px; float: left">
+                                                            <span style="">运输费用：</span>
+                                                            <input id="shipping_price" style="width: 20%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value="{{ shipping_price }}">
+                                                            <span style="color: #a0a0a0">注：如不输入则免邮</span>
+                                                            <a href="https://seller-hub.en.tophatter.com/category/214-fulfillment-shipping" target="_blank"  style="color: #0c85d0">（运费规则）</a>
+                                                        </div>
+
+                                                    <div style="width: 100%; height: 60px; float: left">
+                                                        <span style="">配件价格（USD）：</span>
+                                                        <input id="配件价格" style="width: 20%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入"value={{ accessory_price }}>
+                                                        <span style="color: #a0a0a0">注：配件价格和配件描述必须同时输入或者同时不输入</span>
+                                                    </div>
+                                                    <div style="width: 100%; height: 60px; float: left">
+                                                        <span style="">配件描述1：</span>
+                                                        <select style="width: 40%; height: 36px; border-radius: 4px;" name="" id="配件描述1">
+                                                        <option value=""></option>
+                                                        <option value="Buy one get one">Buy one get one</option>
+                                                        <option value="32g Memory Card">32g Memory Card</option>
+                                                        <option value="USB cable">USB cable</option>
+                                                        <option  style="" selected="selected" value="{{ accessory_description}}">{{ accessory_description}}</option>
+                                                        </select>
+                                                        <span style="color: #a0a0a0">注：配件描述为：配件描述1+配件描述2</span>
+                                                    </div>
+                                                    <div style="width: 100%; height: 60px; float: left">
+                                                        <span style="">配件描述2：</span>
+                                                        <input id="配件描述2" style="width: 40%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入配件描述"value="">
+                                                        <span style="color: #a0a0a0">注：最长40字节</span>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        {#CAMPAIGN设置#}
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">更新CAMPAIGN设置</h3>
+                                                <span style="color: #a0a0a0">（注：输入CAMPAIGN名必须在店铺已经设好，否则设置无效）</span>
+                                                <div class="card-options">
+                                                    <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                 <div style="height: 60px;">
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">CAMPAIGN_1：</span>
+                                                            <select style="width: 20%; height: 36px; border-radius: 4px;" name="" id="CAMPAIGN_1">
+                                                            <option selected="selected" value="{{ campaign_name }}">{{ campaign_name}}</option>
+                                                            <option value="BF5">BF5</option>
+                                                            <option value="BF6">BF6</option>
+                                                            <option value="BF7">BF7</option>
+                                                            <option value="BF8">BF8</option>
+                                                            <option value="BF9">BF9</option>
+                                                            <option value="BF10">BF10</option>
+                                                            <option value="BF11">BF11</option>
+                                                            <option value="BF12">BF12</option>
+                                                            <option value="BF13">BF13</option>
+                                                            <option value="BF14">BF14</option>
+                                                            <option value="BF15">BF15</option>
+
+                                                            <option value="BM5">BM5</option>
+                                                            <option value="BM6">BM6</option>
+                                                            <option value="BM7">BM7</option>
+                                                            <option value="BM8">BM8</option>
+                                                            <option value="BM9">BM9</option>
+                                                            <option value="BM10">BM10</option>
+                                                            <option value="BM11">BM11</option>
+                                                            <option value="BM12">BM12</option>
+                                                            <option value="BM13">BM13</option>
+                                                            <option value="BM14">BM14</option>
+                                                            <option value="BM15">BM15</option>
+
+                                                            <option value="BA5">BA5</option>
+                                                            <option value="BA6">BA6</option>
+                                                            <option value="BA7">BA7</option>
+                                                            <option value="BA8">BA8</option>
+                                                            <option value="BA9">BA9</option>
+                                                            <option value="BA10">BA10</option>
+                                                            <option value="BA11">BA11</option>
+                                                            <option value="BA12">BA12</option>
+                                                            <option value="BA13">BA13</option>
+                                                            <option value="BA14">BA14</option>
+                                                            <option value="BA15">BA15</option>
+                                                            <option value=""></option>
+
+                                                            </select>
+                                                            <span style="color: #a0a0a0">注：CAMPAIGN为：CAMPAIGN_1 + CAMPAIGN_2</span>
+                                                        </div>
+                                                        <div style="width: 100%; height: 60px; float: left">
+                                                            <span style="">CAMPAIGN_2：</span>
+                                                            <input id="CAMPAIGN_2" style="width: 20%; height: 36px; border-radius: 4px;" type="text" name="" placeholder="请输入CAMPAIGN"value="">
+                                                            <span style="color: #a0a0a0">注：如果CAMPAIGN_1无可选名字，则在CAMPAIGN_2这输入，输入时请保持CAMPAIGN_1为空</span>
+                                                        </div>
+                                                 </div>
+                                                 </div>
+                                            </div>
+                                        <hr>
+
+{#                                        <a>请选择你要上传的店铺名：</a>#}
+{#                                        全选&nbsp;<input id="checkAll" type="checkbox"/>&nbsp;&nbsp;#}
+{#                                        A&nbsp;<input type="checkbox"  name="test" value="A,"/>&nbsp;&nbsp;#}
+{#                                        B&nbsp;<input type="checkbox"  name="test" value="B,"/>&nbsp;&nbsp;#}
+{#                                        C&nbsp;<input type="checkbox"  name="test" value="C,"/>&nbsp;&nbsp;#}
+{#                                        E&nbsp;<input type="checkbox"  name="test" value="E,"/>&nbsp;&nbsp;#}
+{#                                        G&nbsp;<input type="checkbox"  name="test" value="G,"/>&nbsp;&nbsp;#}
+{#                                        H&nbsp;<input type="checkbox"  name="test" value="H,"/>&nbsp;&nbsp;#}
+{#                                        I&nbsp;<input type="checkbox"  name="test" value="I,"/>&nbsp;&nbsp;#}
+{#                                        J&nbsp;<input type="checkbox"  name="test" value="J,"/>&nbsp;&nbsp;#}
+{#                                        M&nbsp;<input type="checkbox"  name="test" value="M,"/>&nbsp;&nbsp;#}
+{#                                        P&nbsp;<input type="checkbox"  name="test" value="P,"/>&nbsp;&nbsp;#}
+{#                                        Q&nbsp;<input type="checkbox"  name="test" value="Q,"/>&nbsp;&nbsp;#}
+{#                                        R&nbsp;<input type="checkbox"  name="test" value="R,"/>&nbsp;&nbsp;#}
+{##}
+{#                                        A1&nbsp;<input type="checkbox"  name="test" value="A1,"/>&nbsp;&nbsp;#}
+{#                                        A2&nbsp;<input type="checkbox"  name="test" value="A2,"/>&nbsp;&nbsp;#}
+{#                                        A3&nbsp;<input type="checkbox"  name="test" value="A3,"/>&nbsp;&nbsp;#}
+{#                                        A4&nbsp;<input type="checkbox"  name="test" value="A4,"/>&nbsp;&nbsp;#}
+{#                                        A5&nbsp;<input type="checkbox"  name="test" value="A5,"/>&nbsp;&nbsp;#}
+{#                                        A6&nbsp;<input type="checkbox"  name="test" value="A6,"/>&nbsp;&nbsp;#}
+{#                                        A7&nbsp;<input type="checkbox"  name="test" value="A7,"/>&nbsp;&nbsp;#}
+{#                                        A8&nbsp;<input type="checkbox"  name="test" value="A8,"/>&nbsp;&nbsp;#}
+{#                                        A9&nbsp;<input type="checkbox"  name="test" value="A9,"/>&nbsp;&nbsp;#}
+{#                                        A10&nbsp;<input type="checkbox"  name="test" value="A10,"/>&nbsp;&nbsp;#}
+{#                                        A11&nbsp;<input type="checkbox"  name="test" value="A11,"/>&nbsp;&nbsp;#}
+{#                                        A12&nbsp;<input type="checkbox"  name="test" value="A12,"/>&nbsp;&nbsp;#}
+{#                                        A13&nbsp;<input type="checkbox"  name="test" value="A13,"/>&nbsp;&nbsp;#}
+{#                                        A14&nbsp;<input type="checkbox"  name="test" value="A14,"/>&nbsp;&nbsp;#}
+{#                                        A15&nbsp;<input type="checkbox"  name="test" value="A15,"/>&nbsp;&nbsp;#}
+{#                                        A16&nbsp;<input type="checkbox"  name="test" value="A16,"/><br><br>#}
+                                        <button style="color: black" type="button" onclick="jqchk(this)" class="btn btn-primary" id="bt" >更新并保存商品数据</button>
+                                        <span class="sp_3"></span><br>
+                                    </form>
+                                    <div style="color: black;size:B5">
+                                        更新成功:<span class="sp_1"></span><br>
+                                        更新失败:<span class="sp_2"></span><br>
+                                        <span class="sp_4"></span>
+                                    </div>
+                                </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--footer-->
+			<footer class="footer">
+				<div class="container">
+					<div class="row align-items-center flex-row-reverse">
+						<div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+							Copyright © 2019 <a href="#">Uplor </a>. Designed by <a href="http://www.tophatter.com/">Ethan</a> All rights reserved.
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- End Footer-->
+		</div>
+
+
+		<!-- Back to top -->
+		<a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+        <!--计算器-->
+        <div class="scrollsidebar" id="hhService" style="box-shadow: darkgrey 10px 10px 30px 5px ;opacity:1;">
+            <div class="side_content">
+                <div class="side_list">
+                    <div class="side_title"><a title="隐藏" class="close_btn"><span>关闭</span></a></div>
+                    <div class="side_center" style="background:#f2f4f8">
+                        <form >
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品进价(￥)</span>
+                                      <input type="number" id="计_产品进价" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>产品重量(g)</span>
+                                      <input type="number" id="计_产品重量" style="width: 100px;height: 40px;border-radius: 4px;" class="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>物流商选择</span>
+                                      <select style="width: 100px; height: 40px; border-radius: 4px;" name="" id="计_物流商选择" >
+                                            <option value="普货">普货</option>
+                                            <option value="带电">带电</option>
+                                            <option value="特货">特货</option>
+                                            <option value="海运">输入</option>
+                                            <option style="color: #d1d1d3" selected="selected" value="">--请选择--</option>
+                                      </select>
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;输入运费(￥)</span>
+                                      <input type="number" id="计_输入运费" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>均SFB($)</span>
+                                      <input type="number" id="计_均SFB" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>成交率(%)</span>
+                                      <input type="number" id="计_成交率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="80" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style=""><a style="color: red">*</a>预估退货率(%)</span>
+                                      <input type="number" id="计_预估退货率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="5" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color: red">*</a>当前汇率</span>
+                                      <input type="number" id="计_当前汇率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="{{ EXCHANGE_RATE }}" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;一口价利润(%)</span>
+                                      <input type="number" id="计_一口价利润" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="30" placeholder="请输入" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;拍卖利润率(%)</span>
+                                      <input type="number" id="计_拍卖利润率" style="width: 100px;height: 40px;border-radius: 4px;" class="" value="0" placeholder="请输入" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 45px; float: left">
+                            </div>
+
+
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;运费(￥)</span>
+                                      <input type="number" id="sp_1" style="color:red;width: 100px;height: 40px;border-radius: 4px;"  value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拍卖利润(￥)</span>
+                                      <input type="number" id="sp_6" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;一口价利润(￥):</span>
+                                      <input type="number" id="sp_7" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">&nbsp;&nbsp;&nbsp;拍卖总成本(￥)</span>
+                                      <input type="number" id="sp_2" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: left">
+                                      <span style="">一口价总成本(￥)</span>
+                                      <input type="number" id="sp_4" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class=""  value="" placeholder="" disabled="disabled" />
+                                </div>
+
+                            </div>
+                            <div style="width: 500px; height: 60px; float: left">
+
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;建议一口价($):</span>
+                                      <input type="number" id="sp_5" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                                <div style="width: 250px; height: 45px; float: right">
+                                      <span style="">&nbsp;&nbsp;拍卖预计价($):</span>
+                                      <input type="number" id="sp_3" style="color:red;width: 100px;height: 40px;border-radius: 4px;" class="" value="" placeholder="" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div class=""  >
+                                <button class="btn btn-primary" type="button"  data-container="body"
+                                        data-toggle="popover" data-popover-color="popdanger"
+                                        data-placement="bottom" title="计算公式："
+                                        data-content="拍卖预计价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率) + SFB/成交率 <br><br>
+                                                      一口建议价：<br>
+                                                      ((((成本*利润率)/汇率)+1(广告费)+0.3(手续费)))/0.881(佣金)/(退货率)">计算公式
+                                </button>
+                                <button  type="button" onclick="displayResult_count(this)" class="btn btn-primary"  id="111" >开始计算</button>
+                            </div>
+                            <script>
+                              function displayResult_count(obj){
+                             $.ajax({
+                                        url:'/profitStatistics_2/',
+                                        type:'get',
+                                        data:
+                                            {
+                                            计_产品进价:$('#计_产品进价').val(),
+                                            计_产品重量:$('#计_产品重量').val(),
+                                            计_均SFB:$('#计_均SFB').val(),
+                                            计_成交率:$('#计_成交率').val(),
+                                            计_预估退货率:$('#计_预估退货率').val(),
+                                            计_当前汇率:$('#计_当前汇率').val(),
+                                            计_物流商选择:$('#计_物流商选择').val(),
+                                            计_输入运费:$('#计_输入运费').val(),
+                                            计_一口价利润:$('#计_一口价利润').val(),
+                                            计_拍卖利润率:$('#计_拍卖利润率').val(),
+                                            csrfmiddlewaretoken:$("[name='csrfmiddlewaretoken']").val()
+                                             },
+                                            success: function (response) {
+                                                    var ret = JSON.parse(response);
+
+                                                    $('.sp_0').html('qwerty').css("color", "red");
+
+                                                    document.getElementById('sp_1').value=ret.msg_e_1;
+                                                    document.getElementById('sp_2').value=ret.msg_e_2;
+                                                    document.getElementById('sp_3').value=ret.msg_e_3;
+                                                    document.getElementById('sp_4').value=ret.msg_e_4;
+                                                    document.getElementById('sp_5').value=ret.msg_e_5;
+                                                    document.getElementById('sp_6').value=ret.msg_e_6;
+                                                    document.getElementById('sp_7').value=ret.msg_e_7;
+                                                }
+                                        })
+                             }
+                            </script>
+                        </form>
+                    </div>
+                    <div class="side_bottom"></div>
+                </div>
+            </div>
+            <div class="show_btn"><span>在线客服</span></div>
+        </div><!--scrollsidebar end-->
+
+		<!-- Dashboard js -->
+		 <script src="{% static 'assets/js/vendors/jquery-3.2.1.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/popper.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/bootstrap-4.1.3/js/bootstrap.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/selectize.min.js' %}"></script>
+		 <script src="{% static 'assets/js/vendors/circle-progress.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/rating/jquery.rating-stars.js' %}"></script>
+
+		<!-- Fullside-menu Js-->
+		 <script src="{% static 'assets/plugins/fullside-menu/jquery.slimscroll.min.js' %}"></script>
+		 <script src="{% static 'assets/plugins/fullside-menu/waves.min.js' %}"></script>
+
+		<!-- Custom scroll bar Js-->
+		 <script src="{% static 'assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+
+		<!-- Custom Js-->
+		 <script src="{% static 'assets/js/custom.js' %}"></script>
+
+        <!---选择框-->
+        <script>
+            function jqchk() { //jquery获取复选框值
+                var chk_value = [];
+                var str_1 = '正在更新……';
+                var str_2 = '更新完成';
+                var str_3 = '文件错误：';
+
+                //正在上传（状态文字）
+                $('.sp_3').html(str_1).css("color", "red");
+
+                //选择框的值
+                $('input[name="test"]:checked').each(function () {
+                    chk_value.push($(this).val());
+                });
+                var value = chk_value.join('');//把复选框的值以数组形式存放
+
+                $.ajax({
+                    type: "post",
+                    url: "/products_update/",
+                    data: {
+                        valss: value,
+                        FIG:'FIG',
+                        //基本信息
+                        identifier:$('#identifier').val(),
+                        //价格信息
+                        buy_now_price:$('#buy_now_price').val(),
+                        cost_basis:$('#cost_basis').val(),
+                        retail_price:$('#retail_price').val(),
+                        reserve_price:$('#reserve_price').val(),
+                        scheduling_fee_bid:$('#scheduling_fee_bid').val(),
+                        //运输信息
+                        shipping_price:$('#shipping_price').val(),
+                        配件价格:$('#配件价格').val(),
+                        配件描述1:$('#配件描述1').val(),
+                        配件描述2:$('#配件描述2').val(),
+
+                        //CAMPAIGN信息
+                        CAMPAIGN_1:$('#CAMPAIGN_1').val(),
+                        CAMPAIGN_2:$('#CAMPAIGN_2').val(),
+
+                        店铺名:$('#店铺名').val(),
+
+                        csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val(),
+                    },
+
+                    success: function (response) {
+                        var ret = JSON.parse(response);
+                        {#alert(ret.msg_1.msg_1)#}
+                        if (ret.msg_1) { //上传成功
+                            $('.sp_1').html(ret.msg_1).css("color", "red");
+                        }
+
+                        if (ret.msg_2) { //上传失败
+                            $('.sp_2').html(ret.msg_2).css("color", "red");
+                        }
+
+                        //上传完成
+                        $('.sp_3').html(str_2).css("color", "red");
+
+                        if (ret.msg_e) {//上传文件错误
+                            $('.sp_4').html(str_3 + ret.msg_e).css("color", "red");
+                        }
+                    }
+                })
+            }
+        </script>
+        <script type="text/javascript">
+        $(function() {
+           $("#checkAll").click(function() {
+                $('input[name="test"]').prop("checked",this.checked);
+            });
+            var $subBox = $("input[name='test']");
+            $subBox.click(function(){
+                $("#checkAll").prop("checked",$subBox.length == $("input[name='test']:checked").length ? true : false);
+            });
+        });
+    </script>
+
+        <!-- 图片懒加载 -->
+        <script src="{% static 'js/echo/echo.min.js' %}"></script>
+        <script>
+        Echo.init({
+            offset: 5,
+            throttle: 200
+        });
+        </script>
+
+        <!-- html太平洋时间 -->
+        <script>
+        // 时间设置
+        var  timezone = -7; // 时区 ： 东区时区1~12  西区时区-1~-12
+        var  date;
+
+         date = getLocalTime(timezone)
+          .toString()
+           .split("GMT+")[0]
+           .toString();
+        $("#showdate").html(date);
+
+       function getLocalTime(i) {
+         if (typeof i !== "number") {
+             return new Date();
+           }
+           var d = new Date();
+           var len = d.getTime();
+           var offset = d.getTimezoneOffset() * 60000;
+           var utcTime = len + offset;
+          return new Date(utcTime + 3600000 * i);
+        }
+       // 时间设置end
+       window.onload = function() {
+       // 调用时间
+       var setdate = setInterval(() => {
+       date = getLocalTime(timezone)
+         var year = date.getFullYear();
+         var month = date.getMonth()+1;
+         var Date = date.getDate();
+         var hour = date.getHours();  //获得小时、分钟、秒
+         var minute = date.getMinutes();
+         var second = date.getSeconds();
+         var weekday = 0;
+         switch(date.getDay()){
+            case 0:
+            weekday = "星期日";
+            break;
+            case 1:
+            weekday = "星期一";
+            break;
+            case 2:
+            weekday = "星期二";
+            break;
+            case 3:
+            weekday = "星期三";
+            break;
+            case 4:
+            weekday = "星期四";
+            break;
+            case 5:
+            weekday = "星期五";
+            break;
+            case 6:
+            weekday = "星期六";
+            break;
+         }
+        document.getElementById("showdate").innerHTML="<br>当前太平洋时间："+year+"年"+month+"月"+Date+"日&nbsp&nbsp;"+hour+":"+minute+":"+second+"&nbsp&nbsp;"+weekday;
+       }, 1000);
+       // 调用时间end
+        };
+      </script>
+
+        <!--计算器-->
+        <script type="text/javascript" src="{% static 'jisuanqi/js/jquery.hhService.js' %}"></script>
+        <script type="text/javascript">
+            $(function(){
+            //悬浮计算器
+            $("#hhService").fix({
+                float : 'right',	      //默认设置 “left” or “right”
+                minStatue : true,     //默认设置 “false” or “true”
+                skin : 'blue',	    //默认设置 “blue”  “orange”  “green”  “red”  “pink”
+                durationTime : 400
+            });
+        });
+        </script>
+	</body>
+</html>
