@@ -983,12 +983,11 @@ def TOP_statistics(request):
                     Sort_order + Sort_field)[page_star:page_end]
 
             for obj in objs:
-                print(obj)
                 obj['facets_em'] = []
                 obj['lots_id'] = str(obj['lots_id'])
                 obj['hammer_shipping_price'] = round(
                     float(obj['hammer_price_local']) + float(obj['shipping_price_local']), 2)
-                obj['avg_hammer_price'] = round(obj['hammer_shipping_price'] / float(obj['valid_orders']), 2)
+                # obj['avg_hammer_price'] = round(obj['hammer_shipping_price'] / float(obj['valid_orders']), 2)
                 if obj['bid_orders']:
                     obj['action_price'] = round(
                         float(obj['hammer_price_local']) + float(obj['shipping_price_local']) / float(obj['bid_orders']), 2

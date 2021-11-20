@@ -3821,9 +3821,10 @@ def my_task01():
 
 # 定时统计TOP数据
 # @sched.scheduled_job('cron',hour='*/1',id='my_task1')
+@sched.scheduled_job('cron', minute='*/1', id='my_task1')
 def my_task1():
     myfunc_colocet()
-my_task1()
+# my_task1()
 # #
 # # 定时30分钟获取销售数据(销售数据)
 # @sched.scheduled_job('cron',minute='*/30',id='my_task2')
